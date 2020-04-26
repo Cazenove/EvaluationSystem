@@ -1,6 +1,6 @@
 <template>
 	<div class="about">
-		<UserNav v-if="!this.$store.state.isInLoginPage" />
+		<UserNav />
 		<h1>This is an about page</h1>
 		<button class="btn btn-success" @click="SendGet">GET</button><br /><br />
 		<!-- <button class="btn btn-primary" @click="SendPost">POST</button> -->
