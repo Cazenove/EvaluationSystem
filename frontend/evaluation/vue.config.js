@@ -1,7 +1,6 @@
 const webpack = require('webpack')
 
 module.exports = {
-	lintOnSave: false,
 	configureWebpack: {
 		plugins: [
 			new webpack.ProvidePlugin({
@@ -10,5 +9,6 @@ module.exports = {
 				"windows.jQuery": "jquery"
 			})
 		]
-	}
+	},
+	lintOnSave: false
 }

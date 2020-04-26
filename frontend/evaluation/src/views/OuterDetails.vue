@@ -1,5 +1,6 @@
 <template>
 	<div id="OuterDetails">
+		<UserNav v-if="!this.$store.state.isInLoginPage"/>
 		<button class="btn btn-success">成功</button>
 		<vxe-table :data="tableData">
 			<vxe-table-column type="seq" title="Seq" width="80"></vxe-table-column>
