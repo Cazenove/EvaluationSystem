@@ -38,6 +38,14 @@ public class Assistant {
         this.password = password;
     }
 
+    ublic String getName() {
+        return name;
+    }
+
+    public void setName(String assistant_id) {
+        this.name = name;
+    }
+
     public int getClass_id() {
         return class_id;
     }
