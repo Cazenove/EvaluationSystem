@@ -1,17 +1,10 @@
 <template>
 	<div id="app">
-		<UserNav v-if="!this.$store.state.isInLoginPage"/>
 		<router-view />
 	</div>
 </template>
 
 <script>
-	import UserNav from './components/UserNav.vue'
-	export default {
-		components: {
-			UserNav
-		}
-	}
 </script>
 
 <style>

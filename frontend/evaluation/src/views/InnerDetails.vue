@@ -1,5 +1,6 @@
 <template>
 	<div id="OuterDetails">
+		<UserNav v-if="!this.$store.state.isInLoginPage"/>
 		<h1>{{this.title}}</h1>
 		<h2>{{this.id}}</h2>
 		<p>

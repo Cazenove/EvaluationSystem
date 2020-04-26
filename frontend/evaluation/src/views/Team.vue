@@ -1,5 +1,6 @@
 <template>
 	<div class="about">
+		<UserNav v-if="!this.$store.state.isInLoginPage" />
 		<h1>This is an about page</h1>
 		<button class="btn btn-success" @click="SendGet">GET</button><br /><br />
 		<!-- <button class="btn btn-primary" @click="SendPost">POST</button> -->
@@ -12,11 +13,16 @@
 
 <script>
 	import axios from 'axios'
+	import UserNav from '../components/UserNav.vue'
+	
 	export default {
 		data() {
 			return {
 				data: ""
 			}
+		},
+		components:{
+			UserNav
 		},
 		methods: {
 			SendGet: function() {

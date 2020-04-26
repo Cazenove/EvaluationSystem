@@ -12,10 +12,10 @@
 						<router-link class="nav-link" to="/home">评分表</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link class="nav-link" to="/about">我的小组</router-link>
+						<router-link class="nav-link" to="/team">我的小组</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link class="nav-link" to="/login">Login</router-link>
+						<a href="" class="nav-link" @click="loginOut()">注销</a>
 					</li>
 				</ul>
 			</div>
@@ -24,6 +24,15 @@
 </template>
 
 <script>
+	export default{
+		methods:{
+			loginOut: function() {
+				window.sessionStorage.removeItem('data');
+				this.$router.push('/');
+				alert("已注销");
+			}
+		}
+	}
 </script>
 
 <style>
