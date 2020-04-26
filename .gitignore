@@ -1,2 +1,7 @@
 
 frontend/evaluation/node_modules/
+！frontend/evaluation/node_modules/jquery
+frontend/evaluation/.DS_Store
+frontend/evaluation/dist/*
+frontend/evaluation/node_modules 2/*
+frontend/evaluation/node_modules 3/*
