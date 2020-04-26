@@ -38,7 +38,7 @@ public class Assistant {
         this.password = password;
     }
 
-    ublic String getName() {
+    public String getName() {
         return name;
     }
 
