@@ -1,0 +1,3 @@
+
+*.json
+frontend/evaluation/node_modules/\*
