@@ -1,3 +1,2 @@
 
-*.json
-frontend/evaluation/node_modules/\*
+frontend/evaluation/node_modules/
