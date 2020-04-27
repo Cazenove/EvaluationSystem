@@ -15,16 +15,8 @@ import VXETable from 'vxe-table'
 import 'vxe-table/lib/index.css'
 
 Vue.use(VXETable)
-
 Vue.config.productionTip = false
-
 Vue.use(VueAxios, axios)
-
-new Vue({
-	router,
-	store,
-	render: h => h(App)
-}).$mount('#app')
 
 //路由守卫
 router.beforeEach((to, from, next) => {
@@ -34,9 +26,7 @@ router.beforeEach((to, from, next) => {
 		// console.log(to.path) //每次跳转的路径
 		if (to.path === '/') {
 			//登录状态下 访问login.vue页面 会跳到home.vue
-			next({
-				path: '/home'
-			});
+			next({path: '/home'});
 		} else {
 			next();
 		}
@@ -45,9 +35,13 @@ router.beforeEach((to, from, next) => {
 		if (to.path === '/') { // 如果是登录页面的话，直接next() -->解决注销后的循环执行bug
 			next();
 		} else { // 否则 跳转到登录页面
-			next({
-				path: '/'
-			});
+			next({path: '/'});
 		}
 	}
 })
+
+new Vue({
+	router,
+	store,
+	render: h => h(App)
+}).$mount('#app')
