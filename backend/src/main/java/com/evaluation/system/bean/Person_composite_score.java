@@ -1,4 +1,4 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,7 +1,7 @@
 package com.evaluation.system.controller;
 
-import com.evaluation.system.Admin;
-import com.evaluation.system.AdminRepository;
+import com.evaluation.system.bean.Admin;
+import com.evaluation.system.dao.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 //小组综合得分表类
 

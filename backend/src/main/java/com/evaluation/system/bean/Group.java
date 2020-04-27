@@ -1,12 +1,9 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 //小组类
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Group {
@@ -16,6 +13,11 @@ public class Group {
     private String name;
     private int class_id;
     private int group_num;
+
+    @Transient
+    private User leader;
+    @Transient
+    private List<User> members;
 
     public Group(){
 
@@ -51,5 +53,21 @@ public class Group {
 
     public void setGroup_num(int group_num) {
         this.group_num = group_num;
+    }
+
+    public User getLeader() {
+        return leader;
+    }
+
+    public void setLeader(User leader) {
+        this.leader = leader;
+    }
+
+    public List<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
     }
 }

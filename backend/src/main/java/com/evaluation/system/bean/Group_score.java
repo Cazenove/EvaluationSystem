@@ -1,32 +1,31 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
+
+//小组历次得分表
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
-//组间评价提交记录表类
 @Entity
-public class Submit_outer {
+public class Group_score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int submit_outer_id;
+    private int group_score_id;
     private int group_id;
     private int evaluation_outer_id;
-    private String content;
-    private Date submit_time;
+    private String content;//先用String代替jason
 
-    public Submit_outer(){
+    public Group_score(){
 
     }
 
-    public int getSubmit_outer_id() {
-        return submit_outer_id;
+    public int getGroup_score_id() {
+        return group_score_id;
     }
 
-    public void setSubmit_outer_id(int submit_outer_id) {
-        this.submit_outer_id = submit_outer_id;
+    public void setGroup_score_id(int group_score_id) {
+        this.group_score_id = group_score_id;
     }
 
     public int getGroup_id() {
@@ -51,13 +50,5 @@ public class Submit_outer {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getSubmit_time() {
-        return submit_time;
-    }
-
-    public void setSubmit_time(Date submit_time) {
-        this.submit_time = submit_time;
     }
 }

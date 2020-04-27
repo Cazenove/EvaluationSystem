@@ -1,9 +1,6 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //管理员类
 
@@ -11,7 +8,9 @@ import javax.persistence.Id;
 public class Admin{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private String admin_id;
+    @Column
     private String password;
 
     public Admin(){

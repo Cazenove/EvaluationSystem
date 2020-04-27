@@ -1,4 +1,4 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,6 +36,14 @@ public class Assistant {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getClass_id() {

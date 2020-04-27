@@ -1,10 +1,7 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //学生类
 
@@ -16,7 +13,8 @@ public class User {
     private String password;
     private String name;
     private int class_id;
-    private int group_id;
+    @Column(name = "group_id")
+    private int groupId;
     private String status;
     private String telephone;
 
@@ -56,12 +54,12 @@ public class User {
         this.class_id = class_id;
     }
 
-    public int getGroup_id() {
-        return group_id;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public String getStatus() {

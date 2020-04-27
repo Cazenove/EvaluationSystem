@@ -1,6 +1,6 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
-//小组历次得分表
+//小组收到的建议表
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,24 +8,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Group_score {
+public class Group_suggestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int group_score_id;
+    private int group_suggestion_id;
     private int group_id;
     private int evaluation_outer_id;
-    private String content;//先用String代替jason
+    private String content;//暂时先用String代替json吧
 
-    public Group_score(){
+    public Group_suggestion(){
 
     }
 
-    public int getGroup_score_id() {
-        return group_score_id;
+    public int getGroup_suggestion_id() {
+        return group_suggestion_id;
     }
 
-    public void setGroup_score_id(int group_score_id) {
-        this.group_score_id = group_score_id;
+    public void setGroup_suggestion_id(int group_suggestion_id) {
+        this.group_suggestion_id = group_suggestion_id;
     }
 
     public int getGroup_id() {

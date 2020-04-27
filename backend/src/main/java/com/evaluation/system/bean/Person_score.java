@@ -1,4 +1,4 @@
-package com.evaluation.system;
+package com.evaluation.system.bean;
 
 //个人历次贡献率及分工情况表类
 
