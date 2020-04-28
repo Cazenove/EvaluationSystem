@@ -1,3 +1,4 @@
+<!-- 用户首页，显示评分表列表 -->
 <template>
 	<div class="home">
 		<UserNav />

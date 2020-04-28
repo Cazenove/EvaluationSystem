@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import apiList from './router/httpConfig.js'
 import App from './App.vue'
 import router from './router'
 import store from './store'

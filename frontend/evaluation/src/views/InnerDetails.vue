@@ -1,31 +1,26 @@
+<!-- 一份组内评分表的内容 -->
 <template>
-	<div id="OuterDetails">
+	<div id="InnerDetails">
 		<UserNav />
-		<h1>{{this.title}}</h1>
-		<h2>{{this.id}}</h2>
-		<p>
-			{{this.content}}
-		</p>
+		<InnerEditableTable />
 	</div>
 </template>
 
 <script>
 	import UserNav from '../components/UserNav.vue'
-	export default{
+	import InnerEditableTable from '../components/InnerEditableTable.vue'
+	export default {
 		data() {
 			return {
-				id:"",
-				title:"",
-				content:""
+				id: ""
 			}
 		},
-		components:{
-			UserNav
-		},
 		created() {
-			this.id=this.$route.query.id;
-			this.title="组内评价表";
-			this.content="内容balabala";
+			this.id = this.$route.query.id;
+		},
+		components:{
+			UserNav,
+			InnerEditableTable
 		}
 	}
 </script>

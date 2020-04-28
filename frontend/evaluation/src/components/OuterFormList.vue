@@ -19,15 +19,12 @@ export default {
 			list: [
 				{
 					id:1,
-					groupId:1,
 					name:"第一次团队作业组间评分表_第一组"
 				},{
 					id:2, //轮次
-					groupId:1,
 					name:"第二次团队作业组间评分表_第一组"
 				},{
 					id:3, //轮次
-					groupId:1,
 					name:"第三次团队作业组间评分表_第一组"
 				}
 			]

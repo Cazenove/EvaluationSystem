@@ -1,7 +1,6 @@
 <template>
 	<div id="OuterEditableTable">
 		<h2>{{this.$data.data.name}}</h2>
-		<vxe-button @click="showAll">获取所有表单</vxe-button>
 		 <vxe-grid
 		  border
 		  resizable
@@ -84,7 +83,7 @@
 				this.$data.tableColumn[i] = {
 					field: "score" + (i-2),
 					title: content[i-2].item+"("+content[i-2].max_score+")",
-					"editRender": {name: '$input', props: {type: 'number', min: 0, max: max_score}}
+					"editRender": {name: '$input', props: {type: 'number', min: 0, max: content[i-2].max_score}}
 				};
 			}
 			this.$data.tableColumn[i] = {
@@ -112,11 +111,9 @@
 			console.log(this.$data.tableData);
 		},
 		methods: {
-			showAll() {
-				console.log(this.$data.tableData);
-			},
 			sumbit() {
 				// 提交表格
+				// 将修改的数据保存到表单，然后进行提交
 				var len = this.$data.tableData.length,
 					conlen = this.$data.tableColumn.length;
 				for(var i = 0; i < len; i++) {
@@ -127,6 +124,9 @@
 					this.$data.data.content[i].suggestion = this.$data.tableData[i]["suggestion"];
 				}
 				console.log(this.$data.data);
+				
+				// 提交
+				
 			}
 		}
 	}
