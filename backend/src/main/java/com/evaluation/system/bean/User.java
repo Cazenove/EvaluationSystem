@@ -1,15 +1,24 @@
 package com.evaluation.system.bean;
 
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 //学生类
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String user_id;
+    /*@GeneratedValue(generator = "userId")
+    @GenericGenerator(name = "userId",strategy = "native")*/
+    @Column(name = "user_id")
+    private String userId = "000000000";
     private String password;
     private String name;
     private int class_id;
@@ -23,11 +32,11 @@ public class User {
     }
 
     public String getUser_id() {
-        return user_id;
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUser_id(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
