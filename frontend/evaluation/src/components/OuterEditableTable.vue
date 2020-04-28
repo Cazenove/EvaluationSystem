@@ -84,7 +84,7 @@
 				this.$data.tableColumn[i] = {
 					field: "score" + (i-2),
 					title: content[i-2].item+"("+content[i-2].max_score+")",
-					"editRender": {name: '$input', props: {type: 'number'}}
+					"editRender": {name: '$input', props: {type: 'number', min: 0, max: max_score}}
 				};
 			}
 			this.$data.tableColumn[i] = {
