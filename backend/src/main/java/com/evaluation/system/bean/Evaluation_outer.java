@@ -1,33 +1,31 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
-//组件评价表类
+//组间评价表类
 
 @Entity
 public class Evaluation_outer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int evaluation_outer_id;
+    @Column(name = "evaluation_outer_id")
+    private int evaluationOuterId;
     private String name;
     private int class_id;
     private String content;//这个暂时先用string
-    private Date release_time;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
+    private String release_time;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
 
     public Evaluation_outer(){
 
     }
 
     public int getEvaluation_outer_id() {
-        return evaluation_outer_id;
+        return evaluationOuterId;
     }
 
-    public void setEvaluation_outer_id(int evaluation_outer_id) {
-        this.evaluation_outer_id = evaluation_outer_id;
+    public void setEvaluation_outer_id(int evaluationOuterId) {
+        this.evaluationOuterId = evaluationOuterId;
     }
 
     public String getName() {
@@ -54,11 +52,11 @@ public class Evaluation_outer {
         this.content = content;
     }
 
-    public Date getRelease_time() {
+    public String getRelease_time() {
         return release_time;
     }
 
-    public void setRelease_time(Date release_time) {
+    public void setRelease_time(String release_time) {
         this.release_time = release_time;
     }
 }
