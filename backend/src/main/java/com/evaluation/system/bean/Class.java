@@ -1,9 +1,8 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.*;
 import java.util.Date;
 
 //班级类
@@ -12,23 +11,23 @@ import java.util.Date;
 public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int class_id;
+    private int classId;
     private String name;
-    private int group_num;
-    private Date start_time;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
-    private Date end_time;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
+    private int groupNum;
+    private Date startTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
+    private Date endTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
     private String status;
 
     public Class(){
 
     }
 
-    public int getClass_id() {
-        return class_id;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setClass_id(int class_id) {
-        this.class_id = class_id;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public String getName() {
@@ -39,32 +38,44 @@ public class Class {
         this.name = name;
     }
 
-    public int getGroup_num() {
-        return group_num;
+    public int getGroupNum() {
+        return groupNum;
     }
 
-    public void setGroup_num(int group_num) {
-        this.group_num = group_num;
+    public void setGroupNum(int groupNum) {
+        this.groupNum = groupNum;
     }
 
-    public Date getStart_time() {
-        return start_time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Class{" +
+                "classId=" + classId +
+                ", name='" + name + '\'' +
+                ", groupNum=" + groupNum +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status='" + status + '\'' +
+                '}';
     }
 
     public void setStatus(String status) {
