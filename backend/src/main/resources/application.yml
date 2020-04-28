@@ -14,4 +14,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
+  http:
+    encoding:
+      charset: utf-8
+      force: true

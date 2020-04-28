@@ -23,6 +23,18 @@ public class Class {
 
     }
 
+    @Override
+    public String toString() {
+        return "Class{" +
+                "class_id=" + class_id +
+                ", name='" + name + '\'' +
+                ", group_num=" + group_num +
+                ", start_time=" + start_time +
+                ", end_time=" + end_time +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public int getClass_id() {
         return class_id;
     }
