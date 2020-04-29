@@ -4,11 +4,18 @@
 		<UserNav />
 		<h1>我的小组</h1>
 		<hr />
-		<h3>小组成员</h3>
-		<p>组长：<a href="">{{ leader.name }}</a></p>
-		<p>组员：<a v-for="person in member" href="">{{person.name}}  </a></p>
+		<p>班级：{{response.data.className}}</p>
+		<p>组号：{{response.data.groupNum}}</p>
+		<p>组名：{{response.data.groupName}}</p>
+		<p>组长：<a href="">{{response.data.leader.userName}}</a></p>
+		<p>组员：<a v-for="person in response.data.member" href="">{{person.userName}}  </a></p>
 		<hr />
-		
+		<div v-for="item in response.data.data">
+			<p>{{item.evaluationOuterId}}</p>
+			<p>{{item.name}}</p>
+			<p>{{item.score}}</p>
+			<p>{{item.suggestion}}</p>
+		</div>
 	</div>
 </template>
 
@@ -19,60 +26,60 @@
 	export default {
 		data() {
 			return {
-				groupId: "1", //小组 id
-				groupName: "第一组", //小组名称
-				leader: {
-					id: "221701000", //组长学号
-					name: "张三", //组长姓名
+				request: {
+					groupId:""
 				},
-				member: [{
-					id: "221701001", //组员学号
-					name: "李四", //组员姓名
-				}, {
-					id: "221701002", //组员学号
-					name: "王五", //组员姓名
-				}],
-				data: [{
-					id: "1", //课程活动 id
-					score: 100, //本次得分
-					suggestion:["建议 1 ","建议 2 "] //收到的建议
-				}, {
-					id: "2", //课程活动 id
-					score: 99, //本次得分
-					suggestion:["建议 1 ","建议 2 "] //收到的建议
-				}, ]
+				response: {
+					status:1,
+					data: {
+					    groupId:1,
+					    groupName:"第一组",
+					    classId:1,
+					    className:"2020软件工程S班",
+					    groupNum:1,//小组在班级里的编号
+					    leader: {
+					        userId:"221701000",//组长的学号
+					        userName:"张三"//组长的姓名
+					    },
+					    member: [
+					        {
+					            userId:"221701001",
+					            userName:"李四"
+					        },
+					        {
+					            userId:"221701002",
+					            userName:"王五"
+					        }
+					    ],
+					    data: [
+					        {
+					            evaluationOuterId:1,
+					            name:"第一次团队作业_组间评分表",
+					            score:93,
+					            suggestion:["建议1","建议2"]
+					        },
+					        {
+					            evaluationOuterId:2,
+					            name:"第二次团队作业_组间评分表",
+					            score:94,
+					            suggestion:["建议1","建议2"]
+					        }
+					    ]
+					}
+				}
 			}
 		},
-	components: {
+		created() {
+			//创建时获取班级的信息
+			this.getRequest();
+		},
+		components: {
 			UserNav
 		},
 		methods: {
-			SendGet: function() {
-				axios.get('http://www.dzyong.top:3005/yiqing/history', {
-					params: {}
-				}).then(function(res) {
-					console.log(res.data.data);
-				}).catch(function(error) {
-					console.log(error);
-				});
-			},
-			SendPost: function() {
-				axios.post('', {}).then(function(response) {
-					console.log(response);
-				}).catch(function(error) {
-					console.log(error);
-				});
+			getRequest() {
+				this.$data.request.groupId = this.$store.state.userInfo.groupId;
 			}
-		},
-		// created() {
-		// 	axios.get('http://www.dzyong.top:3005/yiqing/history',{
-		// 		params:{
-		// 		}
-		// 	}).then(function(res){
-		// 		console.log(res.data);
-		// 	}).catch(function(error){
-		// 		console.log(error);
-		// 	});
-		// }
+		}
 	}
 </script>

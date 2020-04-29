@@ -1,10 +1,10 @@
 <template>
 	<div id="OuterEditableTable">
-		<h2>{{this.$data.data.name}}</h2>
+		<h2>{{this.$data.response.data.name}}</h2>
 		<vxe-grid border show-footer resizable keep-source ref="xGrid" height="530" class="editable-footer" :footer-method="footerMethod"
 		 :footer-cell-class-name="footerCellClassName" :data="tableData" :edit-config="{trigger: 'click', mode: 'row', showStatus: true, icon: 'fa fa-file-text-o'}">
-			<vxe-table-column field="id" title="学号"></vxe-table-column>
-			<vxe-table-column field="name" title="姓名"></vxe-table-column>
+			<vxe-table-column field="userId" title="学号"></vxe-table-column>
+			<vxe-table-column field="userName" title="姓名"></vxe-table-column>
 			<vxe-table-column field="decision" title="分工" :edit-render="{name: 'input', attrs: {type: 'text'}}"></vxe-table-column>
 			<vxe-table-column field="contribution" title="贡献率" :edit-render="{name: '$input', props: {type: 'number',min: 0,max: 100}}"></vxe-table-column>
 		</vxe-grid>
@@ -18,34 +18,46 @@
 	export default {
 		data() {
 			return {
-				state: "",
-				data: {
-					id: "1",
-					name: "第一次团队合作_组内评分表",
-					group_id: "1",
-					group_name: "第一组",
-					content: [{
-							id: "221701000",
-							name: "张三",
-							decision: "前端",
-							contribution: "60"
-						},
-						{
-							id: "221701001",
-							name: "李四",
-							decision: "后端",
-							contribution: "40"
-						}
-					]
+				request: {
+					classId:1,
+					groupId:1,
+					evaluationInnerId:1//组内评分表的id
+				},
+				response: {
+					status:1,
+					data: {
+					    evaluationInnerId:1,
+					    name:"第一次团队合作_组内评分表",
+					    groupId:1,
+					    groupName:"第一组",
+					    content: [
+					        {
+					            userId:"221701000",//id，学号
+					            userName:"张三",//姓名
+					            decision:"",//分工
+					            contribution:""//贡献率
+					        },
+					        {
+					            userId:"221701001",//id，学号
+					            userName:"李四",//姓名
+					            decision:"",//分工
+					            contribution:""//贡献率
+					        }
+					    ]
+					}
 				},
 				sum: "",
 				tableData: []
 			}
 		},
 		created() {
-			this.$data.tableData = this.$data.data.content;
+			this.getRequest();
+			this.$data.tableData = this.$data.response.data.content;
 		},
 		methods: {
+			getRequest() {
+				
+			},
 			footerCellClassName({
 				$rowIndex,
 				column,

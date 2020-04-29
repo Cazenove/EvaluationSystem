@@ -11,59 +11,16 @@
 				<label for="password">密码</label>
 				<input type="password" class="form-control" id="password" v-model="password" />
 			</div>
-			<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal" @click="getClassInfo">注册</button><br /><br />
-			<button class="btn btn-primary" @click="register()">登录</button>
+			<RegisterModal />
+			<br />
+			<button class="btn btn-primary" @click="login()">登录</button>
 		</div>
-
-		<!-- 注册模态框 -->
-		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="registerModalLabel">注册</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="regisiter-userid">学号</label>
-							<input type="text" class="form-control" id="regisiter-userid" v-model="registerInfo.userid" />
-						</div>
-						<div class="form-group">
-							<label for="regisiter-password">密码</label>
-							<input type="password" class="form-control" id="regisiter-password" v-model="registerInfo.password" />
-						</div>
-						<div class="form-group">
-							<label for="register-username">姓名</label>
-							<input type="text" class="form-control" id="register-username" v-model="registerInfo.username" />
-						</div>
-						<div class="form-group">
-							<label for="telephone">电话号码</label>
-							<input type="text" class="form-control" id="telephone" v-model="registerInfo.telephone" />
-						</div>
-						<div class="form-group">
-							<label for="classid">班级</label>
-							<input type="text" class="form-control" id="classid" v-model="registerInfo.classid" />
-						</div>
-						<div class="form-group">
-							<label for="groupid">小组</label>
-							<input type="text" class="form-control" id="groupid" v-model="registerInfo.groupid" />
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary">注册</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 	</div>
 </template>
 
 <script>
 	import axios from 'axios'
+	import RegisterModal from '../components/RegisterModal.vue'
 	export default {
 		data() {
 			return {
@@ -88,18 +45,10 @@
 				welcomemsg: "《软件工程实践》互动评价系统",
 				username: "",
 				password: "",
-				classInfo: {
-					
-				},
-				registerInfo: {
-					userid:"",
-					password:"",
-					username:"",
-					telephone:"",
-					classid:"",
-					groupid:""
-				}
 			}
+		},
+		components: {//注册组件
+			RegisterModal
 		},
 		methods: {
 			login() {
@@ -110,12 +59,11 @@
 						userNameArr = [],
 						passWordArr = [],
 						ses = window.sessionStorage;
-					// 拿到所有的username
+					// 以下为模拟登陆
 					for (var i = 0; i < len; i++) {
 						userNameArr.push(res[i].username);
 						passWordArr.push(res[i].password);
 					}
-					console.log(userNameArr, passWordArr);
 					if (userNameArr.indexOf(this.username) === -1) {
 						alert('账号不存在！');
 					} else {
@@ -136,24 +84,6 @@
 				// 	console.log('连接数据库失败！')
 				// })
 			},
-			getClassInfo() {
-				// 点击注册时获取班级的小组信息
-				axios.post('/admin/get',{})
-				.then(function(response) {
-					this.$data.classInfo = response.data;
-				}).catch(function(error) {
-					
-				});
-			},
-			register() {
-				// 注册
-				axios.post('/user/register',this.registerInfo)
-				.then(function(response) {
-					console.log(response);
-				}).catch(function(error) {
-					console.log(error);
-				});
-			}
 		}
 	}
 </script>
