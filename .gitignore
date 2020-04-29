@@ -5,3 +5,5 @@ frontend/evaluation/.DS_Store
 frontend/evaluation/dist/*
 frontend/evaluation/node_modules 2/*
 frontend/evaluation/node_modules 3/*
+frontend/evaluation/.idea/
+frontend/evaluation/package-lock.json
