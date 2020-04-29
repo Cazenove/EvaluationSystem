@@ -1,0 +1,1270 @@
+1.用户登录
+2.用户注册
+3.修改个人信息
+4.退出
+5.获取组间评分表列表
+6.获取一份组间评分表内容
+7.提交组间评分表
+8.获取组内评分表列表
+9.获取一份组内评分表内容
+10.提交组内评分表
+11.查看小组详情
+12.查看组员详情
+13.新增用户
+14.删除用户
+15.修改用户信息
+16.用户列表
+17.新增助教
+18.删除助教
+19.修改助教信息
+20.助教列表
+21.新增班级
+22.删除班级
+23.修改班级信息
+24.查询所有班级信息
+25.结束班级
+26.新增评分表
+27.删除评分表
+28.修改评分表
+29.查看所有评分表具体内容
+30.新增建议
+31.删除建议
+32.修改建议
+33.查询建议列表
+34.获得所有小组的历次评分
+35.获取所有小组的综合评分
+36.获取所有用户的历次分工及贡献率
+37.获取所有人综合得分
+38.获取所有小组信息
+39.修改小组名称
+40.查看组间评价表提交记录
+41.查看组内评表提交记录
+
+1.用户登录//所有用户共用一个接口
+路径：/login
+请求方式：POST
+请求参数：
+{
+    userId:"123456789",//用户名位数其实不固定，因为还有管理员账户
+    password:"123456"
+}
+返回结果：
+status: 0登录失败，1为组员，2为组长，3为助教，4为老师
+{
+    status:0
+    msg:"登录失败的原因"
+}
+{
+    status:1,//或2
+    data:{
+        userId:"",//账号
+        password:"",//密码
+        userName:"",//姓名
+        telephone:"",//电话
+        classId:"",//班级id
+        groupId:""//小组id
+    }
+}
+{
+    status:3,//助教
+    data: {
+        assistantId:"",//助教账号
+        password:"",//密码
+        assistantName:"",//姓名
+        classId:"",//班级
+        telephone:""//电话
+    }
+}
+{
+    status:4//老师
+}
+
+2.用户注册//只能注册成为用户
+路径:/register
+请求方式：POST
+提交参数：
+{
+    userId:"123456789",//只能是9位
+    password:"123456",//6-16位
+    telephone:"12345678900",//11位
+    userName:"张三",//姓名
+    classId:1,//班级id
+    groupId:1,//小组id
+    status:1//1组员，2组长
+}
+返回结果：
+{
+    status:1,
+    msg:"注册成功"
+}
+{
+    status:0,
+    msg:"注册失败的原因"
+}
+
+3.修改个人信息//可修改密码、电话、姓名
+路径：/user/update
+请求方式：POST
+提交参数：
+{
+    userId:"123456789",//只能是9位
+    password:"123456",//6-16位
+    telephone:"12345678900",//11位
+    userName:"张三",//姓名
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"修改失败的原因"
+}
+
+4.退出
+//暂时用不到
+
+5.获取组间评分表列表
+请求路径：/user/evaluation/outer/list
+请求方式：GET
+请求参数：//只需要获取自己班级的评分表
+{
+    classId:1,
+    groupId:1
+}
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            evaluationOuterId:1,
+            name:"第一组团队作业组间评分表",
+            releaseTime:"",//发布时间
+            endTime:""//结束时间
+        },
+        {
+            evaluationOuterId:2,
+            name:"第二组团队作业组间评分表",
+            releaseTime:"",
+            endTime:""
+        }
+    ]
+}
+{
+    status:0,
+    msg:"获取失败" //提示、原因等
+}
+
+6.获取一份组间评分表内容
+请求路径：/user/evaluation/outer
+请求方式：GET
+请求参数：
+{
+    evaluationOuterId:1//组间评分表的id
+}
+返回结果：
+{
+    status:1,
+    data: {
+        evaluationOuterId:1,
+        name:"第一次团队合作_组间评分表",
+        content: [
+            {
+                groupId:1,
+                groupName:"第一组",
+                score:"",//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:"",
+                    }
+                ],
+                suggestion:"对第一组的建议..."
+            },
+            {
+                groupId:2,
+                groupName:"第二组",
+                score:"",//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:"",
+                    }
+                ],
+                suggestion:"对第二组的建议..."
+            }
+        ]
+    }
+}
+{
+    status:0,
+    msg:"获取失败原因"
+}
+
+7.提交组间评分表 //提交之后要把建议汇总到建议表中
+请求路径：/user/evaluation/outer/submit
+请求方式：POST
+请求参数：
+{
+    evaluationOuterId:1,
+    groupId:3,//提交评分表的小组的id，不能对自己的小组进行评分和建议
+    submitTime:"",//提交时间
+    content: [
+        {
+            groupId:1,
+            groupName:"第一组",
+            score:100,//总分
+            content:[
+                {
+                    item:"创新性",
+                    maxScore:40,
+                    score:40,//未填状态
+                },
+                {
+                    item:"实用性",
+                    maxScore:60,
+                    score:60,
+                }
+            ],
+            suggestion:"对第一组的建议..."
+        },
+        {
+            groupId:2,
+            groupName:"第二组",
+            score:98,//总分
+            content:[
+                {
+                    item:"创新性",
+                    maxScore:40,
+                    score:39,//未填状态
+                },
+                {
+                    item:"实用性",
+                    maxScore:60,
+                    score:59,
+                }
+            ],
+            suggestion:"对第二组的建议..."
+        }
+    ]
+}
+返回结果:
+{
+    status:1,
+    msg:"提交成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+8.获取组内评分表列表 //只能获取自己小组的评分表
+请求路径：/user/evaluation/inner/list
+请求方式：GET
+请求参数：
+{
+    classId:1,
+    groupId:1
+}
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            evaluationInnerId:1,
+            name:"第一组团队作业_组内评分表",
+            releaseTime:"",//发布时间
+            endTime:""//结束时间
+        },
+        {
+            evaluationInnerId:2,
+            name:"第二组团队作业_组内评分表",
+            releaseTime:"",
+            endTime:""
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+9.获取一份组内评分表内容
+请求路径：/user/evaluation/inner
+请求方式：GET
+请求参数：
+{
+    evaluationInnerId:1//组内评分表的id
+}
+返回结果：
+{
+    status:1,
+    data: {
+        evaluationInnerId:1,
+        name:"第一次团队合作_组内评分表",
+        groupId:1,
+        groupName:"第一组",
+        content: [
+            {
+                userId:"221701000",//id，学号
+                userName:"张三",//姓名
+                decision:"",//分工
+                contribution:""//贡献率
+            },
+            {
+                userId:"221701001",//id，学号
+                userName:"李四",//姓名
+                decision:"",//分工
+                contribution:""//贡献率
+            }
+        ]
+    }
+}
+{
+    status:0,
+    msg:"获取失败原因"
+}
+
+10.提交组内评分表
+请求路径：/user/evaluation/inner/submit
+请求方式：POST
+请求参数：
+{
+    evaluationInnerId:1,
+    groupId:1,
+    submitTime:"",//提交时间
+    content: [
+        {
+            userId:"221701000",//id，学号
+            userName:"张三",//姓名
+            decision:"前端",//分工
+            contribution:50//贡献率
+        },
+        {
+            userId:"221701001",//id，学号
+            userName:"李四",//姓名
+            decision:"后端",//分工
+            contribution:50//贡献率
+        }
+    ]
+}
+返回结果：
+{
+    status:1,
+    msg:"提交成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+11.查看小组详情
+请求路径：/user/group/details
+请求方式：GET
+请求参数：
+{
+    groupId:1
+}
+返回结果：
+{
+    status:1,
+    data: {
+        groupId:1,
+        groupName:"第一组",
+        leader: {
+            userId:"221701000",//组长的学号
+            userName:"张三"//组长的姓名
+        },
+        member: [
+            {
+                userId:"221701001",
+                userName:"李四"
+            },
+            {
+                userId:"221701002",
+                userName:"王五"
+            }
+        ],
+        data: [
+            {
+                evaluationOuterId:1,
+                name:"第一次团队作业_组间评分表",
+                score:93,
+                suggestion:["建议1","建议2"]
+            },
+            {
+                evaluationOuterId:2,
+                name:"第二次团队作业_组间评分表",
+                score:94,
+                suggestion:["建议1","建议2"]
+            }
+        ]
+    }
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+12.查看组员详情
+请求路径：/user/group/userdetails
+请求方式：GET
+请求参数：
+{
+    userId:1
+}
+返回结果
+{
+    status:1,
+    data:[
+        {
+            userId:"221701000",
+            userName:"张三" ,
+            data:[
+                {
+                    evaluationInnerId:1,
+                    name:"第一次团队作业_组内评分表",
+                    decision:"前端",
+                    contribution:40
+                },
+                {
+                    evaluationInnerId:2,
+                    name:"第二次团队作业_组内评分表",
+                    decision:"前端",
+                    contribution:50
+                }
+            ]
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+后台部分
+
+13.新增用户
+请求路径：/admin/user/create
+请求方式：POST
+请求参数：
+{
+    userId:"221701501",
+    password:"123456",
+    telephone:"13200000000",
+    userName:"老六",
+    classId:1,
+    groupId:1,
+    status:1//1组员2组长
+}
+返回结果：
+{
+    status:1,
+    msg:"创建成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+14.删除用户
+请求路径：/admin/user/delete
+请求方式：POST
+请求参数：
+{
+    userId:"221701501"
+}
+返回结果：
+{
+    status:1,
+    msg:"删除成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+15.修改用户信息
+请求路径：/admin/user/update
+请求方式：POST
+请求参数：
+{
+    userId:"123456789",//只能是9位
+    password:"123456",//6-16位
+    telephone:"12345678900",//11位
+    userName:"张三",//姓名
+    classId:1,//班级
+    groupId:1,//小组
+    status:1//职务1组员，2组织
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+16.用户列表
+请求路径：/admin/user/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            userId:"221701501",//学号
+            password:"123456",//密码
+            userName:"张三",//姓名
+            classId:1,//班级
+            groupId:1,//小组
+            status:1//职务
+        },
+        {
+            userId:"221701502",//学号
+            password:"123456",//密码
+            userName:"李四",//姓名
+            classId:1,//班级
+            groupId:1,//小组
+            status:2//职务
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+17.新增助教
+请求路径：/admin/assistant/create
+请求方式：POST
+请求参数：
+{
+    assistantId:"221601501",
+    password:"123456",
+    telephone:"13200000000",
+    name:"老王",
+    classId:1//助教管理的班级
+}
+返回结果：
+{
+    status:1,
+    msg:"创建成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+18.删除助教
+请求路径：/admin/assistant/delete
+请求方式：POST
+请求参数：
+{
+    assistantId:"221601501"
+}
+返回结果：
+{
+    status:1,
+    msg:"删除成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+19.修改助教信息
+请求路径：/admin/assistant/update
+请求方式：POST
+请求参数：
+{
+    assistantId:"221601501",
+    password:"123456",
+    telephone:"13200000000",
+    name:"老王",
+    classId:1//助教管理的班级
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+20.助教列表
+请求路径：/admin/assistant/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            assistantId:"221701501",
+            password:"123456",
+            assistantName:"老王"
+            telephone:"13200000000",
+            classId:1
+        },
+        {
+            assistantId:"221701502",
+            password:"123456",
+            assistantName:"老李"
+            telephone:"13200000001",
+            classId:2
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+21.新增班级
+请求路径：/admin/class/create
+请求方式：POST
+请求参数：
+{
+    className:"2020软件工程S班",//班级名称
+    groupNum:4,//最大班级数量
+    startTime:""//学期的开始时间
+}
+返回结果：
+{
+    status:1,
+    msg:"创建成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+22.删除班级
+请求路径：/admin/class/delete
+请求方式：POST
+请求参数：
+{
+    classId:1
+}
+返回结果：
+{
+    status:1,
+    msg:"删除成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+23.修改班级信息
+请求路径：/admin/class/update
+请求方式：POST
+请求参数：
+{
+    className:"2020软件工程H班",
+    groupNum:7,
+    startTime:"2020-03-11"
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+24.查询所有班级信息
+请求路径：/admin/class/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            classId:1,
+            className:"2020软件工程S班",
+            groupNum:7,
+            startTime:"2020-03-11"
+        },
+        {
+            classId:2,
+            className:"2020软件工程W班",
+            groupNum:8,
+            startTime:"2020-03-11"
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+25.结束班级
+请求路径：/admin/class/end
+请求方式：POST
+请求参数：
+{
+    classId:1
+}
+返回结果：
+{
+    status:1,
+    msg:"结束成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+26.新增评分表 //使用该接口以后，会生成组间评价表和组内评价表，名称分别为name_组间评价表、name_组内评价表，保持两者在各自表中的id一致，删除的时候就可以一起删除
+请求路径：/admin/evaluation/create
+请求方式：POST
+请求参数：
+{
+    name:"第二次团队作业",
+    classId:1,
+    releaseTime:"",//发布时间
+    endTime:"",//结束时间
+    content:[
+        {
+            item:"实用性",//评分项
+            maxScore:50//该项的最大分值
+        },
+        {
+            item:"创新性",
+            maxScore:50
+        }
+    ]
+}
+返回结果：
+{
+    status:1,
+    msg:"创建成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+27.删除评分表 //需要删除组间和组内评价表两份，所以新增的时候要保证同一份的id一样
+请求路径：/admin/evaluation/delete
+请求方式：POST
+请求参数：
+{
+    id:1
+}
+返回结果：
+{
+    status:1,
+    msg:"删除成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+28.修改评分表 //修改了的话，需要把已有的提交记录删除
+请求路径：/admin/evaluation/update
+请求方式：POST
+请求参数：
+{
+    name:"第二次团队作业",
+    classId:1,
+    releaseTime:"",//发布时间
+    endTime:"",//结束时间
+    content:[
+        {
+            item:"实用性",//评分项
+            maxScore:50//该项的最大分值
+        },
+        {
+            item:"创新性",
+            maxScore:50
+        }
+    ]
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+29.查看所有评分表具体内容 //查看了才可以修改
+请求路径：/admin/evaluation/details
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    {
+        name:"第一次团队作业",
+        classId:1,
+        releaseTime:"",//发布时间
+        endTime:"",//结束时间
+        content:[
+            {
+                item:"实用性",//评分项
+                maxScore:50//该项的最大分值
+            },
+            {
+                item:"创新性",
+                maxScore:50
+            }
+        ]
+    },
+    {
+        name:"第二次团队作业",
+        classId:1,
+        releaseTime:"",//发布时间
+        endTime:"",//结束时间
+        content:[
+            {
+                item:"实用性",//评分项
+                maxScore:50//该项的最大分值
+            },
+            {
+                item:"创新性",
+                maxScore:50
+            }
+        ]
+    }
+}
+
+30.新增建议
+请求路径：/admin/suggestion/create
+请求方式：POST
+请求参数：
+{
+    adminId:"root",//管理员或助教id
+    evaluationId:1,//针对某一轮作业
+    targetGroupId:1,//针对某一个小组
+    suggestion:"建议内容"
+}
+返回结果：
+{
+    status:1,
+    msg:"新增成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+31.删除建议
+请求路径：/admin/suggestion/delete
+请求方式：POST
+请求参数：
+{
+    groupSuggestionId:1//建议表内的id
+}
+返回结果：
+{
+    status:1,
+    msg:"删除成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+32.修改建议
+请求路径：/admin/suggestion/update
+请求方式：POST
+请求参数：
+{
+    groupSuggestionId:1,
+    suggestion:"修改后的建议内容"
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+33.查询建议列表
+请求路径：/admin/suggestion/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            groupSuggestionId:1,//小组建议表内的ID
+            groupId:1//表示是这个小组收到的建议
+            evaluationOuterId:1//表示是针对这一轮作业的建议
+            suggestion:"建议内容1"
+        },
+        {
+            groupSuggestionId:2,
+            groupId:1
+            evaluationOuterId:1
+            suggestion:"建议内容2"
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+34.获得所有小组的历次评分 //groupId是外键，groupNum表示该小组在班级里是第几组
+请求路径：/admin/group/score/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            groupId:1,//小组表中的id
+            classId:1,
+            groupNum:1,
+            groupName:"第一组",//小组名
+            content:[
+                {
+                    evaluationOuterId:1,//组间评价表号
+                    name:"第一次团队作业_组间评价表",//评价表的名称
+                    score:85//该次的得分
+                },
+                {
+                    evaluationOuterId:2,
+                    name:"第二次团队作业_组间评价表",
+                    score:87
+                }
+            ]
+        },
+        {
+            groupId:8,//小组表中的id
+            classId:2,
+            groupNum:1,//可能是另一个班的第一组
+            groupName:"第一组",//小组名
+            content:[
+                {
+                    evaluationOuterId:1,//组间评价表号
+                    name:"第一次团队作业_组间评价表",//评价表的名称
+                    score:85//该次的得分
+                },
+                {
+                    evaluationOuterId:2,
+                    name:"第二次团队作业_组间评价表",
+                    score:87
+                }
+            ]
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+35.获取所有小组的综合评分
+请求路径：/admin/group/score/final
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            groupId:1,//小组表中的id
+            classId:1,
+            groupNum:1,
+            groupName:"第一组",//小组名
+            score:90//小组综合得分
+        },
+        {
+            groupId:8,//小组表中的id
+            classId:2,
+            groupNum:1,//可能是另一个班的第一组
+            groupName:"第一组",//小组名
+            score:95
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+36.获取所有用户的历次分工及贡献率
+请求路径：/admin/user/score/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            userId:"221701000",
+            userName:"张三",
+            classId:1,
+            className:"2020软件工程S班",
+            groupId:1,
+            groupName:"第一组"
+            content:[
+                {
+                    evaluationInnerId:1,
+                    evaluationInnerName:"第一次团队合作_组内评分表",
+                    decision:"前端",//分工
+                    contribution:40//贡献率
+                },
+                {
+                    evaluationInnerId:2,
+                    evaluationInnerName:"第二次团队合作_组内评分表",
+                    decision:"前端",//分工
+                    contribution:60//贡献率
+                }
+            ]
+        },
+        {
+            userId:"221701001",
+            userName:"李四",
+            classId:1,
+            className:"2020软件工程S班",
+            groupId:1,
+            groupName:"第一组"
+            content:[
+                {
+                    evaluationInnerId:1,
+                    evaluationInnerName:"第一次团队合作_组内评分表",
+                    decision:"后端",//分工
+                    contribution:60//贡献率
+                },
+                {
+                    evaluationInnerId:2,
+                    evaluationInnerName:"第二次团队合作_组内评分表",
+                    decision:"后端",//分工
+                    contribution:40//贡献率
+                }
+            ]
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+37.获取所有人综合得分
+请求路径：/admin/user/score/final
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            userId:"221701000",
+            userName:"张三",
+            classId:1,
+            className:"2020软件工程S班",
+            groupId:1,
+            groupName:"第一组"
+            score:50//综合贡献率
+        },
+        {
+            userId:"221701001",
+            userName:"李四",
+            classId:1,
+            className:"2020软件工程S班",
+            groupId:1,
+            groupName:"第一组"
+            score:50//综合贡献率
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+38.获取所有小组信息
+请求路径：/admin/team/list
+请求方式：GET
+请求参数：无
+返回结果：
+{
+    status:1,
+    data:[
+        {
+            groupId:1,
+            groupName:"第一组",
+            classId:1,
+            className:"2020软件工程S班",
+            groupNum:1,//小组序列，在该班级的第几组
+            leader:{//组长
+                userId:"221701000",
+                userName:"张三"
+            },
+            member:[
+                {
+                    userId:"221701001",
+                    userName:"李四"
+                },
+                {
+                    userId:"221701002",
+                    userName:"王五"
+                }
+            ]
+        },
+        {
+            ...
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+
+新增接口
+//发现没有设置小组名称的地方
+39.修改小组名称 //小组名称默认为空，组长可以修改组名
+请求路径：/user/team/update
+请求方式：POST
+请求参数：
+{
+    groupId:1,//小组id
+    groupName:"第一组"
+}
+返回结果：
+{
+    status:1,
+    msg:"修改成功"
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+40.查看组间评价表提交记录
+请求路径：/admin/evaluation/outer/submit
+请求方式：GET
+请求参数：无
+请求结果：
+{
+    status:1,
+    data:[
+        {
+            submitOuterId:1,//组间评价表提交编号
+            groupId:1,//小组id
+            evaluationOuterId:1,//组间评价表id
+            submitTime:"",//提交时间
+            content: [
+                {
+                    groupId:1,
+                    groupName:"第一组",
+                    score:100,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:40,//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:60,
+                        }
+                    ],
+                    suggestion:"对第一组的建议..."
+                },
+                {
+                    groupId:2,
+                    groupName:"第二组",
+                    score:98,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:39,//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:59,
+                        }
+                    ],
+                    suggestion:"对第二组的建议..."
+                }
+            ]
+        },
+        {
+            ...
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
+
+41.查看组内评表提交记录
+请求路径：/admin/evaluation/inner/submit
+请求方式：GET
+请求参数：无
+请求结果：
+{
+    status:1,
+    data:[
+        {
+            submitInnerId:1,//组内评价表提交编号
+            groupId:3,//小组id
+            evaluationInnerId:1,
+            submitTime:"",//提交时间
+            content: [
+                {
+                    userId:"221701000",//id，学号
+                    userName:"张三",//姓名
+                    decision:"前端",//分工
+                    contribution:50//贡献率
+                },
+                {
+                    userId:"221701001",//id，学号
+                    userName:"李四",//姓名
+                    decision:"后端",//分工
+                    contribution:50//贡献率
+                }
+            ]
+        },
+        {
+            ...
+        }
+    ]
+}
+{
+    status:0,
+    msg:"失败原因"
+}
