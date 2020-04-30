@@ -1,7 +1,10 @@
+<!-- 一份组间评分表的内容 -->
 <template>
 	<div id="OuterDetails">
 		<UserNav />
-		<OuterEditableTable />
+		<br />
+		<button class="btn btn-light" @click="goBack">返回列表</button>
+		<OuterEditableTable v-bind:evaluationOuterId = "evaluationOuterId" />
 	</div>
 </template>
 
@@ -12,7 +15,21 @@
 		components:{
 			UserNav,
 			OuterEditableTable
+		},
+		data() {
+			return {
+				evaluationOuterId: null
+			}
+		},
+		created() {
+			this.evaluationOuterId = this.$route.query.evaluationOuterId;
+		},
+		methods: {
+			goBack() {
+				this.$router.push('/home');
+			}
 		}
+		
 	}
 </script>
 

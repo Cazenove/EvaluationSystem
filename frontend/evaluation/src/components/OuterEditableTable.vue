@@ -1,20 +1,21 @@
+<!-- 组间评价表内容 -->
 <template>
 	<div id="OuterEditableTable">
-		<h2>{{this.$data.data.name}}</h2>
-		<vxe-button @click="showAll">获取所有表单</vxe-button>
-		 <vxe-grid
-		  border
-		  resizable
-		  keep-source
-		  ref="xGrid"
-		  height="530"
-		  :columns="tableColumn"
-		  :data="tableData"
-		  :edit-config="{trigger: 'click', mode: 'row', showStatus: true, icon: 'fa fa-file-text-o'}"
-		 >
+		<h2>{{this.$data.response.data.name}}</h2>
+		<vxe-grid
+		 border
+		 resizable
+		 keep-source
+		 ref="xGrid"
+		 height="500"
+		 :columns="tableColumn"
+		 :data="tableData"
+		 :edit-config="{trigger: 'click', mode: 'cell', activeMethod: activeRowMethod}"
+		 @edit-disabled="editDisabledEvent"
+		>
 		</vxe-grid>
 		<br />
-		<vxe-button @click="sumbit">提交</vxe-button>
+		<button class="btn btn-success" @click="sumbit">提交</button>
 	</div>
 </template>
 
@@ -22,69 +23,223 @@
 	export default {
 		data() {
 			return {
-				state: "",
-				data: {
-					id: "1",
-					name: "第一次团队合作_组间评分表",
-					content: [
-						{
-							group_id: 1,
-							group_name: "第一小组",
-							content: [
-								{
-									item: "创新性",
-									max_score: 50,
-									score: 39
-								},
-								{
-									item: "实用性",
-									max_score: 50,
-									score: 40
-								}
-							],
-							suggestion: "对第一组的建议"
-						},
-						{
-							group_id: 2,
-							group_name: "第二小组",
-							content: [
-								{
-									item: "创新性",
-									max_score: 50,
-									score: 41
-								},
-								{
-									item: "实用性",
-									max_score: 50,
-									score: 42
-								}
-							],
-							suggestion: "对第二组的建议"
-						}
-					]
+				request: {
+					classId:null,
+					groupId:null,
+					evaluationOuterId:null//组间评分表的id
+				},
+				response: {
+					status:1,
+					data: {
+					    evaluationOuterId:1,
+					    name:"第一次团队合作_组间评分表",
+					    content: [
+					        {
+					            groupId:1,
+					            groupName:"第一组",
+					            score:"",//总分
+					            content:[
+					                {
+					                    item:"创新性",
+					                    maxScore:40,
+					                    score:"",//未填状态
+					                },
+					                {
+					                    item:"实用性",
+					                    maxScore:60,
+					                    score:"",
+					                }
+					            ],
+					            suggestion:"对第一组的建议..."
+					        },
+					        {
+					            groupId:2,
+					            groupName:"第二组",
+					            score:"",//总分
+					            content:[
+					                {
+					                    item:"创新性",
+					                    maxScore:40,
+					                    score:"",//未填状态
+					                },
+					                {
+					                    item:"实用性",
+					                    maxScore:60,
+					                    score:"",
+					                }
+					            ],
+					            suggestion:"对第二组的建议..."
+					        },
+							{
+							    groupId:3,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:4,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:5,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:6,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:7,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:8,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:9,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							},
+							{
+							    groupId:10,
+							    groupName:"第二组",
+							    score:"",//总分
+							    content:[
+							        {
+							            item:"创新性",
+							            maxScore:40,
+							            score:"",//未填状态
+							        },
+							        {
+							            item:"实用性",
+							            maxScore:60,
+							            score:"",
+							        }
+							    ],
+							    suggestion:"对第二组的建议..."
+							}
+					    ]
+					}
 				},
 				tableColumn: [
 					{
-					field:"group_id",
-					title:"小组id"
-				},
-				{
-					field:"group_name",
-					title:"组名"
-				},
+						field:"groupId",
+						title:"小组id"
+					},
+					{
+						field:"groupName",
+						title:"组名"
+					}
 				],
 				tableData: []
 			}
 		},
 		created() {
+			this.getRequest();
 			// 获取表头
-			var content = this.$data.data.content[0].content,
+			var content = this.$data.response.data.content[0].content,
 				len = content.length;
 			for (var i = 2; i < len+2; i++) {
 				this.$data.tableColumn[i] = {
 					field: "score" + (i-2),
-					title: content[i-2].item+"("+content[i-2].max_score+")",
-					"editRender": {name: '$input', props: {type: 'number', min: 0, max: max_score}}
+					title: content[i-2].item+"("+content[i-2].maxScore+")",
+					"editRender": {name: '$input', props: {type: 'number', min: 0, max: content[i-2].maxScore}}
 				};
 			}
 			this.$data.tableColumn[i] = {
@@ -92,15 +247,14 @@
 				title: "建议",
 				editRender: {name: 'textarea'}
 			};
-			console.log(this.$data.tableColumn);
 			
 			// 获取表的内容
-			content = this.$data.data.content;
+			content = this.$data.response.data.content;
 			var conlen = content.length;
 			for(var i = 0; i < conlen; i++) {
 				var item = {
-					group_id: content[i].group_id,
-					group_name: content[i].group_name,
+					groupId: content[i].groupId,
+					groupName: content[i].groupName,
 					suggestion: content[i].suggestion
 				}
 				for(var j = 0; j < len; j++) {
@@ -109,24 +263,38 @@
 				}
 				this.$data.tableData[i] = item;
 			}
-			console.log(this.$data.tableData);
 		},
+		props: ['evaluationOuterId'],
 		methods: {
-			showAll() {
-				console.log(this.$data.tableData);
+			activeRowMethod({row,rowIndex}) {
+				if(row.groupId === this.$store.state.userInfo.groupId) {//不可对自己的小组进行评分
+					return false;
+				}
+				return true;
+			},
+			editDisabledEvent({row, column}) {
+				this.$XModal.alert('不可对自己小组进行评分！');
+			},
+			getRequest() {
+				this.$data.request.classId = this.$store.state.userInfo.classId;
+				this.$data.request.groupId = this.$store.state.userInfo.groupId;
+				this.$data.request.evaluationOuterId = this.$props.evaluationOuterId;
 			},
 			sumbit() {
 				// 提交表格
+				// 将修改的数据保存到表单，然后进行提交
 				var len = this.$data.tableData.length,
 					conlen = this.$data.tableColumn.length;
 				for(var i = 0; i < len; i++) {
 					for(var j = 0; j < conlen-3; j++) {
 						var str = "score" + j;
-						this.$data.data.content[i].content[j].score = this.$data.tableData[i][str];
+						this.$data.response.data.content[i].content[j].score = this.$data.tableData[i][str];
 					}
 					this.$data.data.content[i].suggestion = this.$data.tableData[i]["suggestion"];
 				}
-				console.log(this.$data.data);
+				
+				// 提交
+				
 			}
 		}
 	}

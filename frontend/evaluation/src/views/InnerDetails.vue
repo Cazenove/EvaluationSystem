@@ -1,31 +1,33 @@
+<!-- 一份组内评分表的内容 -->
 <template>
-	<div id="OuterDetails">
+	<div id="InnerDetails">
 		<UserNav />
-		<h1>{{this.title}}</h1>
-		<h2>{{this.id}}</h2>
-		<p>
-			{{this.content}}
-		</p>
+		<br />
+		<button class="btn btn-light" @click="goBack">返回列表</button>
+		<InnerEditableTable v-bind:evaluationInnerId = "evaluationInnerId" />
 	</div>
 </template>
 
 <script>
 	import UserNav from '../components/UserNav.vue'
-	export default{
+	import InnerEditableTable from '../components/InnerEditableTable.vue'
+	export default {
+		components:{
+			UserNav,
+			InnerEditableTable
+		},
 		data() {
 			return {
-				id:"",
-				title:"",
-				content:""
+				evaluationInnerId: null
 			}
 		},
-		components:{
-			UserNav
-		},
 		created() {
-			this.id=this.$route.query.id;
-			this.title="组内评价表";
-			this.content="内容balabala";
+			this.evaluationInnerId = this.$route.query.evaluationInnerId;
+		},
+		methods: {
+			goBack() {
+				this.$router.push('/home');
+			}
 		}
 	}
 </script>

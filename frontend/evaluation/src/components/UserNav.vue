@@ -15,7 +15,18 @@
 						<router-link class="nav-link" to="/team">我的小组</router-link>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link" @click="loginOut()">注销</a>
+						
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+						 aria-haspopup="true" aria-expanded="false">
+							个人中心
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" @click="toAccount">个人信息</a>
+							<a class="dropdown-item" @click="toChangePassword">修改密码</a>
+							<a class="dropdown-item" @click="loginOut">注销</a>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -24,12 +35,18 @@
 </template>
 
 <script>
-	export default{
-		methods:{
-			loginOut: function() {
+	export default {
+		methods: {
+			loginOut() {
 				window.sessionStorage.removeItem('data');
 				this.$router.push('/');
 				alert("已注销");
+			},
+			toAccount() {
+				this.$router.push('/account');
+			},
+			toChangePassword() {
+				this.$router.push('/changepassword');
 			}
 		}
 	}

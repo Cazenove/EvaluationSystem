@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 //班级类
 
@@ -17,6 +19,9 @@ public class Class {
     private Date startTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
     private Date endTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
     private String status;
+
+    @OneToMany(mappedBy = "classInfo")
+    private Set<EvaluationOuter> list = new HashSet<EvaluationOuter>();
 
     public Class(){
 
