@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class,Integer> {
-    /*
-    班级ID查询
+    /**
+     * 班级ID查询
      */
     @Query("select c from Class as c where c.classId = :classId")
     Class findByClassId(@Param("classId") Integer classId);

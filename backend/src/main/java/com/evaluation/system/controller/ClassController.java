@@ -17,37 +17,30 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
-    @Autowired
-    private ClassRepository classRepository;
 
     @PostMapping(value = "/admin/class/create")
     public Map<String, Object> creatClass(@RequestBody Class classInfo){
-        Map<String, Object> result = classService.saveClass(classInfo);
-        return result;
+        return classService.saveClass(classInfo);
     }
 
     @PostMapping(value = "/admin/class/delete")
     public Map<String, Object> deleteClass(@RequestBody Class classInfo){
-        Map<String, Object> result = classService.deleteClass(classInfo);
-        return result;
+        return classService.deleteClass(classInfo);
     }
 
     @PostMapping(value = "/admin/class/update")
     public Map<String, Object> updateClass(@RequestBody Class classInfo){
-        Map<String, Object> result = classService.saveClass(classInfo);
-        return result;
+        return classService.saveClass(classInfo);
     }
 
     @PostMapping(value = "/admin/class")
     public Map<String, Object> findAllClass(){
-        Map<String, Object> result = classService.findAllClass();
-        return result;
+        return classService.findAllClass();
     }
 
     @PostMapping(value = "/admin/class/end")
     public Map<String, Object> endClass(@RequestBody Class classInfo){
-        Map<String, Object> result = classService.endClass(classInfo);
-        return result;
+        return classService.endClass(classInfo);
     }
 
 }
