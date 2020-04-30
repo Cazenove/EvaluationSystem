@@ -5,6 +5,11 @@ import com.evaluation.system.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
+/**
+ * @author acer
+ */
 @Service
 public class UserService {
     @Autowired
@@ -21,37 +26,59 @@ public class UserService {
     }
 
     /*注册检查学号、电话是否注册*/
-    public boolean registerCheck(String id,String password,String name,int class_id,int group_id,String status,
-                                 String tel){
-        boolean flag = false;
+    public HashMap<String, Object> registerCheck(String id, String password, String name, int classId, int groupId, String status,
+                                                 String tel){
+        HashMap<String,Object> result = new HashMap<>();
+        int flag = 0;
+        String msg = "注册成功";
         User user = userRepository.findByUserId(id);
-        if (user==null){
+        User user2 = userRepository.findByTelephone(tel);
+        if (user==null && user2==null){
             User user1 = new User();
             user1.setUser_id(id);
             user1.setPassword(password);
             user1.setName(name);
-            user1.setClass_id(class_id);
-            user1.setGroupId(group_id);
+            user1.setClass_id(classId);
+            user1.setGroupId(groupId);
             user1.setStatus(status);
             user1.setTelephone(tel);
             userRepository.save(user1);
-            flag = true;
+            flag = 1;
+
         }
-        return  flag;
+        else {
+            msg = "学号或手机号已注册";
+        }
+        result.put("status",flag);
+        result.put("msg",msg) ;
+        return  result;
     }
 
     /*修改个人信息*/
-    public boolean updateCheck(String id,String password,String name,String tel){
+    public HashMap<String,Object> updateCheck(String id,String password,String name,String tel){
         User user = userRepository.findByUserId(id);
-        String oldPasswprd = user.getPassword();
-        String oldName = user.getName();
-        String oldTel = user.getTelephone();
+        HashMap<String,Object> result = new HashMap<>();
+        int flag = 0;
+        String msg = "修改成功";
         User user1 = user;
-        user1.setUser_id(id);
-        if (!password.equals("")) user1.setPassword(password);
-        if (!name.equals("")) user1.setName(name);
-        if (!tel.equals("")) user1.setTelephone(tel);
+        if (!password.equals("")) {
+            user1.setPassword(password);
+        }
+        if (!name.equals("")) {
+            user1.setName(name);
+        }
+        if (!tel.equals("")) {
+            user = userRepository.findByTelephone(tel);
+            if (user!=null) {
+                msg = "手机号已被使用";
+            } else {
+                user1.setTelephone(tel);
+                flag = 1;
+            }
+        }
+        result.put("status",flag);
+        result.put("msg",msg);
         userRepository.save(user1);
-        return  true;
+        return  result;
     }
 }
