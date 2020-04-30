@@ -1,33 +1,25 @@
 package com.evaluation.system.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //组件评价表类
 
 @Entity
-@TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationOuter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int evaluationOuterId;
     private String name;
-    private Date releaseTime;
+    private String content;//这个暂时先用string
+    private Date releaseTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
     private Date endTime;
-    @Type(type = "json")
-    @Column(columnDefinition = "json")
-    private Map<String,Object> content;
 
     @Transient
     private int classId;
@@ -94,11 +86,11 @@ public class EvaluationOuter {
         this.classInfo = classInfo;
     }
 
-    public Map<String, Object> getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
