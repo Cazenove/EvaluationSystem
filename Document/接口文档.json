@@ -131,8 +131,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 请求方式：GET
 请求参数：//只需要获取自己班级的评分表
 {
-    classId:1,
-    groupId:1
+    classId:1//每个班级里面小组需要填的表是一样的
 }
 返回结果：
 {
@@ -172,44 +171,50 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     data: {
         evaluationOuterId:1,
         name:"第一次团队合作_组间评分表",
-        content: [
-            {
-                groupId:1,
-                groupName:"第一组",
-                score:"",//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:"",
-                    }
-                ],
-                suggestion:"对第一组的建议..."
-            },
-            {
-                groupId:2,
-                groupName:"第二组",
-                score:"",//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:"",
-                    }
-                ],
-                suggestion:"对第二组的建议..."
-            }
-        ]
+        releaseTime:"",//发布时间
+        endTime:"",//截止时间，在截止时间之后就不能提交
+        content: {
+            details:[
+                {
+                    groupId:1,
+                    groupNum: 1,// 填表的时候看的是自己班级里的第几组
+                    groupName:"第一组",
+                    score:null,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:"",//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:null,
+                        }
+                    ],
+                    suggestion:"对第一组的建议..."
+                },
+                {
+                    groupId:2,
+                    groupNum: 2,
+                    groupName:"第二组",
+                    score:null,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:"",//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:"",
+                        }
+                    ],
+                    suggestion:"对第二组的建议..."
+                }
+            ]
+        }
     }
 }
 {
@@ -225,44 +230,48 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     evaluationOuterId:1,
     groupId:3,//提交评分表的小组的id，不能对自己的小组进行评分和建议
     submitTime:"",//提交时间
-    content: [
-        {
-            groupId:1,
-            groupName:"第一组",
-            score:100,//总分
-            content:[
-                {
-                    item:"创新性",
-                    maxScore:40,
-                    score:40,//未填状态
-                },
-                {
-                    item:"实用性",
-                    maxScore:60,
-                    score:60,
-                }
-            ],
-            suggestion:"对第一组的建议..."
-        },
-        {
-            groupId:2,
-            groupName:"第二组",
-            score:98,//总分
-            content:[
-                {
-                    item:"创新性",
-                    maxScore:40,
-                    score:39,//未填状态
-                },
-                {
-                    item:"实用性",
-                    maxScore:60,
-                    score:59,
-                }
-            ],
-            suggestion:"对第二组的建议..."
-        }
-    ]
+    content: {
+        details: [
+            {
+                groupId:1,
+                groupNum:1,
+                groupName:"第一组",
+                score:100,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:40,//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:60,
+                    }
+                ],
+                suggestion:"对第一组的建议..."
+            },
+            {
+                groupId:2,
+                groupNum:2,
+                groupName:"第二组",
+                score:98,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:39,//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:59,
+                    }
+                ],
+                suggestion:"对第二组的建议..."
+            }
+        ]
+    }
 }
 返回结果:
 {
@@ -279,8 +288,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 请求方式：GET
 请求参数：
 {
-    classId:1,
-    groupId:1
+    classId:1//每个班级需要填的内容是一样的
 }
 返回结果：
 {
@@ -322,20 +330,24 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
         name:"第一次团队合作_组内评分表",
         groupId:1,
         groupName:"第一组",
-        content: [
-            {
-                userId:"221701000",//id，学号
-                userName:"张三",//姓名
-                decision:"",//分工
-                contribution:""//贡献率
-            },
-            {
-                userId:"221701001",//id，学号
-                userName:"李四",//姓名
-                decision:"",//分工
-                contribution:""//贡献率
-            }
-        ]
+        releaseTime:"",//发布时间
+        endTime:"",//截止时间
+        content: {
+            details: [
+                {
+                    userId:"221701000",//id，学号
+                    userName:"张三",//姓名
+                    decision:"",//分工
+                    contribution:""//贡献率
+                },
+                {
+                    userId:"221701001",//id，学号
+                    userName:"李四",//姓名
+                    decision:"",//分工
+                    contribution:""//贡献率
+                }
+            ]
+        }
     }
 }
 {
@@ -686,6 +698,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 请求方式：POST
 请求参数：
 {
+    classId:1,//通过班级id查找
     className:"2020软件工程H班",
     groupNum:7,
     startTime:"2020-03-11"
@@ -753,16 +766,48 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     classId:1,
     releaseTime:"",//发布时间
     endTime:"",//结束时间
-    content:[
-        {
-            item:"实用性",//评分项
-            maxScore:50//该项的最大分值
-        },
-        {
-            item:"创新性",
-            maxScore:50
-        }
-    ]
+    content: {
+        details:[//登录的时候
+            {
+                groupId:1,
+                groupNum: 1,
+                groupName:"第一组",
+                score:null,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:null,
+                    }
+                ],
+                suggestion:"对第一组的建议..."
+            },
+            {
+                groupId:2,
+                groupNum: 2,
+                groupName:"第二组",
+                score:null,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:"",
+                    }
+                ],
+                suggestion:"对第二组的建议..."
+            }
+        ]
+    }
 }
 返回结果：
 {
@@ -796,20 +841,53 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 请求方式：POST
 请求参数：
 {
+    id:1,//评分表的id，需要把对应id的组间、组内评价表提交记录删除，再把组内评价表的时间改掉
     name:"第二次团队作业",
     classId:1,
     releaseTime:"",//发布时间
     endTime:"",//结束时间
-    content:[
-        {
-            item:"实用性",//评分项
-            maxScore:50//该项的最大分值
-        },
-        {
-            item:"创新性",
-            maxScore:50
-        }
-    ]
+    content: {
+        details:[//登录的时候
+            {
+                groupId:1,
+                groupNum: 1,
+                groupName:"第一组",
+                score:null,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:null,
+                    }
+                ],
+                suggestion:""
+            },
+            {
+                groupId:2,
+                groupNum: 2,
+                groupName:"第二组",
+                score:null,//总分
+                content:[
+                    {
+                        item:"创新性",
+                        maxScore:40,
+                        score:"",//未填状态
+                    },
+                    {
+                        item:"实用性",
+                        maxScore:60,
+                        score:"",
+                    }
+                ],
+                suggestion:""
+            }
+        ]
+    }
 }
 返回结果：
 {
@@ -821,52 +899,72 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     msg:"失败原因"
 }
 
-29.查看所有评分表具体内容 //查看了才可以修改
+29.查看所有评分表具体内容 //查看了才可以修改 前端用一个折叠的表格来展示
 请求路径：/admin/evaluation/details
 请求方式：GET
 请求参数：无
 返回结果：
 {
-    {
-        name:"第一次团队作业",
-        classId:1,
-        releaseTime:"",//发布时间
-        endTime:"",//结束时间
-        content:[
-            {
-                item:"实用性",//评分项
-                maxScore:50//该项的最大分值
-            },
-            {
-                item:"创新性",
-                maxScore:50
-            }
-        ]
-    },
-    {
+    status:1,
+    data: [
+        id:1,//评分表的id，需要把对应id的组间、组内评价表提交记录删除，再把组内评价表的时间改掉
         name:"第二次团队作业",
         classId:1,
         releaseTime:"",//发布时间
         endTime:"",//结束时间
-        content:[
-            {
-                item:"实用性",//评分项
-                maxScore:50//该项的最大分值
-            },
-            {
-                item:"创新性",
-                maxScore:50
-            }
-        ]
-    }
+        content: {
+            details:[//登录的时候
+                {
+                    groupId:1,
+                    groupNum: 1,
+                    groupName:"第一组",
+                    score:null,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:"",//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:null,
+                        }
+                    ],
+                    suggestion:""
+                },
+                {
+                    groupId:2,
+                    groupNum: 2,
+                    groupName:"第二组",
+                    score:null,//总分
+                    content:[
+                        {
+                            item:"创新性",
+                            maxScore:40,
+                            score:"",//未填状态
+                        },
+                        {
+                            item:"实用性",
+                            maxScore:60,
+                            score:"",
+                        }
+                    ],
+                    suggestion:""
+                }
+            ]
+        },
+        {
+            ...
+        }
+    ]
 }
 
-30.新增建议
+30.新增建议 //暂时匿名建议，所以不分身份
 请求路径：/admin/suggestion/create
 请求方式：POST
 请求参数：
 {
-    adminId:"root",//管理员或助教id
     evaluationId:1,//针对某一轮作业
     targetGroupId:1,//针对某一个小组
     suggestion:"建议内容"
@@ -956,18 +1054,20 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
             classId:1,
             groupNum:1,
             groupName:"第一组",//小组名
-            content:[
-                {
-                    evaluationOuterId:1,//组间评价表号
-                    name:"第一次团队作业_组间评价表",//评价表的名称
-                    score:85//该次的得分
-                },
-                {
-                    evaluationOuterId:2,
-                    name:"第二次团队作业_组间评价表",
-                    score:87
-                }
-            ]
+            content: {
+                list: [
+                    {
+                        evaluationOuterId:1,//组间评价表号
+                        name:"第一次团队作业_组间评价表",//评价表的名称
+                        score:85//该次的得分
+                    },
+                    {
+                        evaluationOuterId:2,
+                        name:"第二次团队作业_组间评价表",
+                        score:87
+                    }
+                ]
+            }
         },
         {
             groupId:8,//小组表中的id
@@ -1038,42 +1138,25 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
             className:"2020软件工程S班",
             groupId:1,
             groupName:"第一组"
-            content:[
-                {
-                    evaluationInnerId:1,
-                    evaluationInnerName:"第一次团队合作_组内评分表",
-                    decision:"前端",//分工
-                    contribution:40//贡献率
-                },
-                {
-                    evaluationInnerId:2,
-                    evaluationInnerName:"第二次团队合作_组内评分表",
-                    decision:"前端",//分工
-                    contribution:60//贡献率
-                }
-            ]
+            content: {
+                list:[
+                    {
+                        evaluationInnerId:1,
+                        evaluationInnerName:"第一次团队合作_组内评分表",
+                        decision:"前端",//分工
+                        contribution:40//贡献率
+                    },
+                    {
+                        evaluationInnerId:2,
+                        evaluationInnerName:"第二次团队合作_组内评分表",
+                        decision:"前端",//分工
+                        contribution:60//贡献率
+                    }
+                ]
+            }
         },
         {
-            userId:"221701001",
-            userName:"李四",
-            classId:1,
-            className:"2020软件工程S班",
-            groupId:1,
-            groupName:"第一组"
-            content:[
-                {
-                    evaluationInnerId:1,
-                    evaluationInnerName:"第一次团队合作_组内评分表",
-                    decision:"后端",//分工
-                    contribution:60//贡献率
-                },
-                {
-                    evaluationInnerId:2,
-                    evaluationInnerName:"第二次团队合作_组内评分表",
-                    decision:"后端",//分工
-                    contribution:40//贡献率
-                }
-            ]
+            ...
         }
     ]
 }
@@ -1285,12 +1368,12 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     data: [
         {
             classId:1,//班级id
-            name:"2020软件工程S班",//班级名
+            className:"2020软件工程S班",//班级名
             groupNum:11//这个班级的小组数量
         },
         {
             classId:2,//班级id
-            name:"2020软件工程W班",//班级名
+            className:"2020软件工程W班",//班级名
             groupNum:11//这个班级的小组数量
         }
     ]
