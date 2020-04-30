@@ -2,7 +2,9 @@
 <template>
 	<div id="OuterDetails">
 		<UserNav />
-		<OuterEditableTable />
+		<br />
+		<button class="btn btn-light" @click="goBack">返回列表</button>
+		<OuterEditableTable v-bind:evaluationOuterId = "evaluationOuterId" />
 	</div>
 </template>
 
@@ -10,18 +12,24 @@
 	import UserNav from '../components/UserNav.vue'
 	import OuterEditableTable from '../components/OuterEditableTable.vue'
 	export default {
-		data() {
-			return {
-				id: ""
-			}
-		},
-		created() {
-			this.id = this.$route.query.id;
-		},
 		components:{
 			UserNav,
 			OuterEditableTable
+		},
+		data() {
+			return {
+				evaluationOuterId: null
+			}
+		},
+		created() {
+			this.evaluationOuterId = this.$route.query.evaluationOuterId;
+		},
+		methods: {
+			goBack() {
+				this.$router.push('/home');
+			}
 		}
+		
 	}
 </script>
 

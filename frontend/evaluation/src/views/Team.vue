@@ -2,19 +2,39 @@
 <template>
 	<div class="about">
 		<UserNav />
-		<h1>我的小组</h1>
-		<hr />
-		<p>班级：{{response.data.className}}</p>
-		<p>组号：{{response.data.groupNum}}</p>
-		<p>组名：{{response.data.groupName}}</p>
-		<p>组长：<a href="">{{response.data.leader.userName}}</a></p>
-		<p>组员：<a v-for="person in response.data.member" href="">{{person.userName}}  </a></p>
-		<hr />
-		<div v-for="item in response.data.data">
-			<p>{{item.evaluationOuterId}}</p>
-			<p>{{item.name}}</p>
-			<p>{{item.score}}</p>
-			<p>{{item.suggestion}}</p>
+		<br />
+		<div class="text-left offset-md-1">
+			<h2>我的小组</h2>
+			<hr />
+			<p>班级：{{response.data.className}}</p>
+			<p>组号：{{response.data.groupNum}}</p>
+			<p>组名：{{response.data.groupName}} 
+				<button
+				 v-if="this.$store.state.userInfo.status === 2" 
+				 class="btn btn-outline-light" 
+				 @click="changeGroupName">修改名称</button>
+			</p>
+			<p>组长：
+				<router-link :to="{path:'/member',query:{userId:response.data.leader.userId}}">
+					{{response.data.leader.userName}}
+				</router-link></p>
+			<p>组员：
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item" v-for="member in response.data.member" :key="member.userId">
+						<router-link :to="{path:'/member',query:{userId:member.userId}}">
+							{{member.userName}}
+						</router-link>
+					</li>
+				</ul>
+			</p>
+			<hr />
+			<h2>团队作业概况</h2>
+			<div v-for="item in response.data.data" :key="item.evaluationOuterId">
+				<p>{{item.evaluationOuterId}}</p>
+				<p>{{item.name}}</p>
+				<p>{{item.score}}</p>
+				<p>{{item.suggestion}}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -49,7 +69,19 @@
 					        {
 					            userId:"221701002",
 					            userName:"王五"
-					        }
+					        },
+							{
+							    userId:"221701003",
+							    userName:"陆"
+							},
+							{
+							    userId:"221701004",
+							    userName:"柒"
+							},
+							{
+							    userId:"221701005",
+							    userName:"捌"
+							}
 					    ],
 					    data: [
 					        {
@@ -79,6 +111,9 @@
 		methods: {
 			getRequest() {
 				this.$data.request.groupId = this.$store.state.userInfo.groupId;
+			},
+			changeGroupName() {
+				
 			}
 		}
 	}

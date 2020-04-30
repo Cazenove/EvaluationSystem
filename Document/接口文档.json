@@ -90,7 +90,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     telephone:"12345678900",//11位
     userName:"张三",//姓名
     classId:1,//班级id
-    groupId:1,//小组id
+    groupNum:1,//小组id 修改说明：注册的时候只知道是第几组，并不是小组表中的groupId
     status:1//1组员，2组长
 }
 返回结果：
@@ -437,26 +437,24 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 返回结果
 {
     status:1,
-    data:[
-        {
-            userId:"221701000",
-            userName:"张三" ,
-            data:[
-                {
-                    evaluationInnerId:1,
-                    name:"第一次团队作业_组内评分表",
-                    decision:"前端",
-                    contribution:40
-                },
-                {
-                    evaluationInnerId:2,
-                    name:"第二次团队作业_组内评分表",
-                    decision:"前端",
-                    contribution:50
-                }
-            ]
-        }
-    ]
+    data:{
+        userId:"221701000",
+        userName:"张三" ,
+        data:[
+            {
+                evaluationInnerId:1,
+                name:"第一次团队作业_组内评分表",
+                decision:"前端",
+                contribution:40
+            },
+            {
+                evaluationInnerId:2,
+                name:"第二次团队作业_组内评分表",
+                decision:"前端",
+                contribution:50
+            }
+        ]
+    }
 }
 {
     status:0,

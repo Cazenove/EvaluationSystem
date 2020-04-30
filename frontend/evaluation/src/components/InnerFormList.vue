@@ -1,8 +1,9 @@
+<!-- 组内评价表列表 -->
 <template>
 	<div id="InnerFormList">
 		<ul>
 			<li v-for="item in response.data" :key="item.evaluationInnerId">
-				<router-link :to="{path:'/inner',query:{id:item.evaluationInnerId}}">
+				<router-link :to="{path:'/inner',query:{evaluationInnerId:item.evaluationInnerId}}">
 					{{item.evaluationInnerId}}.{{item.name}}
 				</router-link>
 				<p>发布时间：{{item.releaseTime}} 截止时间：{{item.endTime}}</p>
@@ -42,7 +43,6 @@ export default {
 	created() {
 		//创建时根据班级小组获取评分表列表
 		this.getRequest();
-		console.log("b");
 	},
 	methods: {
 		getRequest() {
