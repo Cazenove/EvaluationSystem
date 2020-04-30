@@ -11,18 +11,12 @@ import javax.validation.constraints.NotEmpty;
 //学生类
 
 @Entity
-@DynamicInsert
-@DynamicUpdate
 public class User {
     @Id
-    /*@GeneratedValue(generator = "userId")
-    @GenericGenerator(name = "userId",strategy = "native")*/
-    @Column(name = "user_id")
     private String userId = "000000000";
     private String password;
     private String name;
-    private int class_id;
-    @Column(name = "group_id")
+    private int classId;
     private int groupId;
     private String status;
     private String telephone;
@@ -56,11 +50,11 @@ public class User {
     }
 
     public int getClass_id() {
-        return class_id;
+        return classId;
     }
 
-    public void setClass_id(int class_id) {
-        this.class_id = class_id;
+    public void setClass_id(int classId) {
+        this.classId = classId;
     }
 
     public int getGroupId() {
