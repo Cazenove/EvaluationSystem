@@ -1,8 +1,9 @@
+<!-- 组间评价表列表 -->
 <template>
 	<div id="OuterFormList">
 		<ul>
 			<li v-for="item in response.data" :key="item.evaluationOuterId">
-				<router-link :to="{path:'/outer',query:{id:item.evaluationOuterId}}">
+				<router-link :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
 					{{item.evaluationOuterId}}.{{item.name}}
 				</router-link>
 				<p>发布时间：{{item.releaseTime}} 截止时间：{{item.endTime}}</p>
@@ -49,7 +50,6 @@ export default {
 	created() {
 		//创建的时候根据班级小组来获取评分表
 		this.getRequest();
-		console.log(this.$data.request);
 	}
 }
 </script>

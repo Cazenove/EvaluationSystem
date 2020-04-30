@@ -4,11 +4,11 @@
 		<div class="container">
 			<h1>{{welcomemsg}}</h1>
 			<div class="form-group">
-				<label for="username">用户名</label>
+				<label for="username" class="col-form-label">用户名</label>
 				<input type="text" class="form-control" id="username" v-model="username" />
 			</div>
 			<div class="form-group">
-				<label for="password">密码</label>
+				<label for="password" class="col-form-label">密码</label>
 				<input type="password" class="form-control" id="password" v-model="password" />
 			</div>
 			<RegisterModal />

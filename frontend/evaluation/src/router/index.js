@@ -21,6 +21,14 @@ const routes = [{
 		}
 	},
 	{
+		path: '/member',
+		name: 'Member',
+		component: () => import('../views/MemberDetails.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
 		path: '/outer',
 		name: 'Outer',
 		component: () => import('../views/OuterDetails.vue'),
@@ -37,6 +45,22 @@ const routes = [{
 		}
 	},
 	{
+		path: '/account',
+		name: 'Account',
+		component: () => import('../views/Account.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		path: '/changepassword',
+		name: 'ChangePassword',
+		component: () => import('../views/ChangePassword.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
 		path: '*',
 		name: 'Login',
 		component: () => import('../views/Login.vue'),
@@ -44,6 +68,7 @@ const routes = [{
 			requireLogin: false
 		}
 	}
+	
 ]
 
 const router = new VueRouter({
