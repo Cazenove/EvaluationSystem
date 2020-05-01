@@ -1,19 +1,51 @@
 <!-- 登录注册页面 -->
 <template>
 	<div id="login">
+		<div class="jumbotron jumbotron-fluid">
+			<div class="container">
+			<h1 class="display-4">{{welcomemsg}}</h1>
+			<p class="lead">登录或注册来使用{{welcomemsg}}</p>
+			</div>
+		</div>
 		<div class="container">
-			<h1>{{welcomemsg}}</h1>
-			<div class="form-group">
-				<label for="username" class="col-form-label">用户名</label>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="inputEmail4">用户名</label>
+					<input type="email" class="form-control" placeholder="Username" aria-label="Username"   id="username" v-model="username"/>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="inputPassword4">密码</label>
+					<input type="password" class="form-control" placeholder="Password" aria-label="Password" id="password" v-model="password"/>
+				</div>
+			</div>
+			<!-- <div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">用户名</span>
+				</div>
+				<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"  id="username" v-model="username"/>
+			</div> -->
+			<!-- <div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1">密码&nbsp;</span>
+				</div>
+				<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"  id="password" v-model="password"/>
+			</div> -->
+			<!-- <div class="form-group row">
+				<label for="username" class="col-md-1 col-form-label offset-md-3">用户名</label>
+				<div class="col-md-6">
 				<input type="text" class="form-control" id="username" v-model="username" />
-			</div>
-			<div class="form-group">
-				<label for="password" class="col-form-label">密码</label>
+				</div>
+			</div> -->
+			<!-- <div class="form-group row">
+				<label for="password" class="col-md-1 col-form-label offset-md-3">密码</label>
+				<div class="col-md-6">
 				<input type="password" class="form-control" id="password" v-model="password" />
+				</div>
+			</div> -->
+			<div class="form-row">
+				<RegisterModal />
+				<button class="btn btn-primary" @click="login()" style="margin-left: 20px;">登录</button>
 			</div>
-			<RegisterModal />
-			<br />
-			<button class="btn btn-primary" @click="login()">登录</button>
 		</div>
 	</div>
 </template>
@@ -97,4 +129,7 @@
 </script>
 
 <style>
+	#login{
+		/* text-align: center; */
+	}
 </style>
