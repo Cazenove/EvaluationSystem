@@ -67,6 +67,14 @@ const routes = [{
 		meta: {
 			requireLogin: false
 		}
+	},
+	{
+		path: '/usermanagement',
+		name: 'UserManagement',
+		component: () => import('../views/UserManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
 	}
 	
 ]

@@ -72,8 +72,16 @@
 							// 把token放在sessionStorage中
 							ses.setItem('data', res[index].token);
 							self.$store.state.loginState = res[index].state;
-							//跳转到首页
-							this.$router.push('/home');
+							if (self.$store.state.loginState == 1) {
+								//跳转到前台首页
+								this.$router.push('/home');
+							}
+							if (self.$store.state.loginState == 2) {
+								//跳转到后台首页
+								this.$router.push('/usermanagement');
+							}
+							
+							// this.$router.push('/usermanagement');
 							// console.log(this.$router);
 						} else {
 							alert('密码错误！')
