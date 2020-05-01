@@ -1,5 +1,7 @@
 package com.evaluation.system.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -7,10 +9,16 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //组件评价表类
 
+/**
+ * @author 221701128
+ */
 @Entity
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationOuter {
@@ -18,14 +26,15 @@ public class EvaluationOuter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int evaluationOuterId;
     private String name;
-    private String releaseTime;
-    private String endTime;
+    private Date releaseTime;
+    private Date endTime;
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private Map<String,Object> content;
 
     @Transient
     private int classId;
+
 
 
     @ManyToOne
@@ -48,11 +57,11 @@ public class EvaluationOuter {
                 '}';
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -96,11 +105,11 @@ public class EvaluationOuter {
         this.content = content;
     }
 
-    public String getReleaseTime() {
+    public Date getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(String releaseTime) {
+    public void setReleaseTime(Date releaseTime) {
         this.releaseTime = releaseTime;
     }
 }
