@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User,String> {
     //通过组号查询
-    public List<User> findByGroupId(int group_id);
+    public List<User> findByGroupId(int groupId);
     //通过学号查询
-    public User findByUserId(String user_id);
+    public User findByUserId(String userId);
     //通过手机号查询
-    public  User findByUserIdAndTelephone(String telephone,String user_id);
+    public  User findByTelephone(String telephone);
 
 }
