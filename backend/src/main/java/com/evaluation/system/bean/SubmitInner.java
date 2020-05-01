@@ -14,8 +14,8 @@ public class SubmitInner {
     private int submitInnerId;
     private int groupId;
     private int evaluationInnerId;
-    private String content;//暂时先用String代替json吧
-    private Date submitTime;//这是util的date，不是sql的date，不知道会不会出问题
+    private String content;
+    private Date submitTime;
 
     public SubmitInner(){
 

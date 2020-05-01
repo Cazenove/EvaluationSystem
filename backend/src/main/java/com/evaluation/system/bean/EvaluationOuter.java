@@ -16,6 +16,9 @@ import java.util.Map;
 
 //组件评价表类
 
+/**
+ * @author 221701128
+ */
 @Entity
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationOuter {

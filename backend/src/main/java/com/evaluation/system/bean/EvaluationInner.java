@@ -16,7 +16,6 @@ import java.util.Map;
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationInner {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int evaluationInnerId;
     private String name;
     @Transient
