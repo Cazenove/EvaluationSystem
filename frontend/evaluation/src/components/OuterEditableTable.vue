@@ -20,6 +20,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	export default {
 		data() {
 			return {
@@ -31,190 +33,52 @@
 				response: {
 					status:1,
 					data: {
-					    evaluationOuterId:1,
-					    name:"第一次团队合作_组间评分表",
-					    content: [
-					        {
-					            groupId:1,
-					            groupName:"第一组",
-					            score:"",//总分
-					            content:[
-					                {
-					                    item:"创新性",
-					                    maxScore:40,
-					                    score:"",//未填状态
-					                },
-					                {
-					                    item:"实用性",
-					                    maxScore:60,
-					                    score:"",
-					                }
-					            ],
-					            suggestion:"对第一组的建议..."
-					        },
-					        {
-					            groupId:2,
-					            groupName:"第二组",
-					            score:"",//总分
-					            content:[
-					                {
-					                    item:"创新性",
-					                    maxScore:40,
-					                    score:"",//未填状态
-					                },
-					                {
-					                    item:"实用性",
-					                    maxScore:60,
-					                    score:"",
-					                }
-					            ],
-					            suggestion:"对第二组的建议..."
-					        },
-							{
-							    groupId:3,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:4,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:5,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:6,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:7,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:8,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:9,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							},
-							{
-							    groupId:10,
-							    groupName:"第二组",
-							    score:"",//总分
-							    content:[
-							        {
-							            item:"创新性",
-							            maxScore:40,
-							            score:"",//未填状态
-							        },
-							        {
-							            item:"实用性",
-							            maxScore:60,
-							            score:"",
-							        }
-							    ],
-							    suggestion:"对第二组的建议..."
-							}
-					    ]
+						evaluationOuterId:1,
+						name:"第一次团队合作_组间评分表",
+						releaseTime:"",//发布时间
+						endTime:"",//截止时间，在截止时间之后就不能提交
+						content: {
+							details:[
+								{
+									groupId:1,
+									groupNum: 1,// 填表的时候看的是自己班级里的第几组
+									groupName:"第一组",
+									score:null,//总分
+									content:[
+										{
+											item:"创新性",
+											maxScore:40,
+											score:"",//未填状态
+										},
+										{
+											item:"实用性",
+											maxScore:60,
+											score:null,
+										}
+									],
+									suggestion:"对第一组的建议..."
+								},
+								{
+									groupId:2,
+									groupNum: 2,
+									groupName:"第二组",
+									score:null,//总分
+									content:[
+										{
+											item:"创新性",
+											maxScore:40,
+											score:"",//未填状态
+										},
+										{
+											item:"实用性",
+											maxScore:60,
+											score:"",
+										}
+									],
+									suggestion:"对第二组的建议..."
+								}
+							]
+						}
 					}
 				},
 				tableColumn: [
@@ -231,9 +95,9 @@
 			}
 		},
 		created() {
-			this.getRequest();
+			this.init();
 			// 获取表头
-			var content = this.$data.response.data.content[0].content,
+			var content = this.$data.response.data.content.details[0].content,
 				len = content.length;
 			for (var i = 2; i < len+2; i++) {
 				this.$data.tableColumn[i] = {
@@ -249,7 +113,7 @@
 			};
 			
 			// 获取表的内容
-			content = this.$data.response.data.content;
+			content = this.$data.response.data.content.details;
 			var conlen = content.length;
 			for(var i = 0; i < conlen; i++) {
 				var item = {
@@ -280,6 +144,19 @@
 				this.$data.request.groupId = this.$store.state.userInfo.groupId;
 				this.$data.request.evaluationOuterId = this.$props.evaluationOuterId;
 			},
+			getResponse() {
+				var self = this;
+				axios.get(api.userEvaluationOuter, self.request)
+					.then(function(res) {
+						self.response = res;
+					}).catch(function(error) {
+						console.log(error);
+					})
+			},
+			init() {
+				this.getRequest(),
+				this.getResponse()
+			},
 			sumbit() {
 				// 提交表格
 				// 将修改的数据保存到表单，然后进行提交
@@ -288,13 +165,29 @@
 				for(var i = 0; i < len; i++) {
 					for(var j = 0; j < conlen-3; j++) {
 						var str = "score" + j;
-						this.$data.response.data.content[i].content[j].score = this.$data.tableData[i][str];
+						this.$data.response.data.content.details[i].content[j].score = this.$data.tableData[i][str];
 					}
-					this.$data.data.content[i].suggestion = this.$data.tableData[i]["suggestion"];
+					this.$data.response.data.content.details[i].suggestion = this.$data.tableData[i]["suggestion"];
 				}
 				
-				// 提交
+				//判断表单完整性
 				
+				//发送
+				var submitForm = {};
+				submitForm['evaluationOuterId'] = this.$data.response.data.evaluationOuterId;
+				submitForm['groupId'] = this.$data.request.groupId;
+				submitForm['submitTime'] = "";
+				submitForm['content'] = this.$data.response.data.content;
+				
+				console.log(submitForm);
+				// 提交
+				let self = this;
+				axios.post(api.userEvaluationOuterSubmit,submitForm)
+				.then(function(res) {
+					
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		}
 	}

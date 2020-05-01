@@ -9,6 +9,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import UserNav from '../components/UserNav.vue'
 	import InnerEditableTable from '../components/InnerEditableTable.vue'
 	export default {

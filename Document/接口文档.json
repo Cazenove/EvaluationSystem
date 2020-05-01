@@ -363,20 +363,22 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     evaluationInnerId:1,
     groupId:1,
     submitTime:"",//提交时间
-    content: [
-        {
-            userId:"221701000",//id，学号
-            userName:"张三",//姓名
-            decision:"前端",//分工
-            contribution:50//贡献率
-        },
-        {
-            userId:"221701001",//id，学号
-            userName:"李四",//姓名
-            decision:"后端",//分工
-            contribution:50//贡献率
-        }
-    ]
+    content: {
+        details: [
+            {
+                userId:"221701000",//id，学号
+                userName:"张三",//姓名
+                decision:"前端",//分工
+                contribution:50//贡献率
+            },
+            {
+                userId:"221701001",//id，学号
+                userName:"李四",//姓名
+                decision:"后端",//分工
+                contribution:50//贡献率
+            }
+        ]
+    }
 }
 返回结果：
 {

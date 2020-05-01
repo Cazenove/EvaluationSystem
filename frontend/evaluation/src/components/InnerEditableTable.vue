@@ -25,6 +25,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import XEUtils from 'xe-utils'
 	export default {
 		data() {
@@ -37,72 +39,28 @@
 				response: {
 					status:1,
 					data: {
-					    evaluationInnerId:1,
-					    name:"第一次团队合作_组内评分表",
-					    groupId:1,
-					    groupName:"第一组",
-					    content: [
-					        {
-					            userId:"221701000",//id，学号
-					            userName:"张三",//姓名
-					            decision:null,//分工
-					            contribution:null//贡献率
-					        },
-					        {
-					            userId:"221701001",//id，学号
-					            userName:"李四",//姓名
-					            decision:null,//分工
-					            contribution:null//贡献率
-					        },
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							},
-							{
-							    userId:"221701001",//id，学号
-							    userName:"李四",//姓名
-							    decision:null,//分工
-							    contribution:null//贡献率
-							}
-					    ]
+						evaluationInnerId:1,
+						name:"第一次团队合作_组内评分表",
+						groupId:1,
+						groupName:"第一组",
+						releaseTime:"",//发布时间
+						endTime:"",//截止时间
+						content: {
+							details: [
+								{
+									userId:"221701000",//id，学号
+									userName:"张三",//姓名
+									decision:"",//分工
+									contribution:""//贡献率
+								},
+								{
+									userId:"221701001",//id，学号
+									userName:"李四",//姓名
+									decision:"",//分工
+									contribution:""//贡献率
+								}
+							]
+						}
 					}
 				},
 				sum: "",
@@ -111,14 +69,27 @@
 		},
 		props: ['evaluationInnerId'],
 		created() {
-			this.getRequest();
-			this.$data.tableData = this.$data.response.data.content;
+			this.init();
+			this.$data.tableData = this.$data.response.data.content.details;
 		},
 		methods: {
 			getRequest() {
 				this.$data.request.classId = this.$store.state.userInfo.classId;
 				this.$data.request.groupId = this.$store.state.userInfo.groupId;
 				this.$data.request.evaluationInnerId = this.$props.evaluationInnerId;
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.userEvaluationInner, self.request)
+					.then(function(res) {
+						self.response = res;
+					}).catch(function(error) {
+						console.log(error);
+					})
+			},
+			init() {
+				this.getRequest(),
+				this.getResponse()
 			},
 			footerCellClassName({
 				$rowIndex,
@@ -158,11 +129,27 @@
 					// 保存修改的数据
 					var len = this.$data.tableData.length;
 					for(var i = 0; i < len; i++) {
-						this.$data.data.content[i].contribution = this.$data.tableData[i].contribution;
+						this.$data.response.data.content.details[i].contribution = this.$data.tableData[i].contribution;
 					}
 					
-					// 提交
+					//完整性验证
 					
+					
+					//提交
+					var submitForm = {};
+					submitForm['evaluationInnerId'] = this.$data.response.data.evaluationInnerId;
+					submitForm['groupId'] = this.$data.request.groupId;
+					submitForm['submitTime'] = "";
+					submitForm['content'] = this.$data.response.data.content;
+					
+					console.log(submitForm);
+					// 提交
+					axios.post(api.userEvaluationInnerSubmit,submitForm)
+					.then(function(res) {
+						
+					}).catch(function(error) {
+						console.log(error);
+					})
 				}
 			}
 		}

@@ -22,7 +22,8 @@
 	</div>
 </template>
 <script>
-	// 引入插件
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	import UserNav from '../components/UserNav.vue'
@@ -85,12 +86,24 @@
 		},
 		methods: {
 			onSubmit() {
-				let verifyList = ['form.password', 'form.newPassword', 'form.checkPassword','noEqual'];
+				let verifyList = ['form.password', 'form.newPassword', 'form.checkPassword'];
 				// check() 校验所有规则，参数可以设置需要校验的数组
 				if (!this.$vuerify.check(verifyList)) {
 					return;
 				}
 				console.log('验证通过');
+				
+				this.request.userId = this.$store.state.userInfo.userId;
+				this.request.password = this.form.newPassword;
+				this.request.telephone = this.$store.state.userInfo.telephone;
+				this.request.userName = this.$store.state.userInfo.userName;
+				console.log(this.request);
+				axios.post(api.userUpdate,this.request)
+				.then(function(res) {
+					
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		}
 	}

@@ -23,6 +23,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import UserNav from '../components/UserNav.vue'
 	export default {
 		components: {
@@ -57,11 +59,24 @@
 			}
 		},
 		created() {
-			this.getRequest();
+			this.init();
 		},
 		methods: {
 			getRequest() {
 				this.$data.request.userId = this.$route.query.userId;
+			},
+			getResponse() {
+				let self = this;
+				axios.get(api.userGroupUserdetails,self.request)
+				.then(function(res) {
+					self.response = res;
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			init() {
+				this.getRequest();
+				this.getResponse();
 			},
 			goBack() {
 				this.$router.push('/team');

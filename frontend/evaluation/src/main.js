@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import apiList from './router/httpConfig.js'
+import api from './router/httpConfig.js'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -47,5 +47,5 @@ router.beforeEach((to, from, next) => {
 new Vue({
 	router,
 	store,
-	render: h => h(App)
+	render: h => h(App),
 }).$mount('#app')
