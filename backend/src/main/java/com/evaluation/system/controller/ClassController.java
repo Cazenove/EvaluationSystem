@@ -20,7 +20,7 @@ public class ClassController {
 
     @PostMapping(value = "/admin/class/create")
     public Map<String, Object> creatClass(@RequestBody Class classInfo){
-        return classService.saveClass(classInfo);
+        return classService.saveClass(classInfo,1);
     }
 
     @PostMapping(value = "/admin/class/delete")
@@ -30,10 +30,10 @@ public class ClassController {
 
     @PostMapping(value = "/admin/class/update")
     public Map<String, Object> updateClass(@RequestBody Class classInfo){
-        return classService.saveClass(classInfo);
+        return classService.saveClass(classInfo,2);
     }
 
-    @PostMapping(value = "/admin/class")
+    @GetMapping(value = "/admin/class/list")
     public Map<String, Object> findAllClass(){
         return classService.findAllClass();
     }

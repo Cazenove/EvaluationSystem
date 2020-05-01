@@ -67,7 +67,31 @@ const routes = [{
 		meta: {
 			requireLogin: false
 		}
-	}
+	},
+	{
+		path: '/usermanagement',
+		name: 'UserManagement',
+		component: () => import('../views/UserManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		path: '/classmanagement',
+		name: 'ClassManagement',
+		component: () => import('../views/ClassManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		path: '/scoremanagement',
+		name: 'ScoreManagement',
+		component: () => import('../views/ScoreManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
 	
 ]
 

@@ -1,7 +1,7 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="RegisterModal">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册</button>
+		<button class="btn btn-light" data-toggle="modal" data-target="#registerModal">注册</button>
 		<!-- 注册模态框 -->
 		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">

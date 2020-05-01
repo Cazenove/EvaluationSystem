@@ -5,10 +5,9 @@ import com.evaluation.system.bean.EvaluationOuter;
 import com.evaluation.system.dao.ClassRepository;
 import com.evaluation.system.service.ClassService;
 import com.evaluation.system.service.EvaluationOuterService;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,14 +19,25 @@ public class EvaluationOuterController {
     @Autowired
     private EvaluationOuterService evaluationOuterService;
 
-    @PostMapping(value = "/admin/evaluation/outer/create")
+    @PostMapping(value = "/admin/evaluation/create")
     public Map<String, Object> creatEvaluation(@RequestBody EvaluationOuter evaluationOuter){
-        return evaluationOuterService.saveEvaluationOuter(evaluationOuter);
+        return evaluationOuterService.saveEvaluationOuter(evaluationOuter,1);
     }
 
-    @PostMapping(value = "/admin/evaluation/outer/find")
-    public Map<String, Object> findEvaluation(@RequestBody EvaluationOuter evaluationOuter){
-        return evaluationOuterService.findEvaluationOuter(evaluationOuter);
+    @GetMapping(value = "/admin/evaluation/details")
+    public Map<String, Object> findEvaluation(){
+        return evaluationOuterService.findEvaluationOuter();
+    }
+
+    @PostMapping(value = "/admin/evaluation/delete")
+    public Map<String, Object> deleteEvaluation(@RequestBody EvaluationOuter evaluationOuter){
+
+        return evaluationOuterService.deleteEvaluationOuter(evaluationOuter);
+    }
+
+    @PostMapping(value = "/admin/evaluation/update")
+    public Map<String, Object> updateEvaluation(@RequestBody EvaluationOuter evaluationOuter){
+        return evaluationOuterService.saveEvaluationOuter(evaluationOuter,2);
     }
 
 

@@ -9,13 +9,13 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a href="" class="nav-link">学生管理</a>
+						<router-link class="nav-link" to="/usermanagement">用户管理</router-link>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">班级管理</a>
+						<router-link class="nav-link" to="/classmanagement">班级管理</router-link>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">评分管理</a>
+						<router-link class="nav-link" to="/scoremanagement">评分管理</router-link>
 					</li>
 					<li class="nav-item">
 						<a href="" class="nav-link">评分表管理</a>
