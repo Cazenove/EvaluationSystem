@@ -1,21 +1,26 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Map;
 
 //组间评价提交记录表类
 @Entity
+@TypeDef(name = "json",typeClass = JsonStringType.class)
 public class SubmitOuter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int submitOuterId;
     private int groupId;
     private int evaluationOuterId;
-    private String content;
-    private Date submitTime;
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private Map<String,Object> content;
+    private String submitTime;
 
     public SubmitOuter(){
 
@@ -28,8 +33,11 @@ public class SubmitOuter {
                 ", groupId=" + groupId +
                 ", evaluationOuterId=" + evaluationOuterId +
                 ", content='" + content + '\'' +
-                ", submitTime=" + submitTime +
                 '}';
+    }
+
+    public String toSuggestion(){
+        return ""+ content.get("suggestion") ;
     }
 
     public int getSubmitOuterId() {
@@ -56,19 +64,19 @@ public class SubmitOuter {
         this.evaluationOuterId = evaluationOuterId;
     }
 
-    public String getContent() {
+    public Map<String, Object> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Map<String, Object> content) {
         this.content = content;
     }
 
-    public Date getSubmitTime() {
+    public String getSubmitTime() {
         return submitTime;
     }
 
-    public void setSubmitTime(Date submitTime) {
+    public void setSubmitTime(String submitTime) {
         this.submitTime = submitTime;
     }
 }
