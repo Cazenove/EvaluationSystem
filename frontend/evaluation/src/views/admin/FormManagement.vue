@@ -27,6 +27,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: "ScoreManagement",
@@ -35,9 +37,33 @@
 		},
 		data () {
 			return{
+				response: {
+				},
 				tableData: [
 					{name: "第一组团队作业组间评分表", classId: "1", groupId: "1", "releaseTime": "2020-3-22"}
 				]
+			}
+		},
+		created() {
+			this.init();
+		},
+		methods: {
+			init() {
+				this.getResponse();
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.adminEvaluationDetails,null)
+				.then(function(res) {
+					if(res.status === 1) {
+						self.response = res;
+					}
+					else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		}
 	}

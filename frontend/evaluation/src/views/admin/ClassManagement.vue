@@ -144,6 +144,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: 'ClassManagement',
@@ -152,9 +154,33 @@
 		},
 		data () {
 			return {
+				response: {
+				},
 				tableData: [
 					{className: "2020软件工程S班", groupNum: "8" ,status:"进行中", startTime: "2020-03-20", }
 				]
+			}
+		},
+		created() {
+			this.init();
+		},
+		methods: {
+			init() {
+				this.getResponse();
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.adminClassList,null)
+				.then(function(res) {
+					if(res.status === 1) {
+						self.response = res;
+					}
+					else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		}
 	}

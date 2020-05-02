@@ -12,6 +12,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		components: {
@@ -35,6 +37,18 @@
             getRequest() {
             },
             getResponse() {
+				var self = this;
+				axios.get(api.adminEvaluationInnerSubmit,null)
+				.then(function(res) {
+					if(res.status === 1) {
+						self.response = res;
+					}
+					else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
             },
             init() {
                 this.getRequest();

@@ -24,7 +24,7 @@ const apiList = {
 	adminUserCreate: http + '/admin/user/create',
 	adminUserDelete: http + '/admin/user/delete',
 	adminUserUpdate: http + '/admin/user/update',
-	adminUsetList: http + '/admin/user/list',
+	adminUserList: http + '/admin/user/list',
 	
 	adminAssistantCreate: http + '/admin/assistant/create',
 	adminAssistantDelete: http + '/admin/assistant/delete',
