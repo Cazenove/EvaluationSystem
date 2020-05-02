@@ -1,21 +1,16 @@
 package com.evaluation.system.controller;
 
-import com.evaluation.system.bean.Class;
 import com.evaluation.system.bean.EvaluationOuter;
-import com.evaluation.system.dao.ClassRepository;
-import com.evaluation.system.service.ClassService;
 import com.evaluation.system.service.EvaluationOuterService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.evaluation.system.service.GroupEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
-/**
- * @author lenovo
- */
 @RestController
 public class EvaluationOuterController {
+    @Autowired
+    private GroupEvaluationService groupEvaluationService;
     @Autowired
     private EvaluationOuterService evaluationOuterService;
 
@@ -39,6 +34,11 @@ public class EvaluationOuterController {
     public Map<String, Object> updateEvaluation(@RequestBody EvaluationOuter evaluationOuter){
         return evaluationOuterService.saveEvaluationOuter(evaluationOuter,2);
     }
-
+    /*组间评价列表*/
+    @PostMapping(value = "/user/evaluation/outer/list")
+   public Map<String, Object> listEvaluation(@RequestBody EvaluationOuter evaluationOuter){
+        return groupEvaluationService.listEvaluation(evaluationOuter);
+    }
 
 }
+
