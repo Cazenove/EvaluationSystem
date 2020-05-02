@@ -144,7 +144,7 @@
 </template>
 
 <script>
-	import ManageNav from '../components/ManageNav.vue'
+	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: 'ClassManagement',
 		components: {

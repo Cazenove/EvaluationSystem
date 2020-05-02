@@ -152,7 +152,7 @@
 
 <script>
 	// import axios from 'axios'
-	import ManageNav from '../components/ManageNav.vue'
+	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: "UserManagement",
 		components: {

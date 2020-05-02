@@ -4,10 +4,10 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="#">主页</a></li>
-				<li class="breadcrumb-item active" aria-current="page">评分管理</li>
+				<li class="breadcrumb-item active" aria-current="page">评分表管理</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">评分管理</h1>
+		<h1 class="offset-md-1">评分表管理</h1>
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<vxe-table :data="tableData">
 				<vxe-table-column field="name" title="评分表名称"></vxe-table-column>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import ManageNav from '../components/ManageNav.vue'
+	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: "ScoreManagement",
 		components: {
