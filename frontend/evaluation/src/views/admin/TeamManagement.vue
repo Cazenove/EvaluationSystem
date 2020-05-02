@@ -8,6 +8,15 @@
 			</ol>
 		</nav>
         <h1 class="offset-md-1">{{this.title}}</h1>
+		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
+			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
+			<vxe-table-column field="className" title="班级名"></vxe-table-column>
+			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
+			<vxe-table-column field="leader" title="组长信息"></vxe-table-column>
+			<vxe-table-column field="member" title="组员信息"></vxe-table-column>
+		</vxe-table>
     </div>
 </template>
 
@@ -21,17 +30,43 @@
 		},
 		data () {
 			return {
+				allAlign: null,
                 title: "小组管理",
 				tableData: [
 				],
                 request: {
                 },
                 response: {
-                }
+					status:1,
+					data:[
+						{
+							groupId:1,
+							groupName:"第一组",
+							classId:1,
+							className:"2020软件工程S班",
+							groupNum:1,//小组序列，在该班级的第几组
+							leader:{//组长
+								userId:"221701000",
+								userName:"张三"
+							},
+							member:[
+								{
+									userId:"221701001",
+									userName:"李四"
+								},
+								{
+									userId:"221701002",
+									userName:"王五"
+								}
+							]
+						}
+					]
+				}
 			}
 		},
         created() {
             this.init();
+			this.tableData = this.response.data;
         },
         methods: {
             getRequest() {

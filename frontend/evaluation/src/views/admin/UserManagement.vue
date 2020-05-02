@@ -161,6 +161,7 @@
 		},
 		data () {
 			return {
+				allAlign: null,
 				response: {
 				    status:1,
 				    data:[
@@ -183,14 +184,13 @@
 				    ]
 				},
 				tableData: [
-					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
-					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 				],
 			
 			}
 		},
 		created() {
 			this.init();
+			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {

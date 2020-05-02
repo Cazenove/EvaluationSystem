@@ -8,6 +8,13 @@
 			</ol>
 		</nav>
         <h1 class="offset-md-1">{{this.title}}</h1>
+		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
+			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
+			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
+			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+			<vxe-table-column field="score" title="综合得分"></vxe-table-column>
+		</vxe-table>
     </div>
 </template>
 
@@ -21,17 +28,36 @@
 		},
 		data () {
 			return {
+				allAlign: null,
                 title: "小组综合得分",
 				tableData: [
 				],
                 request: {
                 },
                 response: {
-                }
+					status:1,
+					data:[
+						{
+							groupId:1,//小组表中的id
+							classId:1,
+							groupNum:1,
+							groupName:"第一组",//小组名
+							score:90//小组综合得分
+						},
+						{
+							groupId:8,//小组表中的id
+							classId:2,
+							groupNum:1,//可能是另一个班的第一组
+							groupName:"第一组",//小组名
+							score:95
+						}
+					]
+				}
 			}
 		},
         created() {
             this.init();
+			this.tableData = this.response.data;
         },
         methods: {
             getRequest() {

@@ -154,15 +154,30 @@
 		},
 		data () {
 			return {
+				allAlign: null,
 				response: {
+					status:1,
+					data:[
+						{
+							classId:1,
+							className:"2020软件工程S班",
+							groupNum:7,
+							startTime:"2020-03-11"
+						},
+						{
+							classId:2,
+							className:"2020软件工程W班",
+							groupNum:8,
+							startTime:"2020-03-11"
+						}
+					]
 				},
-				tableData: [
-					{className: "2020软件工程S班", groupNum: "8" ,status:"进行中", startTime: "2020-03-20", }
-				]
+				tableData: []
 			}
 		},
 		created() {
 			this.init();
+			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {
