@@ -13,7 +13,8 @@
 </template>
 
 <script>
-
+import axios from 'axios'
+import api from '../router/httpConfig.js'
 export default {
 	data() {
 		return {
@@ -42,12 +43,27 @@ export default {
 	},
 	created() {
 		//创建时根据班级小组获取评分表列表
-		this.getRequest();
+		this.init();
 	},
 	methods: {
+		// 目的是获取组内评分表列表
 		getRequest() {
 			this.$data.request.classId = this.$store.state.userInfo.classId;
 			this.$data.request.groupId = this.$store.state.userInfo.groupId;
+		},
+		getResponse() {
+			var self = this;
+			axios.post(api.userEvaluationInnerList,self.request)
+			.then(function(res) {
+				self.response = res;
+				console.log(self.response);
+			}).catch(function(error) {
+				console.log(error);
+			})
+		},
+		init() {
+			this.getRequest(),
+			this.getResponse()
 		}
 	}
 }

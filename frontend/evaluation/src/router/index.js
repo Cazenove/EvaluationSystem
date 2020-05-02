@@ -69,30 +69,113 @@ const routes = [{
 		}
 	},
 	{
-		path: '/usermanagement',
+		// 用户管理
+		path: '/admin/user',
 		name: 'UserManagement',
-		component: () => import('../views/UserManagement.vue'),
+		component: () => import('../views/admin/UserManagement.vue'),
 		meta: {
 			requireLogin: true
 		}
 	},
 	{
-		path: '/classmanagement',
+		// 班级管理
+		path: '/admin/class',
 		name: 'ClassManagement',
-		component: () => import('../views/ClassManagement.vue'),
+		component: () => import('../views/admin/ClassManagement.vue'),
 		meta: {
 			requireLogin: true
 		}
 	},
 	{
-		path: '/scoremanagement',
-		name: 'ScoreManagement',
-		component: () => import('../views/ScoreManagement.vue'),
+		// 助教管理
+		path: '/admin/assistant',
+		name: 'AssistantManagement',
+		component: () => import('../views/admin/AssistantManagement.vue'),
 		meta: {
 			requireLogin: true
 		}
 	},
-	
+	{
+		// 小组信息
+		path: '/admin/team',
+		name: 'TeamManagement',
+		component: () => import('../views/admin/TeamManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 评分表管理
+		path: '/admin/form',
+		name: 'FormManagement',
+		component: () => import('../views/admin/FormManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 组间评分表提交记录
+		path: '/admin/evaluationouter',
+		name: 'EvaluationOuter',
+		component: () => import('../views/admin/EvaluationOuter.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 组内评分表提交记录
+		path: '/admin/evaluationinner',
+		name: 'EvaluationInner',
+		component: () => import('../views/admin/EvaluationInner.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 组内评分表提交记录
+		path: '/admin/suggestion',
+		name: 'SuggestionManagement',
+		component: () => import('../views/admin/SuggestionManagement.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 小组历次评分
+		path: '/admin/teamscore',
+		name: 'TeamScore',
+		component: () => import('../views/admin/TeamScore.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 个人历次评分
+		path: '/admin/personscore',
+		name: 'PersonScore',
+		component: () => import('../views/admin/PersonScore.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 小组综合评分
+		path: '/admin/teamfinalscore',
+		name: 'TeamFinalScore',
+		component: () => import('../views/admin/TeamFinalScore.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 个人综合评分
+		path: '/admin/personfinalscore',
+		name: 'PersonFinalScore',
+		component: () => import('../views/admin/PersonFinalScore.vue'),
+		meta: {
+			requireLogin: true
+		}
+	}
 ]
 
 const router = new VueRouter({

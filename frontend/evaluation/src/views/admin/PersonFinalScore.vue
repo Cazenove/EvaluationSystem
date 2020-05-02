@@ -8,6 +8,14 @@
 			</ol>
 		</nav>
         <h1 class="offset-md-1">{{this.title}}</h1>
+		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-table-column field="userId" title="用户ID"></vxe-table-column>
+			<vxe-table-column field="userName" title="用户名"></vxe-table-column>
+			<vxe-table-column field="className" title="班级"></vxe-table-column>
+			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
+			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+			<vxe-table-column field="score" title="分数"></vxe-table-column>
+		</vxe-table>
     </div>
 </template>
 
@@ -21,17 +29,40 @@
 		},
 		data () {
 			return {
+				allAlign: null,
                 title: "个人综合得分",
 				tableData: [
 				],
                 request: {
                 },
                 response: {
-                }
+					status:1,
+					data:[
+						{
+							userId:"221701000",
+							userName:"张三",
+							classId:1,
+							className:"2020软件工程S班",
+							groupId:1,
+							groupName:"第一组",
+							score:50//综合贡献率
+						},
+						{
+							userId:"221701001",
+							userName:"李四",
+							classId:1,
+							className:"2020软件工程S班",
+							groupId:1,
+							groupName:"第一组",
+							score:50//综合贡献率
+						}
+					]
+				}
 			}
 		},
         created() {
             this.init();
+			this.tableData = this.response.data;
         },
         methods: {
             getRequest() {

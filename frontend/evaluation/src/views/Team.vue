@@ -41,8 +41,8 @@
 
 <script>
 	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import UserNav from '../components/UserNav.vue'
-
 	export default {
 		data() {
 			return {
@@ -102,8 +102,8 @@
 			}
 		},
 		created() {
-			//创建时获取班级的信息
-			this.getRequest();
+			//创建时获取小组的信息
+			this.init();
 		},
 		components: {
 			UserNav
@@ -111,6 +111,19 @@
 		methods: {
 			getRequest() {
 				this.$data.request.groupId = this.$store.state.userInfo.groupId;
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.userGroupDetails, self.request)
+					.then(function(res) {
+						self.response = res;
+					}).catch(function(error) {
+						console.log(error);
+					})
+			},
+			init() {
+				this.getRequest(),
+				this.getResponse()
 			},
 			changeGroupName() {
 				

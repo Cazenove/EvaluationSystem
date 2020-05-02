@@ -43,6 +43,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import UserNav from '../components/UserNav.vue'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
@@ -102,6 +104,17 @@
 					return;
 				}
 				console.log("验证通过");
+				
+				this.request.userId = this.$store.state.userInfo.userId;
+				this.request.password = this.$store.state.userInfo.password;
+				console.log(this.request);
+				axios.post(api.userUpdate,this.request)
+				.then(function(res) {
+					
+				}).catch(function(error) {
+					console.log(error);
+				})
+				
 			}
 		},
 		computed: {

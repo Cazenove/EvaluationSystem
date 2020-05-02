@@ -31,13 +31,66 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
-		name: "ScoreManagement",
+		name: "FormManagement",
 		components: {
 			ManageNav,
 		},
 		data () {
 			return{
+				allAlign: null,
 				response: {
+					status:1,
+					data: [
+						{
+							id:1,//评分表的id，需要把对应id的组间、组内评价表提交记录删除，再把组内评价表的时间改掉
+							name:"第二次团队作业",
+							classId:1,
+							releaseTime:"",//发布时间
+							endTime:"",//结束时间
+							content: {
+								details:[//登录的时候
+									{
+										groupId:1,
+										groupNum: 1,
+										groupName:"第一组",
+										score:null,//总分
+										content:[
+											{
+												item:"创新性",
+												maxScore:40,
+												score:"",//未填状态
+											},
+											{
+												item:"实用性",
+												maxScore:60,
+												score:null,
+											}
+										],
+										suggestion:""
+									},
+									{
+										groupId:2,
+										groupNum: 2,
+										groupName:"第二组",
+										score:null,//总分
+										content:[
+											{
+												item:"创新性",
+												maxScore:40,
+												score:"",//未填状态
+											},
+											{
+												item:"实用性",
+												maxScore:60,
+												score:"",
+											}
+										],
+										suggestion:""
+									}
+								]
+							}
+						}
+					]
 				},
 				tableData: [
 					{name: "第一组团队作业组间评分表", classId: "1", groupId: "1", "releaseTime": "2020-3-22"}
@@ -46,6 +99,7 @@
 		},
 		created() {
 			this.init();
+			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {

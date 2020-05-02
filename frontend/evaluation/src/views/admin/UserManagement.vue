@@ -151,8 +151,9 @@
 </template>
 
 <script>
-	// import axios from 'axios'
-	import ManageNav from '../components/ManageNav.vue'
+	import axios from 'axios'
+	import api from '../../router/httpConfig.js'
+	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		name: "UserManagement",
 		components: {
@@ -160,12 +161,7 @@
 		},
 		data () {
 			return {
-			tableData: [
-				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
-				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
-			],
-			
-			}
+				allAlign: null,
 				response: {
 				    status:1,
 				    data:[
@@ -188,14 +184,13 @@
 				    ]
 				},
 				tableData: [
-					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
-					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 				],
 			
 			}
 		},
 		created() {
 			this.init();
+			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {

@@ -14,6 +14,10 @@ export default new Vuex.Store({
 			classId:1,//班级
 			groupId:1,//小组
 			status:2//身份，组员1，组长2
+		},
+		adminInfo: {
+			
+			status:4//身份，助教3，老师4
 		}
 	},
 	mutations: {},

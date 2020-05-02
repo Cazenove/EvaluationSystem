@@ -1,7 +1,7 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="RegisterModal">
-		<button class="btn btn-light" data-toggle="modal" data-target="#registerModal">注册</button>
+		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册</button>
 		<!-- 注册模态框 -->
 		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">
@@ -38,7 +38,7 @@
 							<label for="classId" class="col-form-label">班级</label>
 							<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
 								<option disabled="disabled" :value="null">请选择</option>
-								<option v-for="(item, index) in response.data" :value="item.classId" :key="item.classId">{{item.name}}</option>
+								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.name}}</option>
 							</select>
 							<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
 						</div>
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import api from '../router/httpConfig.js'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	import UserNav from '../components/UserNav.vue'
@@ -79,20 +81,17 @@
 	export default {
 		data() {
 			return {
-				response: {
-					status: 1,
-					data: [{
-							classId: 1, //班级id
-							name: "2020软件工程S班", //班级名
-							groupNum: 10 //这个班级的小组数量
-						},
-						{
-							classId: 2, //班级id
-							name: "2020软件工程W班", //班级名
-							groupNum: 11 //这个班级的小组数量
-						}
-					]
-				},
+				classList: [{
+						classId: 1, //班级id
+						name: "2020软件工程S班", //班级名
+						groupNum: 10 //这个班级的小组数量
+					},
+					{
+						classId: 2, //班级id
+						name: "2020软件工程W班", //班级名
+						groupNum: 11 //这个班级的小组数量
+					}
+				],
 				registerInfo: { //注册的表单信息
 					userId: null,
 					password: null,
@@ -101,11 +100,15 @@
 					classId: null,
 					groupNum: null,
 					status: null
+				},
+				response: {
+					
 				}
 			}
 		},
 		created() {
 			//创建的时候获取班级小组列表
+			this.getTeamList();
 		},
 
 		vuerify: {
@@ -163,6 +166,15 @@
 			}
 		},
 		methods: {
+			getTeamList() {
+				var self = this;
+				axios.get(api.adminClassList,null)
+				.then(function(res) {
+					self.classList = res.data;
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
 			close() {},
 			register() {
 				console.log(this.registerInfo);
@@ -177,6 +189,13 @@
 				}
 				console.log('验证通过');
 				//然后发送表单
+				let self = this;
+				axios.post(api.register,self.registerInfo)
+				.then(function(res) {
+					alert(res.msg);
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		},
 		computed: {
@@ -184,7 +203,7 @@
 				return this.$vuerify.$errors
 			},
 			getGroupNum: function() {
-				return this.$data.registerInfo.classId !== null ? this.$data.response.data[this.$data.registerInfo.classId - 1].groupNum :
+				return this.$data.registerInfo.classId !== null ? this.$data.classList[this.$data.registerInfo.classId - 1].groupNum :
 					null;
 			}
 		}

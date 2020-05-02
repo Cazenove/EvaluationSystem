@@ -2,6 +2,10 @@ const http = "http://127.0.0.1:8082"
 // 接口URL
 
 const apiList = {
+	
+	testGet: 'http://www.dzyong.top:3005/yiqing/area',
+	testPost: 'http://49.235.26.253:8082/publishQuestion',
+	
 	login: http + '/user/login',
 	register: http + '/user/register',
 	
@@ -20,7 +24,7 @@ const apiList = {
 	adminUserCreate: http + '/admin/user/create',
 	adminUserDelete: http + '/admin/user/delete',
 	adminUserUpdate: http + '/admin/user/update',
-	adminUsetList: http + '/admin/user/list',
+	adminUserList: http + '/admin/user/list',
 	
 	adminAssistantCreate: http + '/admin/assistant/create',
 	adminAssistantDelete: http + '/admin/assistant/delete',
@@ -56,6 +60,7 @@ const apiList = {
 	adminEvaluationOuterSubmit: http + '/admin/evaluation/outer/submit',
 	adminEvaluationInnerSubmit: http + '/admin/evaluation/inner/submit',
 	
+	teamList: http + '/register/team'
 }
 
 export default apiList
