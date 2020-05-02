@@ -154,10 +154,13 @@
 			return {
 <<<<<<< HEAD:frontend/evaluation/src/views/ClassManagement.vue
 <<<<<<< HEAD:frontend/evaluation/src/views/ClassManagement.vue
+<<<<<<< HEAD:frontend/evaluation/src/views/ClassManagement.vue
 				tableData: [
 					{className: "2020软件工程S班", groupNum: "8" ,status:"进行中", startTime: "2020-03-20", }
 				]
 =======
+=======
+>>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/ClassManagement.vue
 =======
 >>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/ClassManagement.vue
 				response: {
