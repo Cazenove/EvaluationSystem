@@ -9,6 +9,9 @@ import java.util.Set;
 
 //班级类
 
+/**
+ * @author 221701128 chh
+ */
 @Entity
 public class Class {
     @Id
@@ -16,8 +19,8 @@ public class Class {
     private int classId;
     private String name;
     private int groupNum;
-    private Date startTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
-    private Date endTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
+    private Date startTime;
+    private Date endTime;
     private String status;
 
     @OneToMany(mappedBy = "classInfo")

@@ -34,6 +34,7 @@ public class EvaluationOuter {
 
     @Transient
     private int classId;
+    //瞬时字段 只是用来接收classId参数的作用，其他基本用不到
 
 
 
@@ -41,6 +42,7 @@ public class EvaluationOuter {
     @JoinColumn(name = "class_id")
     @Fetch(value= FetchMode.JOIN)
     private Class classInfo;
+    //通过外键得到的class的信息
 
     public EvaluationOuter(){
 
