@@ -160,20 +160,12 @@
 		},
 		data () {
 			return {
-<<<<<<< HEAD:frontend/evaluation/src/views/UserManagement.vue
-<<<<<<< HEAD:frontend/evaluation/src/views/UserManagement.vue
-<<<<<<< HEAD:frontend/evaluation/src/views/UserManagement.vue
 			tableData: [
 				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 			],
 			
 			}
-=======
-=======
->>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/UserManagement.vue
-=======
->>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/UserManagement.vue
 				response: {
 				    status:1,
 				    data:[
@@ -223,7 +215,6 @@
 					console.log(error);
 				})
 			}
->>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/UserManagement.vue
 		}
 	}
 </script>
