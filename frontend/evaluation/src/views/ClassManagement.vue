@@ -152,9 +152,42 @@
 		},
 		data () {
 			return {
+<<<<<<< HEAD:frontend/evaluation/src/views/ClassManagement.vue
+<<<<<<< HEAD:frontend/evaluation/src/views/ClassManagement.vue
 				tableData: [
 					{className: "2020软件工程S班", groupNum: "8" ,status:"进行中", startTime: "2020-03-20", }
 				]
+=======
+=======
+>>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/ClassManagement.vue
+				response: {
+				},
+				tableData: [
+					{className: "2020软件工程S班", groupNum: "8" ,status:"进行中", startTime: "2020-03-20", }
+				]
+			}
+		},
+		created() {
+			this.init();
+		},
+		methods: {
+			init() {
+				this.getResponse();
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.adminClassList,null)
+				.then(function(res) {
+					if(res.status === 1) {
+						self.response = res;
+					}
+					else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+>>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/ClassManagement.vue
 			}
 		}
 	}

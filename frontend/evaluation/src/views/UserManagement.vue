@@ -160,12 +160,67 @@
 		},
 		data () {
 			return {
+<<<<<<< HEAD:frontend/evaluation/src/views/UserManagement.vue
+<<<<<<< HEAD:frontend/evaluation/src/views/UserManagement.vue
 			tableData: [
 				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 				{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
 			],
 			
 			}
+=======
+=======
+>>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/UserManagement.vue
+				response: {
+				    status:1,
+				    data:[
+				        {
+				            userId:"221701501",//学号
+				            password:"123456",//密码
+				            userName:"张三",//姓名
+				            classId:1,//班级
+				            groupId:1,//小组
+				            status:1//职务
+				        },
+				        {
+				            userId:"221701502",//学号
+				            password:"123456",//密码
+				            userName:"李四",//姓名
+				            classId:1,//班级
+				            groupId:1,//小组
+				            status:2//职务
+				        }
+				    ]
+				},
+				tableData: [
+					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
+					{ userId: '091700233', userName: '张三', classId: '1', groupId: '1', password: '123456', status: '1'},
+				],
+			
+			}
+		},
+		created() {
+			this.init();
+		},
+		methods: {
+			init() {
+				this.getResponse();
+			},
+			getResponse() {
+				var self = this;
+				axios.get(api.adminUserList,null)
+				.then(function(res) {
+					if(res.status === 1) {
+						self.response = res;
+					}
+					else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			}
+>>>>>>> parent of c4373eb3... 后台初始化方法:frontend/evaluation/src/views/admin/UserManagement.vue
 		}
 	}
 </script>
