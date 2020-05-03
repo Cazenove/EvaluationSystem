@@ -1,7 +1,5 @@
 package com.evaluation.system.bean;
 
-//小组收到的建议表
-
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -9,15 +7,25 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 import java.util.Map;
 
-@Entity(name = "Group_suggestion")
+/**
+ * 小组收到的建议表
+ * @author 221701230张增燊
+ */
+@Entity
+@Table(name = "group_suggestion")
+@TypeDef(name = "json",typeClass = JsonStringType.class)
 public class GroupSuggestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "group_suggestion_id")
     private int groupSuggestionId;
+    @Column(name = "group_id")
     private int groupId;
+    @Column(name = "evaluation_outer_id")
     private int evaluationOuterId;
 
-    private String content;
+    @Column(name = "content")
+    private String suggestion;
 
     public GroupSuggestion(){
 
@@ -47,11 +55,11 @@ public class GroupSuggestion {
         this.evaluationOuterId = evaluationOuterId;
     }
 
-    public String getContent() {
-        return content;
+    public String getSuggestion() {
+        return suggestion;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setSuggestion(String suggestion) {
+        this.suggestion = suggestion;
     }
 }
