@@ -25,5 +25,6 @@ public interface EvaluationInnerRepository extends JpaRepository<EvaluationInner
      * @param evaluationInnerId 组内评分表id
      * @return EvaluationInner
      **/
-    //EvaluationInner findEvaluationInnerByEvaluationInnerId(Integer id);
+    @Query("SELECT a FROM EvaluationInner a WHERE a.evaluationInnerId = :id")
+    EvaluationInner findOneByEvaluationInnerId(@Param("id") Integer id);
 }

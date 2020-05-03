@@ -1,9 +1,5 @@
 package com.evaluation.system.controller;
 
-/**
- * @author 221701310_陈家祯
- */
-
 import com.evaluation.system.bean.EvaluationInner;
 import com.evaluation.system.service.EvaluationInnerService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +11,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 221701310_陈家祯
+ */
 @RestController
 public class EvaluationInnerController {
 
     @Resource
     private EvaluationInnerService evaluationInnerService;
 
-    /**8.获取组内评分表列表**/
+
+
+    /**
+     * 8.获取组内评分表列表
+     */
     @GetMapping(value = "/user/evaluation/inner/list")
     public Map<String, Object> innerFindAll(@RequestParam("classId") int classId) {
-        return evaluationInnerService.getEvaluationInnerByClassId(classId);
+        return evaluationInnerService.getEvaluationInnersByClassId(classId);
+    }
+
+    /**
+     * 9.获取一份组内评分表内容
+     */
+    @GetMapping(value = "/user/evaluation/inner")
+    public Map<String, Object> evaluationInnerFindOne(@RequestParam("evaluationInnerId") Integer id,
+                                                      @RequestParam("classId") Integer classId,
+                                                      @RequestParam("groupId") Integer groupId) {
+        return evaluationInnerService.getOneEvaluationInner(id,classId,groupId);
     }
 
 
