@@ -70,7 +70,7 @@ public class SubmitOuterService {
             Map content = (Map) list.get(0);
             String str = (String) content.get("suggestion");
             System.out.println();
-            groupSuggestion.setContent(str);
+            groupSuggestion.setSuggestion(str);
             groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
             groupSuggestion.setGroupId(submitOuter.getGroupId());
             groupSuggestionRepository.save(groupSuggestion);
