@@ -16,4 +16,10 @@ public interface UserRepository extends JpaRepository<User,String> {
     //通过手机号查询
     public  User findByTelephone(String telephone);
 
+    /**通过user_id查询
+     * @param userId 用户id
+     * @return User
+     **/
+    public User findByUserId(String userId);
+
 }
