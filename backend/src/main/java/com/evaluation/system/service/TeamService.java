@@ -1,16 +1,14 @@
 package com.evaluation.system.service;
 
+import com.evaluation.system.bean.*;
 import com.evaluation.system.bean.Class;
-import com.evaluation.system.bean.Team;
-import com.evaluation.system.bean.User;
-import com.evaluation.system.dao.ClassRepository;
-import com.evaluation.system.dao.TeamRepository;
-import com.evaluation.system.dao.UserRepository;
+import com.evaluation.system.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,4 +74,101 @@ public class TeamService {
         }
         return map;
     }
+
+    @Autowired
+    private GroupSuggestionRepository groupSuggestionRepository;
+
+    @Autowired
+    private EvaluationOuterRepository evaluationOuterRepository;
+
+    @Autowired
+    private GroupScoreRepository groupScoreRepository;
+
+    /**
+     * 获取小组详情
+     * @author 221701310_陈家祯
+     */
+    public Map<String, Object> getGroupInfo(Integer groupId) {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            //获取groupName，classId，groupNum
+            Team group = teamRepository.findOneByGroupId(groupId);
+            String groupName = group.getGroupName();
+            int classId = group.getClassId();
+            int groupNum = group.getGroupNum();
+
+            //获取className by classId
+            String className = classRepository.findByClassId(classId).getName();
+
+            //获取leader的userId，userName
+            User leader = userRepository.findOneByGroupIdAndAndStatus(groupId,"2");
+            String leaderUserId = leader.getUserId();
+            String leaderName = leader.getName();
+
+            //获取member的userId，userName
+            ArrayList<User> memberList = userRepository.findByGroupIdAndStatus(groupId,"1");
+
+            //evaluationInfo组成的List
+            ArrayList<Object> evaluationInfoList = new ArrayList<>();
+
+            //获取evaluationOuterId，name，score，suggestion
+            ArrayList<GroupSuggestion> groupSuggestions = groupSuggestionRepository.findByGroupId(groupId);
+            for(GroupSuggestion groupSuggestion : groupSuggestions) {
+
+                //evaluationInfo内含evaluationOuterId，name，score，suggestion
+                Map<String, Object> evaluationInfo = new HashMap<>();
+
+                //evaluationOuterId
+                int evaluationOuterId = groupSuggestion.getEvaluationOuterId();
+                evaluationInfo.put("evaluationOuterId",evaluationOuterId);
+
+                //name
+                String evaluationOuterName = evaluationOuterRepository.findOneByEvaluationOuterId(evaluationOuterId).getName();
+                evaluationInfo.put("name",evaluationOuterName);
+
+                //score
+                GroupScore groupScore = groupScoreRepository.findOneByEvaluationOuterId(evaluationOuterId);
+                evaluationInfo.put("score",groupScore.getContent());
+
+                //suggestion
+                evaluationInfo.put("suggestion",groupSuggestion.getSuggestion());
+
+                //将evaluationInfo加入evaluationInfoList
+                evaluationInfoList.add(evaluationInfo);
+
+            }
+
+            Map<String, Object> dataMap = new HashMap<>();
+            if(group != null && leader != null && !memberList.isEmpty() && !groupSuggestions.isEmpty()) {
+                result.put("status", 1);
+                dataMap.put("groupId",groupId);
+                dataMap.put("groupName",groupName);
+                dataMap.put("classId",classId);
+                dataMap.put("className",className);
+                dataMap.put("groupNum",groupNum);
+                dataMap.put("leader",leader);
+                dataMap.put("member",memberList);
+                dataMap.put("data",evaluationInfoList);
+                result.put("data",dataMap);
+            } else if (group == null) {
+                result.put("status", 0);
+                result.put("msg", "group == null");
+            } else if (leader == null) {
+                result.put("status", 0);
+                result.put("msg", "leader == null");
+            } else if (memberList.isEmpty()) {
+                result.put("status", 0);
+                result.put("msg", "memberList.isEmpty()");
+            } else if (groupSuggestions.isEmpty()) {
+                result.put("status", 0);
+                result.put("msg", "groupSuggestions.isEmpty()");
+            }
+        } catch (Exception e) {
+            result.put("status", 0);
+            result.put("msg", e);
+        }
+
+        return result;
+    }
+
 }

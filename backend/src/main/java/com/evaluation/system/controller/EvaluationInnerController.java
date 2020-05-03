@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author 221701310_陈家祯
- */
 @RestController
 public class EvaluationInnerController {
 
@@ -24,14 +21,17 @@ public class EvaluationInnerController {
 
     /**
      * 8.获取组内评分表列表
+     * @author 221701310_陈家祯
      */
     @GetMapping(value = "/user/evaluation/inner/list")
-    public Map<String, Object> innerFindAll(@RequestParam("classId") int classId) {
+    public Map<String, Object> evaluationInnerFindAll(@RequestParam("classId") int classId) {
         return evaluationInnerService.getEvaluationInnersByClassId(classId);
     }
 
     /**
      * 9.获取一份组内评分表内容
+     * @author 221701310_陈家祯
+     * "找不到再生成一份空的"没有完成
      */
     @GetMapping(value = "/user/evaluation/inner")
     public Map<String, Object> evaluationInnerFindOne(@RequestParam("evaluationInnerId") Integer id,
@@ -40,5 +40,9 @@ public class EvaluationInnerController {
         return evaluationInnerService.getOneEvaluationInner(id,classId,groupId);
     }
 
+    /**
+     *10.提交组内评分表
+     * @author 221701310_陈家祯
+     */
 
 }

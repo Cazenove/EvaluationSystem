@@ -34,4 +34,13 @@ public class TeamController {
         return teamService.updateTeamName(content);
     }
 
+    /**
+     *11.查看小组详情
+     * @author 221701310_陈家祯
+     */
+    @GetMapping(value = "/user/group/details")
+    public Map<String, Object> teamInfo(@RequestParam("groupId") Integer groupId) {
+        return teamService.getGroupInfo(groupId);
+    }
+
 }

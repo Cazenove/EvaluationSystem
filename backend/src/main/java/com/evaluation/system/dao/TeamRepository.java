@@ -2,6 +2,8 @@ package com.evaluation.system.dao;
 
 import com.evaluation.system.bean.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -22,4 +24,9 @@ public interface TeamRepository extends JpaRepository<Team,Integer> {
      **/
     public List<Team> findByClassId(Integer classId);
 
+    /**
+     * @author 221701310_陈家祯
+     */
+    @Query("SELECT a FROM Team a WHERE a.groupId = :groupId")
+    public Team findOneByGroupId(@Param("groupId") Integer groupId);
 }
