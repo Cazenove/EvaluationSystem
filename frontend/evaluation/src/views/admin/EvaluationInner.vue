@@ -8,13 +8,28 @@
 			</ol>
 		</nav>
         <h1 class="offset-md-1">{{this.title}}</h1>
-		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData" @cell-click="cellClickEvent">
 			<vxe-table-column field="submitInnerId" title="提交记录ID"></vxe-table-column>
 			<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
 			<vxe-table-column field="evaluationInnerId" title="组内评分表ID"></vxe-table-column>
 			<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
-			<vxe-table-column field="content" title="具体内容"></vxe-table-column>
+			<vxe-table-column>
+				<button class="btn btn-info">详情</button>
+			</vxe-table-column>
 		</vxe-table>
+		
+		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
+			<vxe-table
+			 highlight-hover-row
+			 highlight-current-row
+			 border 
+			 :data="detailData" >
+				<vxe-table-column field="userId" title="学号"></vxe-table-column>
+				<vxe-table-column field="userName" title="用户名"></vxe-table-column>
+				<vxe-table-column field="decision" title="分工"></vxe-table-column>
+				<vxe-table-column field="contribution" title="贡献率"></vxe-table-column>
+			</vxe-table>
+		</vxe-modal>
     </div>
 </template>
 
@@ -28,9 +43,12 @@
 		},
 		data () {
 			return {
+				showDetails: false,
 				allAlign: null,
                 title: "组内评价表提交记录",
 				tableData: [
+				],
+				detailData: [
 				],
                 request: {
                 },
@@ -41,7 +59,27 @@
 							submitInnerId:1,//组内评价表提交编号
 							groupId:3,//小组id
 							evaluationInnerId:1,
-							submitTime:"",//提交时间
+							submitTime:"2020-01-01",//提交时间
+							content: [
+								{
+									userId:"221701000",//id，学号
+									userName:"张三",//姓名
+									decision:"前端",//分工
+									contribution:50//贡献率
+								},
+								{
+									userId:"221701001",//id，学号
+									userName:"李四",//姓名
+									decision:"后端",//分工
+									contribution:50//贡献率
+								}
+							]
+						},
+						{
+							submitInnerId:2,//组内评价表提交编号
+							groupId:4,//小组id
+							evaluationInnerId:1,
+							submitTime:"2020-01-02",//提交时间
 							content: [
 								{
 									userId:"221701000",//id，学号
@@ -66,6 +104,10 @@
 			this.tableData = this.response.data
         },
         methods: {
+			cellClickEvent ({ row }) {
+				this.detailData = row.content;
+				this.showDetails = true
+			},
             getRequest() {
             },
             getResponse() {

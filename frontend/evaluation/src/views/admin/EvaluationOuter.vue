@@ -9,56 +9,42 @@
 		</nav>
 		<h1 class="offset-md-1">{{this.title}}</h1>
 		<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
-		 @toggle-row-expand="getRow1" :expand-config="{accordion: true}">
+		 :expand-config="{accordion: true}">
 			<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
 			<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
 			<vxe-table-column field="evaluationOuterId" title="组间评分表ID"></vxe-table-column>
 			<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
 			<vxe-table-column type="expand" title="内容">
 				<template v-slot:content="{row, rowIndex}">
-					<vxe-table @toggle-row-expand="getRow2" border :data="tableData[rowIndex].content">
+					<vxe-table
+					 highlight-hover-row
+					 highlight-current-row
+					 border 
+					 :data="tableData[rowIndex].content" 
+					 @cell-click="cellClickEvent">
 						<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
 						<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
 						<vxe-table-column field="score" title="总分"></vxe-table-column>
 						<vxe-table-column field="suggestion" title="建议"></vxe-table-column>
 						<vxe-table-column>
-							<button
-							 type="button" 
-							 class="btn btn-primary" 
-							 data-toggle="modal" 
-							 data-target="#exampleModal" 
-							 @click="details(row)">
-								详情
-							</button>
+							<button class="btn btn-info">详情</button>
 						</vxe-table-column>
 					</vxe-table>
 				</template>
 			</vxe-table-column>
 		</vxe-table>
-
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">评分表详情</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<vxe-table width="500px" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="modalData">
-							<vxe-table-column field="item" title="提交记录ID" width="100px"></vxe-table-column>
-							<vxe-table-column field="maxScore" title="提交小组" width="100px"></vxe-table-column>
-							<vxe-table-column field="score" title="组间评分表ID" width="100px"></vxe-table-column>
-						</vxe-table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		
+		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
+			<vxe-table
+			 highlight-hover-row
+			 highlight-current-row
+			 border 
+			 :data="detailData" >
+				<vxe-table-column field="item" title="评分项"></vxe-table-column>
+				<vxe-table-column field="maxScore" title="分值"></vxe-table-column>
+				<vxe-table-column field="score" title="得分"></vxe-table-column>
+			</vxe-table>
+		</vxe-modal>
 	</div>
 </template>
 
@@ -72,12 +58,11 @@
 		},
 		data() {
 			return {
+				showDetails: false,
 				allAlign: null,
-				row1: null,
-				row2: null,
 				title: "组间评分表提交记录",
 				tableData: [],
-				modalData: [],
+				detailData: [],
 				request: {},
 				response: {
 					status: 1,
@@ -85,7 +70,7 @@
 							submitOuterId: 1, //组间评价表提交编号
 							groupId: 1, //小组id
 							evaluationOuterId: 1, //组间评价表id
-							submitTime: "", //提交时间
+							submitTime: "2020-01-01", //提交时间
 							content: [{
 									groupId: 1,
 									groupName: "第一组",
@@ -126,7 +111,7 @@
 							submitOuterId: 2, //组间评价表提交编号
 							groupId: 2, //小组id
 							evaluationOuterId: 1, //组间评价表id
-							submitTime: "", //提交时间
+							submitTime: "2020-01-02", //提交时间
 							content: [{
 									groupId: 1,
 									groupName: "第一组",
@@ -172,13 +157,9 @@
 			this.tableData = this.response.data;
 		},
 		methods: {
-			getRow1(row) {
-				this.row1 = row.$rowIndex;
-				console.log(this.row1);
-			},
-			getRow2(row) {
-				this.row2 = row.$rowIndex;
-				console.log(this.row2);
+			cellClickEvent ({ row }) {
+				this.detailData = row.content;
+				this.showDetails = true
 			},
 			getRequest() {},
 			getResponse() {
@@ -197,11 +178,6 @@
 			init() {
 				this.getRequest();
 				this.getResponse();
-			},
-			details(row2) {
-				console.log(row2);
-				// this.row2 = row2;
-				// this.modalData = this.tableData[this.row1].content[this.row2].content;
 			}
 		}
 
