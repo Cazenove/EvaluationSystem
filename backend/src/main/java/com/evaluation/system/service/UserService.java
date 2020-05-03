@@ -28,18 +28,14 @@ public class UserService {
     private AssistantRepository assistantRepository;
     /*登录检查*/
     public HashMap<String,Object> loginCheck(User user){
-        int flag = 0;
+        String flag ="";
         String msg = "账号或密码错误";
         HashMap<String,Object> result = new HashMap<>(15);
         User user1 = userRepository.findByUserId(user.getUserId());
         Assistant assistant = assistantRepository.findByAssistantId(user.getUserId());
         Admin admin = adminRepository.findByAdminId(user.getUserId());
         if (user1!=null && user1.getPassword().equals(user.getPassword())){
-            String state = user1.getStatus();
-            flag = 1;
-            if (state.equals("组长")){
-                flag = 2;
-            }
+            flag = user1.getStatus();
             result.put("status",flag);
             result.put("data",user1);
         }

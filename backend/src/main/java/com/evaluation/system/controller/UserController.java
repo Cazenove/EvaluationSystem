@@ -36,7 +36,7 @@ public class UserController {
     * 成功返回true
     * */
     @ResponseBody
-    @PostMapping(value = "/user/update/{userId}")
+    @PostMapping(value = "/user/update")
     public HashMap<String,Object> update(@RequestBody User user){
         return userService.updateCheck(user);
     }

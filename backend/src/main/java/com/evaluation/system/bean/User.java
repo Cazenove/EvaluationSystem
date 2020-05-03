@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class User {
     @Id
-    private String userId = "000000000";
+    private String userId ;
     private String password;
     private String name;
     private int classId;
