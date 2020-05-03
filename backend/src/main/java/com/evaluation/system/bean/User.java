@@ -1,9 +1,9 @@
 package com.evaluation.system.bean;
 
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 //学生类
 
 @Entity
+@TypeDef(name = "json",typeClass = JsonStringType.class)
 public class User {
     @Id
     private String userId = "000000000";
@@ -25,11 +26,11 @@ public class User {
 
     }
 
-    public String getUser_id() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUser_id(String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
