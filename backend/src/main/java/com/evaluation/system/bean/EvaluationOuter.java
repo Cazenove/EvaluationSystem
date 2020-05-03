@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Map;
 
 //组件评价表类
@@ -18,8 +19,8 @@ public class EvaluationOuter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int evaluationOuterId;
     private String name;
-    private String releaseTime;
-    private String endTime;
+    private Date releaseTime;
+    private Date endTime;
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private Map<String,Object> content;
@@ -48,13 +49,7 @@ public class EvaluationOuter {
                 '}';
     }
 
-    public String getEndTime() {
-        return endTime;
-    }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
 
     public int getClassId() {
         return classId;
@@ -96,11 +91,19 @@ public class EvaluationOuter {
         this.content = content;
     }
 
-    public String getReleaseTime() {
+    public Date getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(String releaseTime) {
+    public void setReleaseTime(Date releaseTime) {
         this.releaseTime = releaseTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }
