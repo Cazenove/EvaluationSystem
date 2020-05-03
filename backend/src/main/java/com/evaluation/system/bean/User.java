@@ -49,11 +49,11 @@ public class User {
         this.name = name;
     }
 
-    public int getClass_id() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClass_id(int classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
 

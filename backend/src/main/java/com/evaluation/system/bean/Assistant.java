@@ -42,7 +42,7 @@ public class Assistant {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String assistant_id) {
         this.name = name;
     }
 
