@@ -9,12 +9,17 @@ import com.evaluation.system.dao.EvaluationOuterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import javax.transaction.Transaction;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * @author 22170128 chh
+ */
 @Service
 public class EvaluationOuterService {
 
@@ -27,7 +32,7 @@ public class EvaluationOuterService {
     @Autowired
     private ClassRepository classRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> saveEvaluationOuter(EvaluationOuter evaluationOuter,int flag)
     {
         Map<String,Object> result =new HashMap<>();
@@ -60,6 +65,7 @@ public class EvaluationOuterService {
         }
         catch (Exception e)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             if(flag==1){
                 result.put("status","0");
                 result.put("msg","创建失败，请检查是否重名或填写是否规范");
@@ -68,6 +74,7 @@ public class EvaluationOuterService {
                 result.put("status","0");
                 result.put("msg","修改失败，请检查是否重名或填写是否规范");
             }
+            return result;
         }
 
         return result;
@@ -92,15 +99,22 @@ public class EvaluationOuterService {
         return result;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> deleteEvaluationOuter(EvaluationOuter evaluationOuter)
     {
         int id = evaluationOuter.getEvaluationOuterId();
         Map<String,Object> result =new HashMap<>();
-        evaluationOuterRepository.deleteById(id);
-        evaluationInnerRepository.deleteById(id);
-        result.put("status","1");
-        result.put("msg","删除成功");
+        try {
+            evaluationOuterRepository.deleteById(id);
+            evaluationInnerRepository.deleteById(id);
+            result.put("status","1");
+            result.put("msg","删除成功");
+        }
+        catch (Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status","0");
+            result.put("msg","删除失败");
+        }
         return result;
     }
 

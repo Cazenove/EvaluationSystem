@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
-//一个例子
+/**
+ * @author 221701128 chh
+ */
 @RestController
 public class ClassController {
     @Autowired
