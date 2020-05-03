@@ -12,6 +12,9 @@ import java.util.Map;
 
 //组内评价表类
 
+/**
+ * @author 221701128 chh
+ */
 @Entity
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationInner {

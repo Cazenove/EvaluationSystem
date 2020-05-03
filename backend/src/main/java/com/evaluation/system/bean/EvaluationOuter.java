@@ -1,5 +1,7 @@
 package com.evaluation.system.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -8,10 +10,15 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //组件评价表类
 
+/**
+ * @author 221701128
+ */
 @Entity
 @TypeDef(name = "json",typeClass = JsonStringType.class)
 public class EvaluationOuter {
@@ -27,12 +34,15 @@ public class EvaluationOuter {
 
     @Transient
     private int classId;
+    //瞬时字段 只是用来接收classId参数的作用，其他基本用不到
+
 
 
     @ManyToOne
     @JoinColumn(name = "class_id")
     @Fetch(value= FetchMode.JOIN)
     private Class classInfo;
+    //通过外键得到的class的信息
 
     public EvaluationOuter(){
 
@@ -49,7 +59,13 @@ public class EvaluationOuter {
                 '}';
     }
 
+    public Date getEndTime() {
+        return endTime;
+    }
 
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public int getClassId() {
         return classId;
@@ -97,13 +113,5 @@ public class EvaluationOuter {
 
     public void setReleaseTime(Date releaseTime) {
         this.releaseTime = releaseTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 }
