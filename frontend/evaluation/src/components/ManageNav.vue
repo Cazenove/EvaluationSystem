@@ -57,7 +57,14 @@
 
 <script>
 	export default {
-		name: "ManageNav"
+		name: "ManageNav",
+		methods: {
+			loginOut() {
+				window.sessionStorage.removeItem('data');
+				this.$router.push('/');
+				alert("已注销");
+			},
+		}
 	}
 </script>
 

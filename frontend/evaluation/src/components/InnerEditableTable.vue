@@ -9,7 +9,7 @@
 		 keep-source 
 		 ref="xGrid" 
 		 height="500" 
-		 class="editable-footer" 
+		 class="editable-footer"
 		 :footer-method="footerMethod"
 		 :footer-cell-class-name="footerCellClassName" 
 		 :data="tableData" 
@@ -123,7 +123,7 @@
 			},
 			sumbit() {
 				// 提交表格
-				if(this.sum>100) {
+				if(this.sum !== 100) {
 					alert("贡献度总和需为100！");
 				} else {
 					// 保存修改的数据

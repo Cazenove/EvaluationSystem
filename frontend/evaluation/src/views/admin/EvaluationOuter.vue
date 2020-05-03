@@ -8,31 +8,33 @@
 			</ol>
 		</nav>
 		<h1 class="offset-md-1">{{this.title}}</h1>
-		<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
-		 :expand-config="{accordion: true}">
-			<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
-			<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
-			<vxe-table-column field="evaluationOuterId" title="组间评分表ID"></vxe-table-column>
-			<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
-			<vxe-table-column type="expand" title="内容">
-				<template v-slot:content="{row, rowIndex}">
-					<vxe-table
-					 highlight-hover-row
-					 highlight-current-row
-					 border 
-					 :data="tableData[rowIndex].content" 
-					 @cell-click="cellClickEvent">
-						<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
-						<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
-						<vxe-table-column field="score" title="总分"></vxe-table-column>
-						<vxe-table-column field="suggestion" title="建议"></vxe-table-column>
-						<vxe-table-column>
-							<button class="btn btn-info">详情</button>
-						</vxe-table-column>
-					</vxe-table>
-				</template>
-			</vxe-table-column>
-		</vxe-table>
+		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
+			 :expand-config="{accordion: true}">
+				<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
+				<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
+				<vxe-table-column field="evaluationOuterId" title="组间评分表ID"></vxe-table-column>
+				<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
+				<vxe-table-column type="expand" title="内容">
+					<template v-slot:content="{row, rowIndex}">
+						<vxe-table
+						 highlight-hover-row
+						 highlight-current-row
+						 border 
+						 :data="tableData[rowIndex].content" 
+						 @cell-click="cellClickEvent">
+							<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
+							<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+							<vxe-table-column field="score" title="总分"></vxe-table-column>
+							<vxe-table-column field="suggestion" title="建议"></vxe-table-column>
+							<vxe-table-column>
+								<button class="btn btn-info">详情</button>
+							</vxe-table-column>
+						</vxe-table>
+					</template>
+				</vxe-table-column>
+			</vxe-table>
+		</div>
 		
 		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
 			<vxe-table

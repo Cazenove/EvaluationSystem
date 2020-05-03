@@ -27,9 +27,8 @@ Vue.use(ElementUI)
 router.beforeEach((to, from, next) => {
 	//路由中设置的needLogin字段就在to当中 
 	if (window.sessionStorage.data) {
-		// console.log(to.path) //每次跳转的路径
-		if (to.path === '/') {
-			//登录状态下 访问login.vue页面 会跳到home.vue
+		console.log(to.path) //每次跳转的路径
+		if(to.path === '/login') {
 			next({path: '/home'});
 		} else {
 			next();

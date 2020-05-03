@@ -406,16 +406,16 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
         groupNum:1,//小组在班级里的编号
         leader: {
             userId:"221701000",//组长的学号
-            userName:"张三"//组长的姓名
+            name:"张三"//组长的姓名
         },
         member: [
             {
                 userId:"221701001",
-                userName:"李四"
+                name:"李四"
             },
             {
                 userId:"221701002",
-                userName:"王五"
+                name:"王五"
             }
         ],
         data: [
@@ -452,20 +452,22 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     data:{
         userId:"221701000",
         userName:"张三" ,
-        data:[
-            {
-                evaluationInnerId:1,
-                name:"第一次团队作业_组内评分表",
-                decision:"前端",
-                contribution:40
-            },
-            {
-                evaluationInnerId:2,
-                name:"第二次团队作业_组内评分表",
-                decision:"前端",
-                contribution:50
-            }
-        ]
+        content:{
+            details:[
+                {
+                    evaluationInnerId:1,
+                    name:"第一次团队作业_组内评分表",
+                    decision:"前端",
+                    contribution:40
+                },
+                {
+                    evaluationInnerId:2,
+                    name:"第二次团队作业_组内评分表",
+                    decision:"前端",
+                    contribution:50
+                }
+            ]
+        }
     }
 }
 {
