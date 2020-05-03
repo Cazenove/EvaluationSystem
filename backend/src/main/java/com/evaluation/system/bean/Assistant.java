@@ -1,9 +1,6 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //助教类
 
@@ -11,23 +8,22 @@ import javax.persistence.Id;
 public class Assistant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String assistant_id;
+    private String assistantId;
     private String password;
     private String name;
-    private int class_id;
+    private int classId;
     private String telephone;
 
     public Assistant(){
 
     }
 
-    public String getAssistant_id() {
-        return assistant_id;
+    public String getAssistantId() {
+        return assistantId;
     }
 
-    public void setAssistant_id(String assistant_id) {
-        this.assistant_id = assistant_id;
+    public void setAssistantId(String assistantId) {
+        this.assistantId = assistantId;
     }
 
     public String getPassword() {
@@ -42,16 +38,16 @@ public class Assistant {
         return name;
     }
 
-    public void setName(String assistant_id) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getClass_id() {
-        return class_id;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setClass_id(int class_id) {
-        this.class_id = class_id;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public String getTelephone() {
