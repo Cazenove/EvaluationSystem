@@ -11,13 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 221701310_陈家祯
+ */
 @RestController
 public class EvaluationInnerController {
 
     @Resource
     private EvaluationInnerService evaluationInnerService;
-
-
 
     /**
      * 8.获取组内评分表列表
@@ -39,10 +40,5 @@ public class EvaluationInnerController {
                                                       @RequestParam("groupId") Integer groupId) {
         return evaluationInnerService.getOneEvaluationInner(id,classId,groupId);
     }
-
-    /**
-     *10.提交组内评分表
-     * @author 221701310_陈家祯
-     */
 
 }

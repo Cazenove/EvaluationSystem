@@ -21,7 +21,10 @@ public class EvaluationInnerService {
     @Autowired
     private TeamRepository teamRepository;
 
-    /*根据班级id找组内评分表*/
+    /**
+     * 根据班级id找组内评分表
+     * @author 221701310_陈家祯
+     */
     public Map<String, Object> getEvaluationInnersByClassId(int classId) {
         Map<String, Object> result = new HashMap<>();
         try {
@@ -41,7 +44,10 @@ public class EvaluationInnerService {
          return result;
     }
 
-    /*获取一份组内评分表内容*/
+    /**
+     * 获取一份组内评分表内容
+     * @author 221701310_陈家祯
+     */
     public Map<String, Object> getOneEvaluationInner(int id, int classId, int groupId) {
         Map<String, Object> result = new HashMap<>();
         try {

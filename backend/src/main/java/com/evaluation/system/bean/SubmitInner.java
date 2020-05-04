@@ -1,10 +1,10 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Map;
 
 //组内评价提交记录表
 @Entity
@@ -14,7 +14,9 @@ public class SubmitInner {
     private int submitInnerId;
     private int groupId;
     private int evaluationInnerId;
-    private String content;
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private Map<String,Object> content;
     private Date submitTime;
 
     public SubmitInner(){
@@ -56,11 +58,11 @@ public class SubmitInner {
         this.evaluationInnerId = evaluationInnerId;
     }
 
-    public String getContent() {
+    public Map<String, Object> getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Map<String, Object> content) {
         this.content = content;
     }
 
