@@ -72,7 +72,7 @@ public class ClassService {
         try {
             List<Class> resultClass = classRepository.findAll();
             result.put("status","1");
-            result.put("date",resultClass);
+            result.put("data",resultClass);
         }
         catch (Exception e)
         {

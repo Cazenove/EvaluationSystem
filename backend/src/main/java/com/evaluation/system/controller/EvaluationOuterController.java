@@ -47,4 +47,9 @@ public class EvaluationOuterController {
         return groupEvaluationService.listEvaluation(evaluationOuter);
     }
 
+    @PostMapping(value = "/user/evaluation/statis")
+    public Map<String, Object> statEvaluation(@RequestBody EvaluationOuter evaluationOuter){
+        return evaluationOuterService.statEvaluationOuter(evaluationOuter);
+    }
+
 }
