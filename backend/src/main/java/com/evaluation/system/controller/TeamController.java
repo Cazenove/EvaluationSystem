@@ -10,6 +10,8 @@ import com.evaluation.system.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +47,17 @@ public class TeamController {
      * @author 221701310_陈家祯
      */
     @GetMapping(value = "/user/group/details")
-    public Map<String, Object> teamInfo(@RequestParam("groupId") Integer groupId) {
+    public Map<String, Object> groupInfo(@RequestParam("groupId") Integer groupId) {
         return teamService.getGroupInfo(groupId);
+    }
+
+    /**
+     *12.查看组员详情
+     * @author 221701310_陈家祯
+     */
+    @GetMapping(value = "/user/group/userdetails")
+    public Map<String, Object> groupMemberInfo(@RequestParam("userId") String userId) {
+        return teamService.getGroupMemberInfo(userId);
     }
 
 }

@@ -166,8 +166,41 @@ public class TeamService {
         } catch (Exception e) {
             result.put("status", 0);
             result.put("msg", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
+        return result;
+    }
+
+    @Autowired
+    private PersonScoreRepository personScoreRepository;
+
+    /**
+     * 获取组员详情
+     * @author 221701310_陈家祯
+     */
+    public Map<String, Object> getGroupMemberInfo(String userId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            Map<String, Object> dataMap = new HashMap<>();
+            ArrayList<Object> evaluationInfoList = new ArrayList<>();
+
+            //获取组员姓名
+            String name = userRepository.findOneByUserId(userId).getName();
+            dataMap.put("userId",userId);
+            dataMap.put("userName",name);
+            //存放组员贡献率分工情况
+            PersonScore personScore = personScoreRepository.findByUserId(userId);
+
+            dataMap.put("content",personScore.getContent());
+
+            result.put("status",1);
+            result.put("data",dataMap);
+        } catch (Exception e) {
+            result.put("status", 0);
+            result.put("msg", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return result;
     }
 

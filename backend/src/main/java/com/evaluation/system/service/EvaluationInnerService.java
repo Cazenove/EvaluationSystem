@@ -6,6 +6,7 @@ import com.evaluation.system.dao.EvaluationInnerRepository;
 import com.evaluation.system.dao.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ public class EvaluationInnerService {
         } catch (Exception e) {
             result.put("status",0);
             result.put("msg",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
          return result;
     }
@@ -64,6 +66,7 @@ public class EvaluationInnerService {
         } catch (Exception e) {
             result.put("status",0);
             result.put("msg",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return result;
     }

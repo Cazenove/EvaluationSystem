@@ -1,5 +1,6 @@
 package com.evaluation.system.dao;
 
+import com.evaluation.system.bean.EvaluationInner;
 import com.evaluation.system.bean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,10 @@ public interface UserRepository extends JpaRepository<User,String> {
      */
     @Query("SELECT a FROM User a WHERE a.groupId = :groupId and a.status =:status")
     public ArrayList<User> findByGroupIdAndStatus(@Param("groupId") Integer groupId,@Param("status") String status);
+
+    /**
+     * @author 221701310_陈家祯
+     */
+    @Query("SELECT a FROM User a WHERE a.userId = :userId")
+    public User findOneByUserId(String userId);
 }
