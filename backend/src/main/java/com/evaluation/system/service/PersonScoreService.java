@@ -44,7 +44,7 @@ public class PersonScoreService {
                 personScores.get(i).setUserName(user.getName());
                 Class c = classRepository.findByClassId(user.getClassId());
                 personScores.get(i).setClassId(user.getClassId());
-                personScores.get(i).setClassName(c.getName());
+                personScores.get(i).setClassName(c.getClassName());
                 Team team=teamRepository.findByGroupId(personScores.get(i).getGroupId());
                 personScores.get(i).setGroupName(team.getGroupName());
             }

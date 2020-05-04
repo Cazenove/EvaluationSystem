@@ -41,7 +41,7 @@ public class PersonCompositeScoreService {
                 personCompositeScores.get(i).setUserName(user.getName());
                 personCompositeScores.get(i).setClassId(user.getClassId());
                 Class c = classRepository.findByClassId(user.getClassId());
-                personCompositeScores.get(i).setClassName(c.getName());
+                personCompositeScores.get(i).setClassName(c.getClassName());
                 Team team=teamRepository.findByGroupId(personCompositeScores.get(i).getGroupId());
                 personCompositeScores.get(i).setGroupName(team.getGroupName());
             }

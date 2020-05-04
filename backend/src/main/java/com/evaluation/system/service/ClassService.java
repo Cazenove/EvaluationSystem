@@ -4,6 +4,8 @@ import com.evaluation.system.bean.Class;
 import com.evaluation.system.dao.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -100,5 +102,22 @@ public class ClassService {
         return result;
     }
 
+    /**
+     * @author 221701230张增燊
+     * 获取班级、小组列表（注册用）
+     */
 
+    public Map<String,Object> listClass(){
+        Map<String,Object> map=new HashMap<>();
+        try{
+            List<Class> classes=classRepository.findAll();
+            map.put("status",1);
+            map.put("data",classes);
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status",0);
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
 }

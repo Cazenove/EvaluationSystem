@@ -17,7 +17,8 @@ public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int classId;
-    private String name;
+    @Column(name = "name")
+    private String className;
     private int groupNum;
     private Date startTime;
     private Date endTime;
@@ -38,12 +39,12 @@ public class Class {
         this.classId = classId;
     }
 
-    public String getName() {
-        return name;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getClassName() {
+        return className;
     }
 
     public int getGroupNum() {
@@ -78,7 +79,7 @@ public class Class {
     public String toString() {
         return "Class{" +
                 "classId=" + classId +
-                ", name='" + name + '\'' +
+                ", name='" + className + '\'' +
                 ", groupNum=" + groupNum +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +

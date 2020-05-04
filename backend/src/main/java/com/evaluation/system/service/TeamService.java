@@ -36,7 +36,7 @@ public class TeamService {
                 Team team=teams.get(i);
 
                 Class c= classRepository.findByClassId(team.getClassId());
-                team.setClassName(c.getName());
+                team.setClassName(c.getClassName());
 
                 List<User> members = userRepository.findByGroupId(team.getGroupId());
                 team.setMembers(members);
@@ -98,7 +98,7 @@ public class TeamService {
             int groupNum = group.getGroupNum();
 
             //获取className by classId
-            String className = classRepository.findByClassId(classId).getName();
+            String className = classRepository.findByClassId(classId).getClassName();
 
             //获取leader的userId，userName
             User leader = userRepository.findOneByGroupIdAndAndStatus(groupId,"2");

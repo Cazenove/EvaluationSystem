@@ -45,4 +45,12 @@ public class ClassController {
         return classService.endClass(classInfo);
     }
 
+    /**
+     * @author 221701230张增燊
+     * 获取班级、小组列表（注册用）//点注册的时候要知道有哪些班哪些组可以选择
+     */
+    @GetMapping(value = "register/team")
+    public Map<String,Object> listClass(){
+        return classService.listClass();
+    }
 }

@@ -30,7 +30,7 @@ public class GroupSuggestionController {
        return groupSuggestionService.updateSuggestion(content);
     }
 
-    /**查询一条建议,并没有做得很好**/
+    /**列出所有建议**/
     @GetMapping(value="admin/suggestion/list")
     public Map<String,Object> findSuggestion(){
 

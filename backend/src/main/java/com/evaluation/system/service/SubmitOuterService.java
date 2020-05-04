@@ -86,4 +86,23 @@ public class SubmitOuterService {
         }
         return result;
     }
+
+    /**
+     * @author 221701230张增燊
+     * 查看组间评价表记录
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String,Object> listSubmitOuter(){
+        Map<String,Object> map=new HashMap<>();
+        try{
+            List<SubmitOuter> submitOuters=submitOuterRepository.findAll();
+            map.put("status",1);
+            map.put("data",submitOuters);
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status",0);
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
 }
