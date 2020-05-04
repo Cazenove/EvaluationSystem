@@ -1,24 +1,25 @@
 <template>
 	<div id="ChangePassword">
 		<UserNav />
-		<br />
-		<el-form ref="form" :model="form" label-width="80px">
-			<el-form-item label="原密码">
-				<el-input type="password" v-model="form.password"></el-input>
-				<span class="error" v-if="errors['form.password']">{{errors['form.password']}}</span>
-			</el-form-item>
-			<el-form-item label="新密码">
-				<el-input type="password" v-model="form.newPassword"></el-input>
-				<span class="error" v-if="errors['form.newPassword']">{{errors['form.newPassword']}}</span>
-			</el-form-item>
-			<el-form-item label="确认密码">
-				<el-input type="password" v-model="form.checkPassword"></el-input>
-				<span class="error" v-if="errors['form.checkPassword']">{{errors['form.checkPassword']}}</span>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="onSubmit">修改密码</el-button>
-			</el-form-item>
-		</el-form>
+		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<el-form ref="form" :model="form" label-width="80px">
+				<el-form-item label="原密码">
+					<el-input type="password" v-model="form.password"></el-input>
+					<span class="error" v-if="errors['form.password']">{{errors['form.password']}}</span>
+				</el-form-item>
+				<el-form-item label="新密码">
+					<el-input type="password" v-model="form.newPassword"></el-input>
+					<span class="error" v-if="errors['form.newPassword']">{{errors['form.newPassword']}}</span>
+				</el-form-item>
+				<el-form-item label="确认密码">
+					<el-input type="password" v-model="form.checkPassword"></el-input>
+					<span class="error" v-if="errors['form.checkPassword']">{{errors['form.checkPassword']}}</span>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="onSubmit">修改密码</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
 	</div>
 </template>
 <script>
