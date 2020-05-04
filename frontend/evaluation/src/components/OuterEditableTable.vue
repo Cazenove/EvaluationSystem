@@ -1,18 +1,18 @@
 <!-- 组间评价表内容 -->
 <template>
-	<div id="OuterEditableTable">
+	<div id="OuterEditableTable" class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 		<h2>{{this.$data.response.data.name}}</h2>
 		<vxe-grid
+		 v-if="validRules"
 		 border
 		 resizable
 		 keep-source
-		 ref="xGrid"
-		 height="500"
+		 ref="xTable"
 		 :columns="tableColumn"
 		 :data="tableData"
-		 :edit-config="{trigger: 'click', mode: 'cell', activeMethod: activeRowMethod}"
-		 @edit-disabled="editDisabledEvent"
-		>
+		 :edit-config="{trigger: 'click', mode: 'cell'}"
+		 :edit-rules="validRules"
+		 @edit-disabled="editDisabledEvent">
 		</vxe-grid>
 		<br />
 		<button class="btn btn-success" @click="sumbit">提交</button>
@@ -25,6 +25,18 @@
 	export default {
 		data() {
 			return {
+				validRules: {
+					score0: [{required:true, message:'此项必填'}],
+					score1: [{required:true, message:'此项必填'}],
+					score2: [{required:true, message:'此项必填'}],
+					score3: [{required:true, message:'此项必填'}],
+					score4: [{required:true, message:'此项必填'}],
+					score5: [{required:true, message:'此项必填'}],
+					score6: [{required:true, message:'此项必填'}],
+					score7: [{required:true, message:'此项必填'}],
+					score8: [{required:true, message:'此项必填'}],
+					suggestion:[{required:true, message:'建议为必填项'}]
+				},
 				request: {
 					classId:null,
 					groupId:null,
@@ -130,6 +142,34 @@
 		},
 		props: ['evaluationOuterId'],
 		methods: {
+			async fullValidEvent () {
+				const errMap = await this.$refs.xTable.fullValidate().catch(errMap => errMap)
+				if (errMap) {
+					let msgList = []
+					Object.values(errMap).forEach(errList => {
+						errList.forEach(params => {
+							let { rowIndex, column, rules } = params
+							rules.forEach(rule => {
+								msgList.push(`第 ${rowIndex} 行 ${column.title} 校验错误：${rule.message}`)
+							})
+						})
+					})
+					this.$XModal.message({
+						status: 'error',
+						message: () => {
+							return [
+								<div class="red" style="max-height: 400px;overflow: auto;">
+									{ msgList.map(msg => <div>{ msg }</div>) }
+								</div>
+							]
+						}
+					})
+					return false;
+				} else {
+					this.$XModal.message({ status: 'success', message: '校验成功！' })
+					return true;
+				}
+			},
 			activeRowMethod({row,rowIndex}) {
 				if(row.groupId === this.$store.state.userInfo.groupId) {//不可对自己的小组进行评分
 					return false;
@@ -171,22 +211,32 @@
 				}
 				
 				//判断表单完整性
-				
-				//发送
-				var submitForm = {};
-				submitForm['evaluationOuterId'] = this.$data.response.data.evaluationOuterId;
-				submitForm['groupId'] = this.$data.request.groupId;
-				submitForm['submitTime'] = "";
-				submitForm['content'] = this.$data.response.data.content;
-				
-				console.log(submitForm);
-				// 提交
-				let self = this;
-				axios.post(api.userEvaluationOuterSubmit,submitForm)
-				.then(function(res) {
-					
-				}).catch(function(error) {
-					console.log(error);
+				var self = this;
+				this.fullValidEvent().then(function(res) {
+					if(!res) {
+						return;
+					} else {
+						//发送
+						var submitForm = {};
+						submitForm['evaluationOuterId'] = self.$data.response.data.evaluationOuterId;
+						submitForm['groupId'] = self.$data.request.groupId;
+						var time = new Date();
+						submitForm['submitTime'] = time;
+						submitForm['content'] = self.$data.response.data.content;
+						
+						console.log(submitForm);
+						// 提交
+						axios.post(api.userEvaluationOuterSubmit,submitForm)
+						.then(function(res) {
+							if(res.status === 1) {
+								this.$XModal.message({ status: 'success', message: '提交成功！' });
+							} else {
+								this.$XModal.message({ status: 'error', message: status.msg });
+							}
+						}).catch(function(error) {
+							console.log(error);
+						})
+					}
 				})
 			}
 		}

@@ -1,19 +1,20 @@
 <!-- 组内评价表内容 -->
 <template>
-	<div id="OuterEditableTable">
+	<div id="OuterEditableTable" class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 		<h2>{{this.$data.response.data.name}}</h2>
 		<vxe-grid
 		 border 
 		 show-footer 
 		 resizable 
 		 keep-source 
-		 ref="xGrid" 
+		 ref="xTable" 
 		 height="500" 
 		 class="editable-footer"
 		 :footer-method="footerMethod"
-		 :footer-cell-class-name="footerCellClassName" 
+		 :footer-cell-class-name="footerCellClassName"
+		 :edit-rules="validRules"
 		 :data="tableData" 
-		 :edit-config="{trigger: 'click', mode: 'row', showStatus: true, icon: 'fa fa-file-text-o'}">
+		 :edit-config="{trigger: 'click', mode: 'cell', showStatus: true, icon: 'fa fa-file-text-o'}">
 			<vxe-table-column field="userId" title="学号"></vxe-table-column>
 			<vxe-table-column field="userName" title="姓名"></vxe-table-column>
 			<vxe-table-column field="decision" title="分工" :edit-render="{name: 'input', attrs: {type: 'text'}}"></vxe-table-column>
@@ -28,9 +29,18 @@
 	import axios from 'axios'
 	import api from '../router/httpConfig.js'
 	import XEUtils from 'xe-utils'
+	
 	export default {
 		data() {
 			return {
+				validRules: {
+					decision: [
+						{required:true, message:'分工为必填项'}
+					],
+					contribution: [
+						{required:true, message:'贡献率为必填项'}
+					]
+				},
 				request: {
 					classId:1,
 					groupId:1,
@@ -63,7 +73,7 @@
 						}
 					}
 				},
-				sum: "",
+				sum: null,
 				tableData: []
 			}
 		},
@@ -73,6 +83,34 @@
 			this.$data.tableData = this.$data.response.data.content.details;
 		},
 		methods: {
+			async fullValidEvent () {
+				const errMap = await this.$refs.xTable.fullValidate().catch(errMap => errMap)
+				if (errMap) {
+					let msgList = []
+					Object.values(errMap).forEach(errList => {
+						errList.forEach(params => {
+							let { rowIndex, column, rules } = params
+							rules.forEach(rule => {
+								msgList.push(`第 ${rowIndex} 行 ${column.title} 校验错误：${rule.message}`)
+							})
+						})
+					})
+					this.$XModal.message({
+						status: 'error',
+						message: () => {
+							return [
+								<div class="red" style="max-height: 400px;overflow: auto;">
+									{ msgList.map(msg => <div>{ msg }</div>) }
+								</div>
+							]
+						}
+					})
+					return false;
+				} else {
+					this.$XModal.message({ status: 'success', message: '校验成功！' })
+					return true;
+				}
+			},
 			getRequest() {
 				this.$data.request.classId = this.$store.state.userInfo.classId;
 				this.$data.request.groupId = this.$store.state.userInfo.groupId;
@@ -124,7 +162,7 @@
 			sumbit() {
 				// 提交表格
 				if(this.sum !== 100) {
-					alert("贡献度总和需为100！");
+					this.$XModal.message({ status: 'error', message: '贡献度总和需为100！' })
 				} else {
 					// 保存修改的数据
 					var len = this.$data.tableData.length;
@@ -133,22 +171,32 @@
 					}
 					
 					//完整性验证
-					
-					
-					//提交
-					var submitForm = {};
-					submitForm['evaluationInnerId'] = this.$data.response.data.evaluationInnerId;
-					submitForm['groupId'] = this.$data.request.groupId;
-					submitForm['submitTime'] = "";
-					submitForm['content'] = this.$data.response.data.content;
-					
-					console.log(submitForm);
-					// 提交
-					axios.post(api.userEvaluationInnerSubmit,submitForm)
-					.then(function(res) {
-						
-					}).catch(function(error) {
-						console.log(error);
+					var self = this;
+					this.fullValidEvent().then(function(res) {
+						if(!res) {
+							return;
+						} else {
+							//提交
+							var submitForm = {};
+							submitForm['evaluationInnerId'] = self.$data.response.data.evaluationInnerId;
+							submitForm['groupId'] = self.$data.request.groupId;
+							var time = new Date();
+							submitForm['submitTime'] = time;
+							submitForm['content'] = self.$data.response.data.content;
+							
+							console.log(submitForm);
+							// 提交
+							axios.post(api.userEvaluationInnerSubmit,submitForm)
+							.then(function(res) {
+								if(res.status === 1) {
+									this.$XModal.message({ status: 'success', message: '提交成功！' })
+								} else {
+									this.$XModal.message({ status: 'error', message: res.msg })
+								}
+							}).catch(function(error) {
+								console.log(error);
+							})
+						}
 					})
 				}
 			}
