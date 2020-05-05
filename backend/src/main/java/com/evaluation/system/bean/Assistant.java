@@ -1,9 +1,6 @@
 package com.evaluation.system.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //助教类
 
@@ -11,8 +8,7 @@ import javax.persistence.Id;
 public class Assistant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String assistant_id;
+    private String assistant_id = "000000000";
     private String password;
     private String name;
     private int class_id;

@@ -80,4 +80,5 @@ public class User {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
 }

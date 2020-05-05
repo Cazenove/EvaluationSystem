@@ -20,12 +20,12 @@ public class Class {
     private Date endTime;//用的是util的date，不知道和sql的date有什么区别。出了问题再修改
     private String status;
 
-    @OneToMany(mappedBy = "classInfo")
+    /*@OneToMany(mappedBy = "classInfo")
     private Set<EvaluationOuter> list = new HashSet<EvaluationOuter>();
 
     public Class(){
 
-    }
+    }*/
 
     public int getClassId() {
         return classId;
@@ -71,17 +71,6 @@ public class Class {
         return status;
     }
 
-    @Override
-    public String toString() {
-        return "Class{" +
-                "classId=" + classId +
-                ", name='" + name + '\'' +
-                ", groupNum=" + groupNum +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", status='" + status + '\'' +
-                '}';
-    }
 
     public void setStatus(String status) {
         this.status = status;
