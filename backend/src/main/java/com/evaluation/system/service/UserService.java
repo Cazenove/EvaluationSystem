@@ -4,10 +4,7 @@ import com.evaluation.system.bean.Admin;
 import com.evaluation.system.bean.Assistant;
 import com.evaluation.system.bean.Team;
 import com.evaluation.system.bean.User;
-import com.evaluation.system.dao.AdminRepository;
-import com.evaluation.system.dao.AssistantRepository;
-import com.evaluation.system.dao.GroupRepository;
-import com.evaluation.system.dao.UserRepository;
+import com.evaluation.system.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +25,7 @@ public class UserService {
     private AdminRepository adminRepository;
     @Autowired
     private AssistantRepository assistantRepository;
+
     /*登录检查*/
     public HashMap<String,Object> loginCheck(User user){
         String flag ="";
@@ -60,28 +58,32 @@ public class UserService {
     public HashMap<String, Object> registerCheck(User user){
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
+        //System.out.println(user.getGroupNum());
         String msg = "注册成功";
         try {
             User user1 = userRepository.findByUserId(user.getUserId());
             User user2 = userRepository.findByTelephone(user.getTelephone());
-            Team team = groupRepository.findByClassIdAndAndGroupId(user.getClassId(),user.getGroupId());
-            if (user1==null && user2==null){
-                user1.setUserId(user.getUserId());
-                user1.setPassword(user.getPassword());
-                user1.setName(user.getName());
-                user1.setClassId(user.getClassId());
-                user1.setGroupId(team.getGroupId());
-                user1.setStatus(user.getStatus());
-                user1.setTelephone(user.getTelephone());
-                userRepository.save(user1);
+            Team team = groupRepository.findByClassIdAndAndGroupNum(user.getClassId(), user.getGroupNum());
+            System.out.println(team.getGroupId());
+            System.out.println(team.getClassId());
+            if (user1 == null && user2 == null) {
+                User user3 = new User();
+                user3.setUserId(user.getUserId());
+                user3.setPassword(user.getPassword());
+                user3.setName(user.getName());
+                user3.setClassId(user.getClassId());
+                user3.setGroupId(team.getGroupId());
+                user3.setStatus(user.getStatus());
+                user3.setTelephone(user.getTelephone());
+                userRepository.save(user3);
                 flag = 1;
-                result.put("status",flag);
-                result.put("msg",msg) ;
-         }
+                result.put("status", flag);
+                result.put("msg", msg);
+            }
         }
         catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            msg = "学号或手机号已注册";
+            msg = "注册失败！学号或手机号已注册";
             result.put("status",flag);
             result.put("msg",msg) ;
             return  result;

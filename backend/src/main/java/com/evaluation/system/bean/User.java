@@ -21,7 +21,8 @@ public class User {
     private int groupId;
     private String status;
     private String telephone;
-
+    @Transient
+    private int groupNum;
     public User(){
 
     }
@@ -81,4 +82,8 @@ public class User {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
+    public void setGroupNum(int groupNum) {this.groupNum = groupNum;}
+
+    public int getGroupNum() {return groupNum;}
 }

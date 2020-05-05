@@ -21,7 +21,7 @@ public class SubmitOuter {
     @Column(columnDefinition = "json")
     private Map<String,Object> content;
     private String submitTime;
-
+    @Transient
     private int classId;
 
     public SubmitOuter(){
