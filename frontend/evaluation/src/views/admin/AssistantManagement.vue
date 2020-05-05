@@ -7,8 +7,11 @@
 				<li class="breadcrumb-item active" aria-current="page">{{this.title}}</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">{{this.title}}</h1>
+		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<div style="margin-bottom: 20px;">
+				<h1>{{this.title}}</h1>
+			</div>
 			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
 				<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
 				<vxe-table-column field="assistantName" title="姓名"></vxe-table-column>

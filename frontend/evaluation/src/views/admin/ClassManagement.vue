@@ -7,8 +7,6 @@
 				<li class="breadcrumb-item active" aria-current="page">班级管理</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">班级管理</h1>
-		<button type="button" class="offset-md-1 btn btn-primary" data-toggle="modal" data-target="#AddModal">新增班级</button>
 		<!-- 模态框 -->
 		<div class="modal fade" id="AddModal">
 			<div class="modal-dialog">
@@ -46,13 +44,17 @@
 		</div>
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<div style="margin-bottom: 20px;">
+			<h1>班级管理</h1>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddModal">新增班级</button>
+			</div>
 			<vxe-table :data="tableData">
 				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 				<vxe-table-column field="className" title="班级名称"></vxe-table-column>
 				<vxe-table-column field="groupNum" title="小组数量"></vxe-table-column>
 				<vxe-table-column field="status" title="状态"></vxe-table-column>
 				<vxe-table-column field="startTime" title="开始时间"></vxe-table-column>
-				<vxe-table-column title="操作">
+				<vxe-table-column title="操作" width="240px">
 					<template v-slot="{ row }">
 						<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#UpdateModal" @click="setEditData(row)">修改</button>
 						&nbsp;

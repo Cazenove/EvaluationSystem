@@ -7,7 +7,8 @@
 				<li class="breadcrumb-item active" aria-current="page">{{this.title}}</li>
 			</ol>
 		</nav>
-        <h1 class="offset-md-1">{{this.title}}</h1>
+		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+        <h1>{{this.title}}</h1>
 		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
 			<vxe-table-column field="userId" title="用户ID"></vxe-table-column>
 			<vxe-table-column field="userName" title="用户名"></vxe-table-column>
@@ -17,6 +18,7 @@
 			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
 			<vxe-table-column field="content" title="详情信息"></vxe-table-column>
 		</vxe-table>
+		</div>
     </div>
 </template>
 

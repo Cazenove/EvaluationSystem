@@ -7,8 +7,9 @@
 				<li class="breadcrumb-item active" aria-current="page">评分表管理</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">评分表管理</h1>
+		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<h1>评分表管理</h1>
 			<vxe-toolbar>
 				<template v-slot:buttons>
 					<button class="btn btn-primary" @click="createForm">新增评分表</button>

@@ -7,8 +7,9 @@
 				<li class="breadcrumb-item active" aria-current="page">{{this.title}}</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">{{this.title}}</h1>
+		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<h1>{{this.title}}</h1>
 			<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
 			 :expand-config="{accordion: true}">
 				<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
