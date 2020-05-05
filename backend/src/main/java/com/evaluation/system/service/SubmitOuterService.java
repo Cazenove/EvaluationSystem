@@ -3,6 +3,7 @@ package com.evaluation.system.service;
 import com.evaluation.system.bean.EvaluationOuter;
 import com.evaluation.system.bean.GroupSuggestion;
 import com.evaluation.system.bean.SubmitOuter;
+import com.evaluation.system.dao.EvaluationOuterRepository;
 import com.evaluation.system.dao.GroupSuggestionRepository;
 import com.evaluation.system.dao.SubmitOuterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class SubmitOuterService {
     private SubmitOuterRepository submitOuterRepository;
     @Autowired
     private GroupSuggestionRepository groupSuggestionRepository;
+    @Autowired
+    private EvaluationOuterRepository evaluationOuterRepository;
 
     /*获取组间评价表内容*/
     @Transactional(rollbackFor = Exception.class)
@@ -34,6 +37,11 @@ public class SubmitOuterService {
             if (getSubmitOuter != null) {
                 result.put("status", 1);
                 result.put("data", getSubmitOuter);
+            }
+            else {
+                List<EvaluationOuter> evaluationOuter = evaluationOuterRepository.findAllByClassId(submitOuter.getClassId());
+                result.put("status",1);
+                result.put("data",evaluationOuter);
             }
         }
         catch (Exception e){
@@ -86,7 +94,6 @@ public class SubmitOuterService {
         }
         return result;
     }
-
     /**
      * @author 221701230张增燊
      * 查看组间评价表记录

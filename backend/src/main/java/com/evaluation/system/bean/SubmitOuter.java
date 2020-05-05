@@ -22,6 +22,8 @@ public class SubmitOuter {
     private Map<String,Object> content;
     private String submitTime;
 
+    private int classId;
+
     public SubmitOuter(){
 
     }
@@ -79,4 +81,8 @@ public class SubmitOuter {
     public void setSubmitTime(String submitTime) {
         this.submitTime = submitTime;
     }
+
+    public void setClassId(int classId){this.classId = classId;}
+
+    public int getClassId(){return classId;}
 }

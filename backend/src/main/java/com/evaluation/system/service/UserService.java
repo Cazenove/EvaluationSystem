@@ -10,6 +10,8 @@ import com.evaluation.system.dao.GroupRepository;
 import com.evaluation.system.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.HashMap;
 
@@ -54,37 +56,42 @@ public class UserService {
     }
 
     /*注册检查学号、电话是否注册*/
+    @Transactional(rollbackFor = Exception.class)
     public HashMap<String, Object> registerCheck(User user){
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "注册成功";
-        User user1 = userRepository.findByUserId(user.getUserId());
-        User user2 = userRepository.findByTelephone(user.getTelephone());
-        Team team = groupRepository.findByClassIdAndAndGroupId(user.getClassId(),user.getGroupId());
-        String state = "组员";
-        if ("2".equals(user.getStatus())) {
-            state = "组长";
+        try {
+            User user1 = userRepository.findByUserId(user.getUserId());
+            User user2 = userRepository.findByTelephone(user.getTelephone());
+            Team team = groupRepository.findByClassIdAndAndGroupId(user.getClassId(),user.getGroupId());
+            if (user1==null && user2==null){
+                user1.setUserId(user.getUserId());
+                user1.setPassword(user.getPassword());
+                user1.setName(user.getName());
+                user1.setClassId(user.getClassId());
+                user1.setGroupId(team.getGroupId());
+                user1.setStatus(user.getStatus());
+                user1.setTelephone(user.getTelephone());
+                userRepository.save(user1);
+                flag = 1;
+                result.put("status",flag);
+                result.put("msg",msg) ;
+         }
         }
-        if (user1==null && user2==null){
-            user1.setUserId(user.getUserId());
-            user1.setPassword(user.getPassword());
-            user1.setName(user.getName());
-            user1.setClassId(user.getClassId());
-            user1.setGroupId(team.getGroupId());
-            user1.setStatus(state);
-            user1.setTelephone(user.getTelephone());
-            userRepository.save(user1);
-            flag = 1;
-        }
-        else {
+        catch (Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             msg = "学号或手机号已注册";
+            result.put("status",flag);
+            result.put("msg",msg) ;
+            return  result;
         }
-        result.put("status",flag);
-        result.put("msg",msg) ;
+
         return  result;
     }
 
     /*修改个人信息*/
+    @Transactional(rollbackFor = Exception.class)
     public HashMap<String,Object> updateCheck(User user2){
         User user = userRepository.findByUserId(user2.getUserId());
         HashMap<String,Object> result = new HashMap<>();
