@@ -54,10 +54,9 @@ public class SubmitInnerService {
             saveEvaluation.setGroupId(submitInner.getGroupId());
             saveEvaluation.setEvaluationInnerId(submitInner.getEvaluationInnerId());
             saveEvaluation.setSubmitTime(submitInner.getSubmitTime());
-            if (submitInnerRepository.save(saveEvaluation).getContent()!=null) {
-                flag = 1;
-                msg = "提交成功";
-            }
+            submitInnerRepository.save(saveEvaluation);
+            flag = 1;
+            msg = "提交成功";
             result.put("status",flag);
             result.put("msg",msg);
         }

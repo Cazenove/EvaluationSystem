@@ -139,30 +139,16 @@ public class TeamService {
             }
 
             Map<String, Object> dataMap = new HashMap<>();
-            if(group != null && leader != null && !memberList.isEmpty() && !groupSuggestions.isEmpty()) {
-                result.put("status", 1);
-                dataMap.put("groupId",groupId);
-                dataMap.put("groupName",groupName);
-                dataMap.put("classId",classId);
-                dataMap.put("className",className);
-                dataMap.put("groupNum",groupNum);
-                dataMap.put("leader",leader);
-                dataMap.put("member",memberList);
-                dataMap.put("data",evaluationInfoList);
-                result.put("data",dataMap);
-            } else if (group == null) {
-                result.put("status", 0);
-                result.put("msg", "group == null");
-            } else if (leader == null) {
-                result.put("status", 0);
-                result.put("msg", "leader == null");
-            } else if (memberList.isEmpty()) {
-                result.put("status", 0);
-                result.put("msg", "memberList.isEmpty()");
-            } else if (groupSuggestions.isEmpty()) {
-                result.put("status", 0);
-                result.put("msg", "groupSuggestions.isEmpty()");
-            }
+            result.put("status", 1);
+            dataMap.put("groupId",groupId);
+            dataMap.put("groupName",groupName);
+            dataMap.put("classId",classId);
+            dataMap.put("className",className);
+            dataMap.put("groupNum",groupNum);
+            dataMap.put("leader",leader);
+            dataMap.put("member",memberList);
+            dataMap.put("data",evaluationInfoList);
+            result.put("data",dataMap);
         } catch (Exception e) {
             result.put("status", 0);
             result.put("msg", e);
