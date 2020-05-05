@@ -10,8 +10,6 @@
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>用户管理</h1>
-			
-			
 			<div style="margin-bottom: 20px;">
 				<div class="row container" style="margin-bottom: 20px;">
 					
@@ -27,22 +25,23 @@
 					<el-col :span="3">
 						<el-input offser="3" placeholder="姓名" v-model="searchInfo.userName"></el-input>
 					</el-col>
-					<el-col :span="3">
-						<el-select offser="5" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+					<el-col :span="4">
+						<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
 							<el-option :value="item.classId" v-for="item in classOption" :label="item.name"></el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="3">
+					<el-col :span="2">
 						<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
 							<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
 						</el-select>
 					</el-col>
 					<el-col :span="3">
 						<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-							<el-option v-for="item in statusOption" :value="item.value">{{item.label}}</el-option>
+							<el-option v-for="item in statusOption" :value="item.value" :label="item.label"></el-option>
 						</el-select>
 					</el-col>
 					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+					<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 				</el-row>
 			</div>
 			<vxe-table border
@@ -314,7 +313,7 @@
 				let item = this.statusOption.find(item => item.value === cellValue)
 				return item ? item.label : ''
 			},
-			search() {
+			search() {//搜索功能
 				// this.init();
 				this.tableData = [];
 				for(let value of this.response.data){
@@ -340,6 +339,18 @@
 					}
 				}
 				
+			},
+			resetSearch () {
+				this.tableData = this.response.data;
+				var list = {
+					userId: null,
+					userName: null,
+					classId: null,
+					groupId: null,
+					status: null,
+					groupNum: null,
+				};
+				this.searchInfo = list;
 			},
 			editEvent (row) {
 				console.log(this.classList)
