@@ -40,4 +40,13 @@ public class UserController {
     public HashMap<String,Object> update(@RequestBody User user){
         return userService.updateCheck(user);
     }
+
+    /*修改密码
+    * 成功返回true
+     */
+    @ResponseBody
+    @PostMapping(value = "/user/update/password")
+    public HashMap<String,Object> updatePassword(@RequestBody User user){
+        return userService.updatePassword(user);
+    }
 }
