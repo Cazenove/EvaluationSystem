@@ -19,25 +19,13 @@ export default {
 	data() {
 		return {
 			request: {
-				classId:"",
-				groupId:""
+				params: {
+					classId:""
+				}
 			},
 			response: {
-				status:1,
-				data:[
-				    {
-				        evaluationInnerId:1,
-				        name:"第一组团队作业_组内评分表",
-				        releaseTime:"2020-01-01",//发布时间
-				        endTime:"2020-01-08"//结束时间
-				    },
-				    {
-				        evaluationInnerId:2,
-				        name:"第二组团队作业_组内评分表",
-				        releaseTime:"2020-01-09",
-				        endTime:"2020-01-16"
-				    }
-				]
+				status:'',
+				data:[]
 			}
 		}
 	},
@@ -48,14 +36,13 @@ export default {
 	methods: {
 		// 目的是获取组内评分表列表
 		getRequest() {
-			this.$data.request.classId = this.$store.state.userInfo.classId;
-			this.$data.request.groupId = this.$store.state.userInfo.groupId;
+			this.$data.request.params.classId = this.$store.state.userInfo.classId;
 		},
 		getResponse() {
 			var self = this;
-			axios.post(api.userEvaluationInnerList,self.request)
+			axios.get(api.userEvaluationInnerList,self.request)
 			.then(function(res) {
-				self.response = res;
+				self.response = res.data;
 				console.log(self.response);
 			}).catch(function(error) {
 				console.log(error);

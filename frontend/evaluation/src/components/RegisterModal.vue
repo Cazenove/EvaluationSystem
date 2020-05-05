@@ -38,7 +38,7 @@
 							<label for="classId" class="col-form-label">班级</label>
 							<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
 								<option disabled="disabled" :value="null">请选择</option>
-								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.name}}</option>
+								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
 							</select>
 							<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
 						</div>
@@ -81,17 +81,7 @@
 	export default {
 		data() {
 			return {
-				classList: [{
-						classId: 1, //班级id
-						name: "2020软件工程S班", //班级名
-						groupNum: 10 //这个班级的小组数量
-					},
-					{
-						classId: 2, //班级id
-						name: "2020软件工程W班", //班级名
-						groupNum: 11 //这个班级的小组数量
-					}
-				],
+				classList: [],
 				registerInfo: { //注册的表单信息
 					userId: null,
 					password: null,
@@ -102,7 +92,6 @@
 					status: null
 				},
 				response: {
-					
 				}
 			}
 		},
@@ -170,7 +159,7 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					self.classList = res.data;
+					self.classList = res.data.date;
 				}).catch(function(error) {
 					console.log(error);
 				})
@@ -189,10 +178,11 @@
 				}
 				console.log('验证通过');
 				//然后发送表单
-				let self = this;
-				axios.post(api.register,self.registerInfo)
+				var self = this;
+				console.log(this.registerInfo);
+				axios.post(api.register,this.registerInfo)
 				.then(function(res) {
-					alert(res.msg);
+					alert(res.data.msg);
 				}).catch(function(error) {
 					console.log(error);
 				})

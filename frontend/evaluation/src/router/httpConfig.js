@@ -6,8 +6,8 @@ const apiList = {
 	testGet: 'http://www.dzyong.top:3005/yiqing/area',
 	testPost: 'http://49.235.26.253:8082/publishQuestion',
 	
-	login: http + '/user/login',
-	register: http + '/user/register',
+	login: http + '/login',
+	register: http + '/register',
 	
 	userUpdate: http + '/user/update',
 	userEvaluationOuterList: http + '/user/evaluation/outer/list',

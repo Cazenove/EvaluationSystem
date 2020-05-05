@@ -24,22 +24,22 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="add-className">名称</label>
-						<input type="text" class="form-control" id="add-userId"/>
+						<input v-model="submitData.className" type="text" class="form-control" id="add-userId"/>
 					</div>
 					<div class="form-group">
 						<label for="add-groupNum">小组数量</label>
-						<input type="text" class="form-control" id="add-userName"/>
+						<input v-model="submitData.groupNum" type="text" class="form-control" id="add-userName"/>
 					</div>
 					<div class="form-group">
 						<label for="add-startTime">开始时间</label>
-						<input type="text" class="form-control" id="add-classId"/>
+						<input v-model="submitData.startTime" type="datetime-local" class="form-control" />
 					</div>
 				</div>
 				
 				<!-- 模态框底部 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary">确认创建</button>
+					<button type="button" class="btn btn-primary" @click="createClass">确认创建</button>
 				</div>
 				</div>
 			</div>
@@ -47,16 +47,19 @@
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<vxe-table :data="tableData">
+				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 				<vxe-table-column field="className" title="班级名称"></vxe-table-column>
 				<vxe-table-column field="groupNum" title="小组数量"></vxe-table-column>
 				<vxe-table-column field="status" title="状态"></vxe-table-column>
 				<vxe-table-column field="startTime" title="开始时间"></vxe-table-column>
 				<vxe-table-column title="操作">
-					<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#UpdateModal">修改</button>
-					&nbsp;
-					<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#EndModal">结束</button>
-					&nbsp;
-					<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#DeleteModal">删除</button>
+					<template v-slot="{ row }">
+						<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#UpdateModal" @click="setEditData(row)">修改</button>
+						&nbsp;
+						<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#EndModal" @click="setEndClass(row.classId)">结束</button>
+						&nbsp;
+						<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#DeleteModal" @click="setDeleteClass(row.classId)">删除</button>
+					</template>
 				</vxe-table-column>
 			</vxe-table>
 		</div>
@@ -79,7 +82,7 @@
 				<!-- 模态框底部 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-danger">确认删除</button>
+					<button type="button" class="btn btn-danger" @click="deleteClass">确认删除</button>
 				</div>
 				</div>
 			</div>
@@ -103,7 +106,7 @@
 				<!-- 模态框底部 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-danger">确认结束</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal" @click="endClass">确认结束</button>
 				</div>
 				</div>
 			</div>
@@ -123,18 +126,22 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="update-className">班级名称</label>
-						<input type="text" class="form-control" id="update-userId"/>
+						<input v-model="editData.className" type="text" class="form-control" id="update-userId"/>
 					</div>
 					<div class="form-group">
 						<label for="update-groupName">小组数量</label>
-						<input type="text" class="form-control" id="update-userName"/>
+						<input v-model="editData.groupNum" type="text" class="form-control" id="update-userName"/>
+					</div>
+					<div class="form-group">
+						<label for="add-startTime">开始时间</label>
+						<input v-model="editData.startTime" type="datetime-local" class="form-control" />
 					</div>
 				</div>
 				
 				<!-- 模态框底部 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary">确认修改</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" @click="editClass">确认修改</button>
 				</div>
 				</div>
 			</div>
@@ -146,7 +153,9 @@
 <script>
 	import axios from 'axios'
 	import api from '../../router/httpConfig.js'
+	import XEUtils from 'xe-utils'
 	import ManageNav from '../../components/ManageNav.vue'
+	
 	export default {
 		name: 'ClassManagement',
 		components: {
@@ -159,7 +168,20 @@
 					status:'',
 					data:[]
 				},
-				tableData: []
+				tableData: [],
+				submitData: {
+					className: '',
+					groupNum: '',
+					startTime: ''
+				},
+				deleteClassId:'',
+				endClassId:'',
+				editData: {
+					classId:'',
+					className:'',
+					groupNum:'',
+					startTime:''
+				}
 			}
 		},
 		created() {
@@ -178,6 +200,74 @@
 						self.tableData = res.data.date;
 					} else {
 						console.log(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			createClass() {
+				axios.post(api.adminClassCreate,this.submitData)
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						alert("创建成功！")
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			setDeleteClass(classId) {
+				this.$data.deleteClassId = classId;
+			},
+			setEndClass(classId) {
+				this.$data.endClassId = classId;
+			},
+			deleteClass() {
+				axios.post(api.adminClassDelete,{
+					classId:this.$data.deleteClassId
+				})
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						alert("删除成功！")
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			endClass() {
+				axios.post(api.adminClassEnd,{
+					classId:this.$data.endClassId
+				})
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						alert("结束成功！")
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			setEditData(row) {
+				this.$data.editData.classId = row.classId;
+				this.$data.editData.className = row .className;
+				this.$data.editData.groupNum = row.groupNum;
+				this.$data.editData.startTime = row.startTime;
+			},
+			editClass() {
+				axios.post(api.adminClassUpdate,this.$data.editData)
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						alert("修改成功！")
+					} else {
+						alert(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

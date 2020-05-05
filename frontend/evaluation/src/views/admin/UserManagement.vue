@@ -311,8 +311,9 @@
 				var self = this;
 				axios.get(api.adminUserList,null)
 				.then(function(res) {
-					if(res.status === 1) {
-						self.response = res;
+					console.log(res);
+					if(res.data.status == 1) {
+						self.response = res.data;
 					}
 					else {
 						console.log(res.msg);

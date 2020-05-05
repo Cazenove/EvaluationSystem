@@ -8,13 +8,15 @@
 			</ol>
 		</nav>
 		<h1 class="offset-md-1">{{this.title}}</h1>
-		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
-			<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
-			<vxe-table-column field="assistantName" title="姓名"></vxe-table-column>
-			<vxe-table-column field="telephone" title="电话"></vxe-table-column>
-			<vxe-table-column field="classId" title="管理的班级"></vxe-table-column>
-			<vxe-table-column field="password" title="密码"></vxe-table-column>
-		</vxe-table>
+		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+				<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
+				<vxe-table-column field="assistantName" title="姓名"></vxe-table-column>
+				<vxe-table-column field="telephone" title="电话"></vxe-table-column>
+				<vxe-table-column field="classId" title="管理的班级"></vxe-table-column>
+				<vxe-table-column field="password" title="密码"></vxe-table-column>
+			</vxe-table>
+		</div>
 	</div>
 </template>
 

@@ -46,63 +46,22 @@
 				tableData: [],
 				request: {},
 				response: {
-					status: 1,
-					data: [{
-							groupId: 1,
-							groupName: "第一组",
-							classId: 1,
-							className: "2020软件工程S班",
-							groupNum: 1, //小组序列，在该班级的第几组
-							leader: { //组长
-								userId: "221701000",
-								userName: "张三"
-							},
-							member: [{
-									userId: "221701001",
-									userName: "李四"
-								},
-								{
-									userId: "221701002",
-									userName: "王五"
-								}
-							]
-						},
-						{
-							groupId: 1,
-							groupName: "第一组",
-							classId: 1,
-							className: "2020软件工程S班",
-							groupNum: 1, //小组序列，在该班级的第几组
-							leader: { //组长
-								userId: "221701000",
-								userName: "张三"
-							},
-							member: [{
-									userId: "221701001",
-									userName: "李四"
-								},
-								{
-									userId: "221701002",
-									userName: "王五"
-								}
-							]
-						}
-					]
+					status: '',
+					data: []
 				}
 			}
 		},
 		created() {
 			this.init();
-			this.tableData = this.response.data;
 		},
 		methods: {
-			getRequest() {},
 			getResponse() {
 				var self = this;
 				axios.get(api.adminTeamList, null)
 					.then(function(res) {
-						if (res.status === 1) {
-							self.response = res;
+						if (res.status == 200 && res.data.status == 1) {
+							self.response = res.data;
+							self.tableData = self.response.data;
 						} else {
 							console.log(res.msg);
 						}
@@ -111,11 +70,9 @@
 					})
 			},
 			init() {
-				this.getRequest();
 				this.getResponse();
 			}
 		}
-
 	}
 </script>
 

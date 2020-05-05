@@ -16,7 +16,7 @@
 			</vxe-toolbar>
 			<vxe-table :data="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign">
 				<vxe-table-column field="name" title="评分表名称"></vxe-table-column>
-				<vxe-table-column field="classId" title="班级"></vxe-table-column>
+				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 				<vxe-table-column field="releaseTime" title="发布时间"></vxe-table-column>
 				<vxe-table-column field="endTime" title="截止时间"></vxe-table-column>
 				<vxe-table-column title="操作" width="150" show-overflow>
@@ -82,9 +82,13 @@
 				var self = this;
 				axios.get(api.adminEvaluationDetails, null)
 					.then(function(res) {
+						console.log(res);
 						if (res.status == 200 && res.data.status == 1) {
 							self.response = res.data;
 							self.tableData = self.response.data;
+							for(var i = 0; i < self.tableData.length; i++) {
+								self.tableData[i].classId = self.tableData[i].classInfo.classId;
+							}
 						} else {
 							console.log(res.msg);
 						}
@@ -93,6 +97,7 @@
 					})
 			},
 			detailsEvent(row) {
+				console.log(row);
 				this.detailData = row.content.details[0].content;
 				this.showDetails = true
 			},
@@ -103,7 +108,6 @@
 						axios.post(api.adminEvaluationDelete,{
 							evaluationOuterId: row.evaluationOuterId
 						}).then(function(res) {
-							console.log(res);
 							if(res.data.status == 1) {
 								alert("删除成功！");
 							} else {
