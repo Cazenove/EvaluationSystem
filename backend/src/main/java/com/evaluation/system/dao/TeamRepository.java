@@ -31,4 +31,10 @@ public interface TeamRepository extends JpaRepository<Team,Integer> {
      */
     @Query("SELECT a FROM Team a WHERE a.groupId = :groupId")
     public Team findOneByGroupId(@Param("groupId") Integer groupId);
+
+    /**
+     * 组ID查询
+     */
+    @Query("select g from Team as g where g.group_id = :group_id")
+    Team findByGroupId(@Param("group_id") Integer group_id);
 }

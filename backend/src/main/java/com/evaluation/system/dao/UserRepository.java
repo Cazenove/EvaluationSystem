@@ -36,4 +36,8 @@ public interface UserRepository extends JpaRepository<User,String> {
      */
     @Query("SELECT a FROM User a WHERE a.userId = :userId")
     public User findOneByUserId(String userId);
+
+    //通过手机号查询
+    @Query("select u from User as u where u.telephone = :telephone")
+    User findByTelephone(@Param("telephone") String telephone);
 }
