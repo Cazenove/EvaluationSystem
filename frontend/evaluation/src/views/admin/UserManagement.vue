@@ -7,36 +7,44 @@
 				<li class="breadcrumb-item active" aria-current="page">用户管理</li>
 			</ol>
 		</nav>
-		<h1 class="offset-md-1">用户管理</h1>
 		
-		<div class="form-row">
-			
-		<!-- <button type="button" class="offset-md-1 btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button> -->
-		<AdminUserCreateModal class="offset-md-1"></AdminUserCreateModal>
-		&nbsp;
-		<button type="button" class="btn btn-light">一键导入</button>
-		</div>
-		<div class="offset-md-1" style="margin-top:40px;">
-			<el-row :gutter="20">
-				<el-col :span="3">
-					<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
-				</el-col>
-				<el-col :span="3">
-					<el-input offser="3" placeholder="姓名" v-model="searchInfo.userName"></el-input>
-				</el-col>
-				<el-col :span="3">
-					<el-input offser="3" placeholder="班级" v-model="searchInfo.classId"></el-input>
-				</el-col>
-				<el-col :span="3">
-					<el-input offser="3" placeholder="小组" v-model="searchInfo.groupId"></el-input>
-				</el-col>
-				<el-col :span="3">
-					<el-input offser="3" placeholder="职务" v-model="searchInfo.status"></el-input>
-				</el-col>
-				<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-			</el-row>
-		</div>
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+			<h1>用户管理</h1>
+			
+			
+			<div style="margin-bottom: 20px;">
+				<div class="row container" style="margin-bottom: 20px;">
+					
+				<!-- <button type="button" class="offset-md-1 btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button> -->
+				<AdminUserCreateModal></AdminUserCreateModal>
+				&nbsp;
+				<button type="button" class="btn btn-light">一键导入</button>
+				</div>
+				<el-row :gutter="20">
+					<el-col :span="3">
+						<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
+					</el-col>
+					<el-col :span="3">
+						<el-input offser="3" placeholder="姓名" v-model="searchInfo.userName"></el-input>
+					</el-col>
+					<el-col :span="3">
+						<el-select offser="5" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+							<el-option :value="item.classId" v-for="item in classOption" :label="item.name"></el-option>
+						</el-select>
+					</el-col>
+					<el-col :span="3">
+						<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+							<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
+						</el-select>
+					</el-col>
+					<el-col :span="3">
+						<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
+							<el-option v-for="item in statusOption" :value="item.value">{{item.label}}</el-option>
+						</el-select>
+					</el-col>
+					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+				</el-row>
+			</div>
 			<vxe-table border
 				resizable
 				row-key
@@ -57,7 +65,6 @@
 					<!-- <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#DeleteModal" >删除</button> -->
 					<!-- <button type="button" class="btn btn-danger" @click="deleteUser()">删除</button> -->
 					<template v-slot="{ row }">
-						
 							<button type="button" @click="editEvent(row)" class="btn btn-light"  data-toggle="modal" data-target="#UpdateModal">修改</button>
 							&nbsp;
 							<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
@@ -130,41 +137,41 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="update-userId">学号</label>
-						<input type="text" class="form-control" id="update-userId" v-model="formData.userId"/>
-						<span class="error" v-if="errors['formData.userId']">{{errors['formData.userId']}}</span>
+						<input type="text" class="form-control" id="update-userId" v-model="updateInfo.userId"/>
+						<span class="error" v-if="errors['updateInfo.userId']">{{errors['updateInfo.userId']}}</span>
 					</div>
 					<div class="form-group">
 						<label for="update-userName">姓名</label>
-						<input type="text" class="form-control" id="update-userName" v-model="formData.userName"/>
-						<span class="error" v-if="errors['formData.userName']">{{errors['formData.userName']}}</span>
+						<input type="text" class="form-control" id="update-userName" v-model="updateInfo.userName"/>
+						<span class="error" v-if="errors['updateInfo.userName']">{{errors['updateInfo.userName']}}</span>
 					</div>
 					<div class="form-group">
 						<label for="telephone" class="col-form-label">电话号码</label>
-						<input type="text" class="form-control" v-model="formData.telephone" />
-						<span class="error" v-if="errors['formData.telephone']">{{errors['formData.telephone']}}</span>
+						<input type="text" class="form-control" v-model="updateInfo.telephone" />
+						<span class="error" v-if="errors['updateInfo.telephone']">{{errors['updateInfo.telephone']}}</span>
 					</div>
 					<div class="form-group">
 						<label for="update-classId">班级</label>
-						<select name="classId" class="form-control" v-model="formData.classId" @change="classOptionChange()">
-							<option :value="item.classId" v-for="item in classList"> {{ item.name }} </option>
+						<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
+							<option :value="item.classId" v-for="item in classOption"> {{ item.name }} </option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="update-groupId">小组</label>
-						<select class="form-control" v-model="formData.groupId">
-							<option v-for="n of formData.groupNum" :value="n" :key="n">第{{n}}小组</option>
+						<select class="form-control" v-model="updateInfo.groupId">
+							<option v-for="n of updateInfo.groupNum" :value="n" :key="n">第{{n}}小组</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="update-status">职务</label>
-						<select name="status" class="form-control" v-model="formData.status">
+						<select name="status" class="form-control" v-model="updateInfo.status">
 							<option v-for="item in statusOption" :value="item.value">{{item.label}}</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="update-password">密码</label>
-						<input type="password" class="form-control" id="update-password" v-model="formData.password"/>
-						<span class="error" v-if="errors['formData.password']">{{errors['formData.password']}}</span>
+						<input type="password" class="form-control" id="update-password" v-model="updateInfo.password"/>
+						<span class="error" v-if="errors['updateInfo.password']">{{errors['updateInfo.password']}}</span>
 					</div>
 				</div>
 				
@@ -172,30 +179,6 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
 					<button type="button" class="btn btn-primary" @click="update()">确认修改</button>
-				</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="modal fade" id="DeleteModal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-		
-				<!-- 模态框头部 -->
-				<div class="modal-header">
-					<h4 class="modal-title">删除</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-		
-				<!-- 模态框主体 -->
-				<div class="modal-body">
-					确认删除该用户？
-				</div>
-				
-				<!-- 模态框底部 -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-danger">确认删除</button>
 				</div>
 				</div>
 			</div>
@@ -257,8 +240,9 @@
 					classId: null,
 					groupId: null,
 					status: null,
+					groupNum: null,
 				},
-				formData: {
+				updateInfo: {
 					userId: null,
 					password: null,
 					telephone: null,
@@ -313,7 +297,7 @@
 				.then(function(res) {
 					console.log(res);
 					if(res.data.status == 1) {
-						self.response = res.data;
+					self.response = res.data;
 					}
 					else {
 						console.log(res.msg);
@@ -323,15 +307,15 @@
 				})
 			},
 			formatterClass({ cellValue }) {
-				let item = this.classOption.find(item => item.value === cellValue)
-				return item ? item.label : ''
+				let item = this.classOption.find(item => item.classId === cellValue)
+				return item ? item.name : ''
 			},
 			formatterStatus({ cellValue }) {
 				let item = this.statusOption.find(item => item.value === cellValue)
 				return item ? item.label : ''
 			},
 			search() {
-				this.init();
+				// this.init();
 				this.tableData = [];
 				for(let value of this.response.data){
 					let flag = 1;
@@ -358,8 +342,9 @@
 				
 			},
 			editEvent (row) {
+				console.log(this.classList)
 				// this.$refs.xTable.setActiveRow(row)
-				this.formData = {
+				this.updateInfo = {
 					userId: row.userId,
 					password: row.password,
 					telephone: row.telephone,
@@ -369,12 +354,12 @@
 					status: row.status,
 					groupNum: null,
 				}
-				for (let value of this.classList) {
-					if (this.formData.classId == value.classId){
-						this.formData.groupNum = value.groupNum;
+				for (let value of this.classOption) {
+					if (this.updateInfo.classId == value.classId){
+						this.updateInfo.groupNum = value.groupNum;
 					}
 				}
-				console.log(this.formData)
+				console.log(this.updateInfo)
 				// this.selectRow = row;
 				// this.showEdit = true;
 			},
@@ -408,8 +393,9 @@
 			getClassOption() {
 				for (let value of this.classList) {
 					var option = {
-						label: value.name,
-						value: value.classId,
+						name: value.name,
+						classId: value.classId,
+						groupNum: value.groupNum,
 					}
 					this.classOption.push(option);
 				}
@@ -429,19 +415,19 @@
 			// 		}
 			// 	}
 			// },
-			classOptionChange() {
-				for (let value of this.classList) {
-					if (this.formData.classId == value.classId){
-						this.formData.groupNum = value.groupNum;
+			classOptionChange(data) {
+				for (let value of this.classOption) {
+					if (data.classId == value.classId){
+						data.groupNum = value.groupNum;
 					}
 				}
 			},
 			update() {
-				console.log(this.formData);
+				console.log(this.updateInfo);
 				//注册功能
 				//先检验表单
-				let verifyList = ['formData.userId', 'formData.password', 'formData.userName', 'formData.telephone',
-					'formData.classId', 'formData.groupNum', 'formData.status'
+				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.userName', 'updateInfo.telephone',
+					'updateInfo.classId', 'updateInfo.groupNum', 'updateInfo.status'
 				];
 				// check() 校验所有规则，参数可以设置需要校验的数组
 				if (!this.$vuerify.check(verifyList)) {
@@ -450,7 +436,7 @@
 				console.log('验证通过');
 				//然后发送表单
 				let self = this;
-				axios.post(api.adminUserUpdate,self.formData)
+				axios.post(api.adminUserUpdate,self.updateInfo)
 				.then(function(res) {
 					alert(res.msg);
 				}).catch(function(error) {
@@ -460,17 +446,17 @@
 			},
 		},
 		vuerify: {
-			'formData.userId': {
+			'updateInfo.userId': {
 				test: /^[0-9]{9,9}$/,
 				message: '用户名为9位的学号'
 			},
-			'formData.password': {
+			'updateInfo.password': {
 				test: /^[^]{6,16}$/,
 				message: '密码长度为6-16'
 			},
-			'formData.userName': {
+			'updateInfo.userName': {
 				test: function() {
-					if (!this.formData.userName) {
+					if (!this.updateInfo.userName) {
 						return false;
 					} else {
 						return true;
@@ -478,13 +464,13 @@
 				},
 				message: '姓名为必填项'
 			},
-			'formData.telephone': {
+			'updateInfo.telephone': {
 				test: /^[0-9]{11,11}$/,
 				message: '电话号码为11位数字'
 			},
-			'formData.classId': {
+			'updateInfo.classId': {
 				test: function() {
-					if (!this.formData.classId) {
+					if (!this.updateInfo.classId) {
 						return false;
 					} else {
 						return true;
@@ -492,9 +478,9 @@
 				},
 				message: '班级为必选项'
 			},
-			'formData.groupNum': {
+			'updateInfo.groupNum': {
 				test: function() {
-					if (!this.formData.groupNum) {
+					if (!this.updateInfo.groupNum) {
 						return false;
 					} else {
 						return true;
@@ -502,9 +488,9 @@
 				},
 				message: '小组为必选项'
 			},
-			'formData.status': {
+			'updateInfo.status': {
 				test: function() {
-					if (!this.formData.status) {
+					if (!this.updateInfo.status) {
 						return false;
 					} else {
 						return true;
