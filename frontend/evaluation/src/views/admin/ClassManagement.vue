@@ -156,28 +156,14 @@
 			return {
 				allAlign: null,
 				response: {
-					status:1,
-					data:[
-						{
-							classId:1,
-							className:"2020软件工程S班",
-							groupNum:7,
-							startTime:"2020-03-11"
-						},
-						{
-							classId:2,
-							className:"2020软件工程W班",
-							groupNum:8,
-							startTime:"2020-03-11"
-						}
-					]
+					status:'',
+					data:[]
 				},
 				tableData: []
 			}
 		},
 		created() {
 			this.init();
-			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {
@@ -187,11 +173,11 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					if(res.status === 1) {
-						self.response = res;
-					}
-					else {
-						console.log(res.msg);
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						self.tableData = res.data.date;
+					} else {
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

@@ -61,101 +61,8 @@
 				showCreate: false,
 				allAlign: null,
 				response: {
-					status: 1,
-					data: [{
-						id: 1, //评分表的id，需要把对应id的组间、组内评价表提交记录删除，再把组内评价表的时间改掉
-						name: "第二次团队作业",
-						classId: 1,
-						releaseTime: "2020-01-01", //发布时间
-						endTime: "2020-01-08", //结束时间
-						content: {
-							details: [ //登录的时候
-								{
-									groupId: 1,
-									groupNum: 1,
-									groupName: "第一组",
-									score: null, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: "", //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: null,
-										}
-									],
-									suggestion: ""
-								},
-								{
-									groupId: 2,
-									groupNum: 2,
-									groupName: "第二组",
-									score: null, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: "", //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: "",
-										}
-									],
-									suggestion: ""
-								}
-							]
-						}
-					},
-					{
-						id: 2, //评分表的id，需要把对应id的组间、组内评价表提交记录删除，再把组内评价表的时间改掉
-						name: "第三次团队作业",
-						classId: 1,
-						releaseTime: "2020-01-01", //发布时间
-						endTime: "2020-01-08", //结束时间
-						content: {
-							details: [ //登录的时候
-								{
-									groupId: 1,
-									groupNum: 1,
-									groupName: "第一组",
-									score: null, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 50,
-											score: "", //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 50,
-											score: null,
-										}
-									],
-									suggestion: ""
-								},
-								{
-									groupId: 2,
-									groupNum: 2,
-									groupName: "第二组",
-									score: null, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 50,
-											score: "", //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 50,
-											score: "",
-										}
-									],
-									suggestion: ""
-								}
-							]
-						}
-					}]
+					status:'',
+					data: []
 				},
 				tableData: [],
 				detailData: []
@@ -163,7 +70,6 @@
 		},
 		created() {
 			this.init();
-			this.tableData = this.response.data;
 		},
 		methods: {
 			createForm() {
@@ -176,8 +82,9 @@
 				var self = this;
 				axios.get(api.adminEvaluationDetails, null)
 					.then(function(res) {
-						if (res.status === 1) {
-							self.response = res;
+						if (res.status == 200 && res.data.status == 1) {
+							self.response = res.data;
+							self.tableData = self.response.data;
 						} else {
 							console.log(res.msg);
 						}
@@ -192,11 +99,12 @@
 			removeEvent(row) {
 				this.$XModal.confirm('您确定要删除这份评分表吗?删除评分表的同时会删除提交记录，请慎重考虑').then(type => {
 					if (type === 'confirm') {
-						console.log(row.id);
+						console.log(row.evaluationOuterId);
 						axios.post(api.adminEvaluationDelete,{
-							evaluationOuterId: row.id
+							evaluationOuterId: row.evaluationOuterId
 						}).then(function(res) {
-							if(res.status === 1) {
+							console.log(res);
+							if(res.data.status == 1) {
 								alert("删除成功！");
 							} else {
 								alert(res.msg);

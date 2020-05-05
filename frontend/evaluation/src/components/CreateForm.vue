@@ -73,62 +73,8 @@
 					socre:""
 				}],
 				classList: [
-					{
-						classId:1,
-						className:"2020软件工程S班",
-						groupNum:7,
-						startTime:"2020-03-11"
-					},
-					{
-						classId:2,
-						className:"2020软件工程W班",
-						groupNum:8,
-						startTime:"2020-03-11"
-					}
 				],
 				teamList: [
-					{
-						groupId:1,
-						groupName:"第一组",
-						classId:1,
-						className:"2020软件工程S班",
-						groupNum:1,//小组序列，在该班级的第几组
-						leader:{//组长
-							userId:"221701000",
-							userName:"张三"
-						},
-						member:[
-							{
-								userId:"221701001",
-								userName:"李四"
-							},
-							{
-								userId:"221701002",
-								userName:"王五"
-							}
-						]
-					},
-					{
-						groupId:2,
-						groupName:"第二组",
-						classId:1,
-						className:"2020软件工程S班",
-						groupNum:1,//小组序列，在该班级的第几组
-						leader:{//组长
-							userId:"221701000",
-							userName:"张三"
-						},
-						member:[
-							{
-								userId:"221701001",
-								userName:"李四"
-							},
-							{
-								userId:"221701002",
-								userName:"王五"
-							}
-						]
-					}
 				],
 				sum: null,
 				submitForm: {
@@ -187,8 +133,9 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 					.then(function(res) {
-						if(res.status === 1) {
-							self.classList = res.data;
+						console.log(res.data);
+						if(res.status == 200 && res.data.status == 1) {
+							self.classList = res.data.date;
 						}
 					}).catch(function(error) {
 						console.log(error);
@@ -198,7 +145,7 @@
 				var self = this;
 				axios.get(api.adminTeamList,null)//获取该班级的小组列表
 					.then(function(res) {
-						self.teamList = res.data;
+						self.teamList = res.data.data;
 					}).catch(function(error) {
 						console.log(error);
 					})
@@ -263,21 +210,21 @@
 										groupId:self.teamList[i].groupId,
 										groupName:self.teamList[i].groupName,
 										groupNum:self.teamList[i].groupNum,
-										score:null,
+										score:'',
 										content:self.tableData
 									};
-									self.submitForm.content.details.push(item);
+									self.submitForm.content.details[i] = item;
 								}
 							}
 							var time = new Date();
 							//获取本地时间作为表单的发布时间
 							self.submitForm.releaseTime = time;
 							console.log(self.submitForm);
-							
 							//提交表单
 							axios.post(api.adminEvaluationCreate,self.submitForm)
 							.then(function(res) {
-								if(res.status === 1) {
+								console.log(res);
+								if(res.status == 200 && res.data.status == 1) {
 									alert("创建成功！");
 								} else {
 									alert(res.msg);
