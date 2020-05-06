@@ -34,7 +34,7 @@ public class SubmitOuterService {
         try {
             SubmitOuter getSubmitOuter = submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
                     submitOuter.getGroupId());
-            if (getSubmitOuter.getSubmitOuterId()!=0) {
+            if (getSubmitOuter!=null) {
                 result.put("status", 1);
                 result.put("data", getSubmitOuter);
             }
