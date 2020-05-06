@@ -189,6 +189,7 @@
 		},
 		created() {
 			this.init();
+			
 		},
 		methods: {
 			init() {
@@ -199,7 +200,19 @@
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
+						for (let item of res.data.data){
+							if(item.startTime != "")
+							{
+								var timeStamp = new Date(parseInt(item.startTime)*1000);
+								var year = timeStamp.getFullYear();
+								var month = timeStamp.getMonth() + 1;
+								var date = timeStamp.getDate();
+								var time = year+"-"+month+"-"+date;
+							}
+							item.startTime = time;
+						}
 						self.tableData = res.data.data;
+						
 					} else {
 						console.log(res.data.msg);
 					}
@@ -208,9 +221,9 @@
 				})
 			},
 			createClass() {
+				this.getTimeStamp(this.submitData);
 				// console.log(Number(new Date()));
 				// this.submitData.startTime = Number(this.submitData.startTime);
-				// console.log(this.submitData.startTime);
 				var self = this;
 				axios.post(api.adminClassCreate,this.submitData)
 				.then(function(res) {
@@ -271,6 +284,8 @@
 				this.$data.editData.startTime = row.startTime;
 			},
 			editClass() {
+				this.getTimeStamp(this.$data.editData);
+				console.log(this.$data.editData.startTime);
 				axios.post(api.adminClassUpdate,this.$data.editData)
 				.then(function(res) {
 					console.log(res);
@@ -283,7 +298,13 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
-			}
+			},
+			getTimeStamp(data){
+				var str = data.startTime.replace(/-/g,'/');
+				var date = new Date(str);
+				var time = date.getTime()/1000;
+				data.startTime = time;
+			},
 		}
 	}
 </script>

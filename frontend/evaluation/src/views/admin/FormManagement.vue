@@ -86,6 +86,17 @@
 				axios.get(api.adminEvaluationDetails, null)
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
+						for (let item of res.data.data){
+							if(item.releaseTime != "")
+							{
+								var timeStamp = new Date(parseInt(item.releaseTime));
+								var year = timeStamp.getFullYear();
+								var month = timeStamp.getMonth() + 1;
+								var date = timeStamp.getDate();
+								var time = year+"-"+month+"-"+date;
+							}
+							item.releaseTime = time;
+						}
 						self.response = res.data;
 						self.tableData = self.response.data;
 						for(var i = 0; i < self.tableData.length; i++) {
