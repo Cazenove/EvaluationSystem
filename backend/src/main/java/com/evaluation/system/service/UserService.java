@@ -64,8 +64,7 @@ public class UserService {
             User user1 = userRepository.findByUserId(user.getUserId());
             User user2 = userRepository.findByTelephone(user.getTelephone());
             Team team = groupRepository.findByClassIdAndAndGroupNum(user.getClassId(), user.getGroupNum());
-            System.out.println(team.getGroupId());
-            System.out.println(team.getClassId());
+
             if (user1 == null && user2 == null) {
                 User user3 = new User();
                 user3.setUserId(user.getUserId());
@@ -100,9 +99,9 @@ public class UserService {
         int flag = 0;
         String msg = "修改成功";
         User user1 = user;
-        if (!user2.getPassword().equals("")) {
+        /*if (!user2.getPassword().isEmpty()) {
             user1.setPassword(user2.getPassword());
-        }
+        }*/
         if (!user2.getName().equals("")) {
             user1.setName(user2.getName());
         }
@@ -118,6 +117,32 @@ public class UserService {
         result.put("status",flag);
         result.put("msg",msg);
         userRepository.save(user1);
+        return  result;
+    }
+
+    /*修改密码*/
+    @Transactional(rollbackFor = Exception.class)
+    public HashMap<String,Object> updatePassword(User user){
+        User user1 = userRepository.findByUserId(user.getUserId());
+        HashMap<String,Object> result = new HashMap<>();
+        try {
+            if (user1!=null){
+                user1.setPassword(user.getPassword());
+                userRepository.save(user1);
+                result.put("status",1);
+                result.put("msg","修改成功");
+            }
+            else {
+                result.put("status",0);
+                result.put("msg","修改失败");
+            }
+        }
+        catch (Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status",0);
+            result.put("msg","修改失败");
+            return result;
+        }
         return  result;
     }
 }

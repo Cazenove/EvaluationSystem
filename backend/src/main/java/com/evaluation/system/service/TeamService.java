@@ -60,7 +60,8 @@ public class TeamService {
     }
 
     public Map<String,Object> updateTeamName(Map<String,Object> content){
-        Team team=teamRepository.findByGroupId((int)content.get("groupId"));
+        String tId=(String)content.get("groupId");
+        Team team=teamRepository.findByGroupId(Integer.valueOf(tId));
         team.setGroupName((String)content.get("groupName"));
         Map<String,Object> map=new HashMap<>();
         try{

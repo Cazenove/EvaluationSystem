@@ -8,4 +8,9 @@ import org.springframework.data.repository.query.Param;
 public interface GroupRepository extends JpaRepository<Team,Integer> {
     @Query("SELECT a from Team a where a.classId = :classId and  a.groupNum = :groupNum")
     public Team findByClassIdAndAndGroupNum(@Param("classId") Integer classId, @Param("groupNum") int groupNum);
+    /**
+     * 组ID查询
+     */
+    @Query("select g from Team as g where g.group_id = :group_id")
+    Team findByGroupId(@Param("group_id") Integer group_id);
 }

@@ -23,8 +23,10 @@ public class GroupSuggestionService {
     public Map<String,Object> createSuggestion(Map<String,Object> content){
         Map<String,Object> map=new HashMap<String,Object>();
         GroupSuggestion groupSuggestion =new GroupSuggestion();
-        groupSuggestion.setEvaluationOuterId((int)content.get("evaluationId"));
-        groupSuggestion.setGroupId((int)content.get("targetGroupId"));
+        String eId=(String)content.get("evaluationId");
+        groupSuggestion.setEvaluationOuterId(Integer.valueOf(eId));
+        String gId=(String)content.get("targetGroupId");
+        groupSuggestion.setGroupId(Integer.valueOf(gId));
         groupSuggestion.setSuggestion((String) content.get("suggestion"));
         try{
             groupSuggestionRepository.save(groupSuggestion);
@@ -41,7 +43,8 @@ public class GroupSuggestionService {
     public Map<String,Object> deleteSuggestion(Map<String,Object> content){
         Map<String,Object> map = new HashMap<String,Object>(16);
         try{
-            groupSuggestionRepository.deleteById((int)content.get("groupSuggestionId"));
+            String gsId=(String)content.get("groupSuggestionId");
+            groupSuggestionRepository.deleteById(Integer.valueOf(gsId));
             map.put("status",1);
             map.put("msg","删除成功");
         }catch(Exception e){
@@ -55,7 +58,8 @@ public class GroupSuggestionService {
     public Map<String,Object> updateSuggestion(Map<String,Object> content){
         Map<String,Object> map = new HashMap<String,Object>(16);
         try{
-            GroupSuggestion groupSuggestion =groupSuggestionRepository.findByGroupSuggestionId((int)content.get("groupSuggestionId"));
+            String gsId=(String)content.get("groupSuggestionId");
+            GroupSuggestion groupSuggestion =groupSuggestionRepository.findByGroupSuggestionId(Integer.valueOf(gsId));
             groupSuggestion.setSuggestion((String) content.get("suggestion"));
             groupSuggestionRepository.save(groupSuggestion);
 
