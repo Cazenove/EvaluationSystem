@@ -11,13 +11,13 @@
 					<li class="nav-item">
 						<router-link class="nav-link" to="/admin/user">用户管理</router-link>
 					</li>
-					<li v-if="this.$store.state.adminInfo.status === 4" class="nav-item">
+					<li v-if="this.$store.state.adminInfo.status == 4" class="nav-item">
 						<router-link class="nav-link" to="/admin/assistant">助教管理</router-link>
 					</li>
-					<li v-if="this.$store.state.adminInfo.status === 4" class="nav-item">
+					<li v-if="this.$store.state.adminInfo.status == 4" class="nav-item">
 						<router-link class="nav-link" to="/admin/class">班级管理</router-link>
 					</li>
-					<li v-if="this.$store.state.adminInfo.status === 4" class="nav-item">
+					<li v-if="this.$store.state.adminInfo.status == 4" class="nav-item">
 						<router-link class="nav-link" to="/admin/team">小组管理</router-link>
 					</li>
 					<li class="nav-item dropdown">

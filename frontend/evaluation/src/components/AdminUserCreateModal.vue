@@ -26,7 +26,7 @@
 						</div>
 						<div class="form-group">
 							<label for="userName" class="col-form-label">姓名</label>
-							<input type="text" class="form-control" id="userName" v-model="registerInfo.userName" />
+							<input type="text" class="form-control" id="userName" v-model="registerInfo.name" />
 							<span class="error" v-if="errors['registerInfo.userName']">{{errors['registerInfo.userName']}}</span>
 						</div>
 						<div class="form-group">
@@ -38,7 +38,7 @@
 							<label for="classId" class="col-form-label">班级</label>
 							<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
 								<option disabled="disabled" :value="null">请选择</option>
-								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.name}}</option>
+								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
 							</select>
 							<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
 						</div>
@@ -62,7 +62,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">取消</button>
-						<button type="button" class="btn btn-primary" @click="register">添加用户</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">添加用户</button>
 					</div>
 				</div>
 			</div>
@@ -79,36 +79,26 @@
 	Vue.use(Vuerify)
 
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
-				classList: [{
-						classId: 1, //班级id
-						name: "2020软件工程S班", //班级名
-						groupNum: 10 //这个班级的小组数量
-					},
-					{
-						classId: 2, //班级id
-						name: "2020软件工程W班", //班级名
-						groupNum: 11 //这个班级的小组数量
-					}
-				],
+				classList: [],
 				registerInfo: { //注册的表单信息
 					userId: null,
 					password: null,
-					userName: null,
+					name: null,
 					telephone: null,
 					classId: null,
 					groupNum: null,
 					status: null
 				},
 				response: {
-					
 				}
 			}
 		},
 		created() {
 			//创建的时候获取班级小组列表
-			this.getTeamList();
+			this.getClassList();
 		},
 
 		vuerify: {
@@ -122,7 +112,7 @@
 			},
 			'registerInfo.userName': {
 				test: function() {
-					if (!this.registerInfo.userName) {
+					if (!this.registerInfo.name) {
 						return false;
 					} else {
 						return true;
@@ -166,18 +156,18 @@
 			}
 		},
 		methods: {
-			getTeamList() {
+			getClassList() {
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					self.classList = res.data;
+					console.log(res);
+					self.classList = res.data.data;
 				}).catch(function(error) {
 					console.log(error);
 				})
 			},
 			close() {},
 			register() {
-				console.log(this.registerInfo);
 				//注册功能
 				//先检验表单
 				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.userName', 'registerInfo.telephone',
@@ -188,11 +178,13 @@
 					return;
 				}
 				console.log('验证通过');
+				
 				//然后发送表单
 				let self = this;
-				axios.post(api.adminUserCreate,self.registerInfo)
+				axios.post(api.register,self.registerInfo)
 				.then(function(res) {
-					alert(res.msg);
+					console.log(res);
+					alert(res.data.msg);
 				}).catch(function(error) {
 					console.log(error);
 				})

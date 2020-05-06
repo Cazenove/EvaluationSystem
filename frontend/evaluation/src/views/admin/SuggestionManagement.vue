@@ -84,7 +84,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary" @click="submitCreateForm">提交</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="submitCreateForm">提交</button>
 					</div>
 				</div>
 			</div>
@@ -98,6 +98,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -120,47 +121,32 @@
 					suggestion:''
 				},
                 response: {
-					status:1,
-					data:[
-						{
-							groupSuggestionId:1,//小组建议表内的ID
-							groupId:1,//表示是这个小组收到的建议
-							evaluationOuterId:1,//表示是针对这一轮作业的建议
-							suggestion:"建议内容1"
-						},
-						{
-							groupSuggestionId:2,
-							groupId:1,
-							evaluationOuterId:1,
-							suggestion:"建议内容2"
-						}
-					]
+					status:'',
+					data:[]
 				}
 			}
 		},
         created() {
             this.init();
-			this.tableData = this.response.data;
         },
         methods: {
-            getRequest() {
-            },
             getResponse() {
 				var self = this;
 				axios.get(api.adminSuggestionList,null)
 				.then(function(res) {
-					if(res.status === 1) {
-						self.response = res;
+					console.log(res)
+					if(res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
 					}
 					else {
-						console.log(res.msg);
+						alert(res.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
 				})
             },
             init() {
-                this.getRequest();
                 this.getResponse();
             },
 			insertEvent () {
@@ -180,13 +166,14 @@
 				this.$XModal.confirm('您确定要删除这条评价吗？').then(type => {
 					if (type === 'confirm') {
 						axios.post(api.adminSuggestionDelete, {
-							groupSuggestionId: row.groupSuggestionId
+							groupSuggestionId: row.groupSuggestionId.toString()
 						}).then(function(res) {
-							if(res.status === 1) {
-								this.$XModal.message({ status: 'success', message: '删除成功！' })
+							if(res.stauts == 200 && res.data.status == 1) {
+								alert(res.data.msg);
 							} else {
-								this.$XModal.message({ status: 'error', message: res.msg })
+								alert(res.data.msg);
 							}
+							self.reload();
 						}).catch(function(error) {
 							console.log(error);
 						})
@@ -194,13 +181,15 @@
 				})
 			},
 			submitEditForm() {
+				this.editForm.groupSuggestionId = this.editForm.groupSuggestionId.toString();
 				axios.post(api.adminSuggestionUpdate,this.editForm)
 				.then(function(res) {
-					if(res.stauts === 1) {
-						this.$XModal.message({ status: 'success', message: '修改成功！' })
+					if(res.stauts == 200 && res.data.status == 1) {
+						alert(res.data.msg);
 					} else {
-						this.$XModal.message({ status: 'error', message: res.msg })
+						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})
@@ -208,11 +197,12 @@
 			submitCreateForm() {
 				axios.post(api.adminSuggestionCreate,this.createForm)
 				.then(function(res) {
-					if(res.stauts === 1) {
-						this.$XModal.message({ status: 'success', message: '新建成功！' })
+					if(res.status == 200 && res.data.stauts == 1) {
+						alert("创建成功！");
 					} else {
-						this.$XModal.message({ status: 'error', message: res.msg })
+						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

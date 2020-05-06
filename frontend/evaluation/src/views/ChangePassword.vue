@@ -31,6 +31,7 @@
 	Vue.use(Vuerify)
 	
 	export default {
+		inject: ['reload'],
 		components: {
 			UserNav
 		},
@@ -45,11 +46,7 @@
 					userId:null,//只能是9位
 					password:null,//6-16位
 					telephone:null,//11位
-					userName:null,//姓名
-				},
-				response: {
-					status:1,
-					msg:"修改成功"
+					name:null,//姓名
 				}
 			}
 		},
@@ -97,11 +94,19 @@
 				this.request.userId = this.$store.state.userInfo.userId;
 				this.request.password = this.form.newPassword;
 				this.request.telephone = this.$store.state.userInfo.telephone;
-				this.request.userName = this.$store.state.userInfo.userName;
-				console.log(this.request);
+				this.request.name = this.$store.state.userInfo.userName;
+				
+				var self = this;
 				axios.post(api.userUpdate,this.request)
 				.then(function(res) {
-					
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						self.$store.state.userInfo.password = self.request.password;
+						alert("修改成功！");
+					} else {
+						alert(res.data.msg);
+					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

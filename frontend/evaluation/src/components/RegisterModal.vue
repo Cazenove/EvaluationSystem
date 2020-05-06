@@ -25,9 +25,9 @@
 							<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
 						</div>
 						<div class="form-group">
-							<label for="userName" class="col-form-label">姓名</label>
-							<input type="text" class="form-control" id="userName" v-model="registerInfo.userName" />
-							<span class="error" v-if="errors['registerInfo.userName']">{{errors['registerInfo.userName']}}</span>
+							<label for="name" class="col-form-label">姓名</label>
+							<input type="text" class="form-control" id="name" v-model="registerInfo.name" />
+							<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="telephone" class="col-form-label">电话号码</label>
@@ -62,7 +62,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">取消</button>
-						<button type="button" class="btn btn-primary" @click="register">注册</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">注册</button>
 					</div>
 				</div>
 			</div>
@@ -79,13 +79,14 @@
 	Vue.use(Vuerify)
 
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				classList: [],
 				registerInfo: { //注册的表单信息
 					userId: null,
 					password: null,
-					userName: null,
+					name: null,
 					telephone: null,
 					classId: null,
 					groupNum: null,
@@ -97,7 +98,7 @@
 		},
 		created() {
 			//创建的时候获取班级小组列表
-			this.getTeamList();
+			this.getClassList();
 		},
 
 		vuerify: {
@@ -109,9 +110,9 @@
 				test: /^[^]{6,16}$/,
 				message: '密码长度为6-16'
 			},
-			'registerInfo.userName': {
+			'registerInfo.name': {
 				test: function() {
-					if (!this.registerInfo.userName) {
+					if (!this.registerInfo.name) {
 						return false;
 					} else {
 						return true;
@@ -155,11 +156,11 @@
 			}
 		},
 		methods: {
-			getTeamList() {
+			getClassList() {
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					self.classList = res.data.date;
+					self.classList = res.data.data;
 				}).catch(function(error) {
 					console.log(error);
 				})
@@ -169,7 +170,7 @@
 				console.log(this.registerInfo);
 				//注册功能
 				//先检验表单
-				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.userName', 'registerInfo.telephone',
+				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.name', 'registerInfo.telephone',
 					'registerInfo.classId', 'registerInfo.groupNum', 'registerInfo.status'
 				];
 				// check() 校验所有规则，参数可以设置需要校验的数组
@@ -183,6 +184,7 @@
 				axios.post(api.register,this.registerInfo)
 				.then(function(res) {
 					alert(res.data.msg);
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

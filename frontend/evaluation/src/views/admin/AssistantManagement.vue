@@ -14,7 +14,7 @@
 			</div>
 			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
 				<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
-				<vxe-table-column field="assistantName" title="姓名"></vxe-table-column>
+				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="telephone" title="电话"></vxe-table-column>
 				<vxe-table-column field="classId" title="管理的班级"></vxe-table-column>
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
@@ -28,6 +28,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -38,46 +39,30 @@
 				tableData: [],
 				request: {},
 				response: {
-					status: 1,
-					data: [{
-							assistantId: "221701501",
-							password: "123456",
-							assistantName: "老王",
-							telephone: "13200000000",
-							classId: 1
-						},
-						{
-							assistantId: "221701502",
-							password: "123456",
-							assistantName: "老李",
-							telephone: "13200000001",
-							classId: 2
-						}
-					]
+					status: '',
+					data: []
 				}
 			}
 		},
 		created() {
 			this.init();
-			this.tableData = this.response.data;
 		},
 		methods: {
-			getRequest() {},
 			getResponse() {
 				var self = this;
 				axios.get(api.adminAssistantList, null)
-					.then(function(res) {
-						if (res.status === 1) {
-							self.response = res;
-						} else {
-							console.log(res.msg);
-						}
-					}).catch(function(error) {
-						console.log(error);
-					})
+				.then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
+					} else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
-				this.getRequest();
 				this.getResponse();
 			}
 		}

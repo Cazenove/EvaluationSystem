@@ -16,6 +16,7 @@
 				</template>
 			</vxe-toolbar>
 			<vxe-table :data="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign">
+				<vxe-table-column field="evaluationOuterId" title="评分表ID"></vxe-table-column>
 				<vxe-table-column field="name" title="评分表名称"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 				<vxe-table-column field="releaseTime" title="发布时间"></vxe-table-column>
@@ -51,6 +52,7 @@
 	import ManageNav from '../../components/ManageNav.vue'
 	import CreateForm from '../../components/CreateForm.vue'
 	export default {
+		inject: ['reload'],
 		name: "FormManagement",
 		components: {
 			ManageNav,
@@ -82,20 +84,19 @@
 			getResponse() {
 				var self = this;
 				axios.get(api.adminEvaluationDetails, null)
-					.then(function(res) {
-						console.log(res);
-						if (res.status == 200 && res.data.status == 1) {
-							self.response = res.data;
-							self.tableData = self.response.data;
-							for(var i = 0; i < self.tableData.length; i++) {
-								self.tableData[i].classId = self.tableData[i].classInfo.classId;
-							}
-						} else {
-							console.log(res.msg);
+				.then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
+						for(var i = 0; i < self.tableData.length; i++) {
+							self.tableData[i].classId = self.tableData[i].classInfo.classId;
 						}
-					}).catch(function(error) {
-						console.log(error);
-					})
+					} else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			detailsEvent(row) {
 				console.log(row);
@@ -114,6 +115,7 @@
 							} else {
 								alert(res.msg);
 							}
+							self.reload();
 						}).catch(function(error) {
 							console.log(error);
 						})

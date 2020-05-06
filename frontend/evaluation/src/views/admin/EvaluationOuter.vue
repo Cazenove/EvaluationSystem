@@ -56,6 +56,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -69,95 +70,12 @@
 				request: {},
 				response: {
 					status: 1,
-					data: [{
-							submitOuterId: 1, //组间评价表提交编号
-							groupId: 1, //小组id
-							evaluationOuterId: 1, //组间评价表id
-							submitTime: "2020-01-01", //提交时间
-							content: [{
-									groupId: 1,
-									groupName: "第一组",
-									score: 100, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: 40, //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: 60,
-										}
-									],
-									suggestion: "对第一组的建议..."
-								},
-								{
-									groupId: 2,
-									groupName: "第二组",
-									score: 99, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: 39, //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: 59,
-										}
-									],
-									suggestion: "对第二组的建议..."
-								}
-							]
-						},
-						{
-							submitOuterId: 2, //组间评价表提交编号
-							groupId: 2, //小组id
-							evaluationOuterId: 1, //组间评价表id
-							submitTime: "2020-01-02", //提交时间
-							content: [{
-									groupId: 1,
-									groupName: "第一组",
-									score: 98, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: 38, //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: 38,
-										}
-									],
-									suggestion: "对第一组的建议..."
-								},
-								{
-									groupId: 2,
-									groupName: "第二组",
-									score: 97, //总分
-									content: [{
-											item: "创新性",
-											maxScore: 40,
-											score: 37, //未填状态
-										},
-										{
-											item: "实用性",
-											maxScore: 60,
-											score: 37,
-										}
-									],
-									suggestion: "对第二组的建议..."
-								}
-							]
-						}
-					]
+					data: []
 				}
 			}
 		},
 		created() {
 			this.init();
-			this.tableData = this.response.data;
 		},
 		methods: {
 			cellClickEvent ({ row }) {
@@ -168,15 +86,16 @@
 			getResponse() {
 				var self = this;
 				axios.get(api.adminEvaluationOuterSubmit, null)
-					.then(function(res) {
-						if (res.status === 1) {
-							self.response = res;
-						} else {
-							console.log(res.msg);
-						}
-					}).catch(function(error) {
-						console.log(error);
-					})
+				.then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
+					} else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getRequest();

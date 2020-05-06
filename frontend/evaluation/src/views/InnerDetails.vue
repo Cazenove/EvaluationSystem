@@ -14,6 +14,7 @@
 	import UserNav from '../components/UserNav.vue'
 	import InnerEditableTable from '../components/InnerEditableTable.vue'
 	export default {
+		inject: ['reload'],
 		components:{
 			UserNav,
 			InnerEditableTable

@@ -20,8 +20,8 @@ public class Class {
     @Column(name = "name")
     private String className;
     private int groupNum;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
     private String status;
 
     @OneToMany(mappedBy = "classInfo")
@@ -55,19 +55,19 @@ public class Class {
         this.groupNum = groupNum;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

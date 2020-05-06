@@ -16,8 +16,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     public List<User> findByGroupId(int groupId);
     //通过学号查询
     public User findByUserId(String userId);
-    //通过手机号查询
-    public  User findByTelephone(String telephone);
 
     /**
      * @author 221701310_陈家祯

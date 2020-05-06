@@ -11,6 +11,6 @@ public interface GroupRepository extends JpaRepository<Team,Integer> {
     /**
      * 组ID查询
      */
-    @Query("select g from Team as g where g.group_id = :group_id")
+    @Query("select g from Team as g where g.groupId = :group_id")
     Team findByGroupId(@Param("group_id") Integer group_id);
 }

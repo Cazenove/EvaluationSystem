@@ -8,22 +8,33 @@
 			<hr />
 			<p>班级：{{response.data.className}}</p>
 			<p>组号：{{response.data.groupNum}}</p>
-			<p>组名：{{response.data.groupName}} 
+			<p>组名：{{response.data.groupName}}
 				<button
 				 v-if="this.$store.state.userInfo.status === 2" 
 				 class="btn btn-outline-light" 
 				 @click="changeGroupName">修改名称</button>
 			</p>
-			<p>组长：
+			<p v-if="this.$store.state.userInfo.status == 2">组长：
 				<router-link :to="{path:'/member',query:{userId:response.data.leader.userId}}">
-					{{response.data.leader.userName}}
-				</router-link></p>
-			<p>组员：
+					{{response.data.leader.name}}
+				</router-link>
+			</p>
+			<p v-else-if="this.$store.state.userInfo.status == 1">
+				组长：{{response.data.leader.name}}
+			</p>
+			<p v-if="this.$store.state.userInfo.status == 2">组员：
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item" v-for="member in response.data.member" :key="member.userId">
 						<router-link :to="{path:'/member',query:{userId:member.userId}}">
-							{{member.userName}}
+							{{member.name}}
 						</router-link>
+					</li>
+				</ul>
+			</p>
+			<p v-else-if="this.$store.state.userInfo.status == 1">组员：
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item" v-for="member in response.data.member" :key="member.userId">
+						{{member.name}}
 					</li>
 				</ul>
 			</p>
@@ -44,59 +55,28 @@
 	import api from '../router/httpConfig.js'
 	import UserNav from '../components/UserNav.vue'
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				request: {
-					groupId:""
+					params: {
+						groupId:""
+					}
 				},
 				response: {
-					status:1,
+					status:'',
 					data: {
-					    groupId:1,
-					    groupName:"第一组",
-					    classId:1,
-					    className:"2020软件工程S班",
-					    groupNum:1,//小组在班级里的编号
+					    groupId:'',
+					    groupName:'',
+					    classId:'',
+					    className:'',
+					    groupNum:'',//小组在班级里的编号
 					    leader: {
-					        userId:"221701000",//组长的学号
-					        userName:"张三"//组长的姓名
+					        userId:'',//组长的学号
+					        userName:''//组长的姓名
 					    },
-					    member: [
-					        {
-					            userId:"221701001",
-					            userName:"李四"
-					        },
-					        {
-					            userId:"221701002",
-					            userName:"王五"
-					        },
-							{
-							    userId:"221701003",
-							    userName:"陆"
-							},
-							{
-							    userId:"221701004",
-							    userName:"柒"
-							},
-							{
-							    userId:"221701005",
-							    userName:"捌"
-							}
-					    ],
-					    data: [
-					        {
-					            evaluationOuterId:1,
-					            name:"第一次团队作业_组间评分表",
-					            score:93,
-					            suggestion:["建议1","建议2"]
-					        },
-					        {
-					            evaluationOuterId:2,
-					            name:"第二次团队作业_组间评分表",
-					            score:94,
-					            suggestion:["建议1","建议2"]
-					        }
-					    ]
+					    member: [],
+					    data: []
 					}
 				}
 			}
@@ -110,16 +90,24 @@
 		},
 		methods: {
 			getRequest() {
-				this.$data.request.groupId = this.$store.state.userInfo.groupId;
+				this.$data.request.params.groupId = this.$store.state.userInfo.groupId;
 			},
 			getResponse() {
 				var self = this;
-				axios.get(api.userGroupDetails, self.request)
-					.then(function(res) {
-						self.response = res;
-					}).catch(function(error) {
-						console.log(error);
-					})
+				axios.get(api.userGroupDetails, {
+					params:{
+						groupId: self.$store.state.userInfo.groupId
+					}
+				}).then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getRequest(),

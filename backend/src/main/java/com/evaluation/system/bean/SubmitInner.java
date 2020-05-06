@@ -17,7 +17,7 @@ public class SubmitInner {
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private Map<String,Object> content;
-    private Date submitTime;
+    private String submitTime;
 
     public SubmitInner(){
 
@@ -66,11 +66,11 @@ public class SubmitInner {
         this.content = content;
     }
 
-    public Date getSubmitTime() {
+    public String getSubmitTime() {
         return submitTime;
     }
 
-    public void setSubmitTime(Date submitTime) {
+    public void setSubmitTime(String submitTime) {
         this.submitTime = submitTime;
     }
 }

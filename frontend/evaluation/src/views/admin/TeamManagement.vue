@@ -19,13 +19,13 @@
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
 			<vxe-table-column title="组长信息">
 				<vxe-table-column field="leader.userId" title="学号"></vxe-table-column>
-				<vxe-table-column field="leader.userName" title="姓名"></vxe-table-column>
+				<vxe-table-column field="leader.name" title="姓名"></vxe-table-column>
 			</vxe-table-column>
 			<vxe-table-column type="expand" title="组员信息">
 				<template v-slot:content="{ row, rowIndex }">
-					<vxe-table border :data="tableData[rowIndex].member">
+					<vxe-table border :data="tableData[rowIndex].members">
 						<vxe-table-column field="userId" title="学号"></vxe-table-column>
-						<vxe-table-column field="userName" title="姓名"></vxe-table-column>
+						<vxe-table-column field="name" title="姓名"></vxe-table-column>
 					</vxe-table>
 				</template>
 			</vxe-table-column>
@@ -39,6 +39,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -61,16 +62,17 @@
 			getResponse() {
 				var self = this;
 				axios.get(api.adminTeamList, null)
-					.then(function(res) {
-						if (res.status == 200 && res.data.status == 1) {
-							self.response = res.data;
-							self.tableData = self.response.data;
-						} else {
-							console.log(res.msg);
-						}
-					}).catch(function(error) {
-						console.log(error);
-					})
+				.then(function(res) {
+					console.log(res);
+					if (res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
+					} else {
+						console.log(res.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getResponse();

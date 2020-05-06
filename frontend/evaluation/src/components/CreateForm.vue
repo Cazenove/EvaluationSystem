@@ -15,7 +15,7 @@
 			</div>
 			<div class="form-group col-md-4 mb-3">
 				<label>选择截止时间：</label>
-				<input v-model="submitForm.endTime" type="datetime-local" class="form-control" />
+				<input v-model="submitForm.endTime" type="date" class="form-control" />
 			</div>
 		</div>
 		<vxe-toolbar>
@@ -57,6 +57,7 @@
 	import XEUtils from 'xe-utils'
 	
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				validRules: {
@@ -133,9 +134,8 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 					.then(function(res) {
-						console.log(res.data);
 						if(res.status == 200 && res.data.status == 1) {
-							self.classList = res.data.date;
+							self.classList = res.data.data;
 						}
 					}).catch(function(error) {
 						console.log(error);
@@ -216,7 +216,7 @@
 									self.submitForm.content.details[i] = item;
 								}
 							}
-							var time = new Date();
+							var time = Number(new Date());
 							//获取本地时间作为表单的发布时间
 							self.submitForm.releaseTime = time;
 							console.log(self.submitForm);
@@ -229,6 +229,7 @@
 								} else {
 									alert(res.msg);
 								}
+								self.reload();
 							}).catch(function(error) {
 								console.log(error);
 							})

@@ -12,12 +12,6 @@ import java.util.List;
  * @author 221701230张增燊&221701310_陈家祯
  */
 public interface TeamRepository extends JpaRepository<Team,Integer> {
-    /**通过小组id找到小组
-     * @author 221701230张增燊
-     * @param groupId 小组id
-     * @return Team
-     */
-    public Team findByGroupId(Integer groupId);
 
     /**通过班级id找到小组
      * @author 221701230张增燊
@@ -35,6 +29,6 @@ public interface TeamRepository extends JpaRepository<Team,Integer> {
     /**
      * 组ID查询
      */
-    @Query("select g from Team as g where g.group_id = :group_id")
+    @Query("select g from Team as g where g.groupId = :group_id")
     Team findByGroupId(@Param("group_id") Integer group_id);
 }

@@ -41,6 +41,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -53,82 +54,36 @@
 				],
 				detailData: [
 				],
-                request: {
-                },
                 response: {
-					status:1,
-					data:[
-						{
-							submitInnerId:1,//组内评价表提交编号
-							groupId:3,//小组id
-							evaluationInnerId:1,
-							submitTime:"2020-01-01",//提交时间
-							content: [
-								{
-									userId:"221701000",//id，学号
-									userName:"张三",//姓名
-									decision:"前端",//分工
-									contribution:50//贡献率
-								},
-								{
-									userId:"221701001",//id，学号
-									userName:"李四",//姓名
-									decision:"后端",//分工
-									contribution:50//贡献率
-								}
-							]
-						},
-						{
-							submitInnerId:2,//组内评价表提交编号
-							groupId:4,//小组id
-							evaluationInnerId:1,
-							submitTime:"2020-01-02",//提交时间
-							content: [
-								{
-									userId:"221701000",//id，学号
-									userName:"张三",//姓名
-									decision:"前端",//分工
-									contribution:50//贡献率
-								},
-								{
-									userId:"221701001",//id，学号
-									userName:"李四",//姓名
-									decision:"后端",//分工
-									contribution:50//贡献率
-								}
-							]
-						}
-					]
+					status:'',
+					data:[]
 				}
 			}
 		},
         created() {
             this.init();
-			this.tableData = this.response.data
         },
         methods: {
 			cellClickEvent ({ row }) {
 				this.detailData = row.content;
 				this.showDetails = true
 			},
-            getRequest() {
-            },
             getResponse() {
 				var self = this;
 				axios.get(api.adminEvaluationInnerSubmit,null)
 				.then(function(res) {
-					if(res.status === 1) {
-						self.response = res;
+					if(res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
 					}
 					else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
 				})
             },
             init() {
-                this.getRequest();
                 this.getResponse();
             }
         }

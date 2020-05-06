@@ -26,8 +26,8 @@ public class EvaluationOuter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int evaluationOuterId;
     private String name;
-    private Date releaseTime;
-    private Date endTime;
+    private String releaseTime;
+    private String endTime;
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private Map<String,Object> content;
@@ -59,11 +59,11 @@ public class EvaluationOuter {
                 '}';
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -107,11 +107,11 @@ public class EvaluationOuter {
         this.content = content;
     }
 
-    public Date getReleaseTime() {
+    public String getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(Date releaseTime) {
+    public void setReleaseTime(String releaseTime) {
         this.releaseTime = releaseTime;
     }
 }

@@ -45,10 +45,10 @@ public class AdminService {
                         msg = "组不存在";
                     }
                     else{
-                        user1.setUser_id(id);
+                        user1.setUserId(id);
                         user1.setPassword(password);
                         user1.setName(name);
-                        user1.setClass_id(classId);
+                        user1.setClassId(classId);
                         user1.setGroupId(groupId);
                         user1.setStatus(status);
                         user1.setTelephone(tel);
@@ -103,7 +103,7 @@ public class AdminService {
                 if (classRepository.findByClassId( classId ) == null) {
                     msg = "班级不存在";
                 } else {
-                    user1.setClass_id( classId );
+                    user1.setClassId( classId );
                     if(groupRepository.findByGroupId(groupId)==null){
                         msg = "组不存在";
                     }
@@ -157,10 +157,10 @@ public class AdminService {
             if (classRepository.findByClassId( classId ) == null) {
                 msg = "班级不存在";
             } else {
-                assistant1.setAssistant_id( id );
+                assistant1.setAssistantId( id );
                 assistant1.setPassword(password);
                 assistant1.setName(name);
-                assistant1.setClass_id(classId);
+                assistant1.setClassId(classId);
                 assistant1.setTelephone(tel);
                 assistantRepository.save(assistant1);
                 flag = 1;

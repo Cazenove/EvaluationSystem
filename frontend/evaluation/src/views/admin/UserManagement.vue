@@ -10,6 +10,8 @@
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>用户管理</h1>
+			
+			
 			<div style="margin-bottom: 20px;">
 				<div class="row container" style="margin-bottom: 20px;">
 					
@@ -25,23 +27,22 @@
 					<el-col :span="3">
 						<el-input offser="3" placeholder="姓名" v-model="searchInfo.userName"></el-input>
 					</el-col>
-					<el-col :span="4">
-						<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
-							<el-option :value="item.classId" v-for="item in classOption" :label="item.name"></el-option>
+					<el-col :span="3">
+						<el-select offser="5" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+							<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.name"></el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="2">
+					<el-col :span="3">
 						<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
 							<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
 						</el-select>
 					</el-col>
 					<el-col :span="3">
 						<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-							<el-option v-for="item in statusOption" :value="item.value" :label="item.label"></el-option>
+							<el-option v-for="item in statusOption" :key="item.value" :value="item.value">{{item.label}}</el-option>
 						</el-select>
 					</el-col>
 					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-					<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 				</el-row>
 			</div>
 			<vxe-table border
@@ -52,7 +53,7 @@
 				ref="xTable"
 				:data="tableData">
 				<vxe-table-column field="userId" title="学号"></vxe-table-column>
-				<vxe-table-column field="userName" title="姓名"></vxe-table-column>
+				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组"></vxe-table-column>
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
@@ -195,6 +196,7 @@
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	export default {
+		inject: ['reload'],
 		name: "UserManagement",
 		components: {
 			ManageNav,
@@ -207,29 +209,8 @@
 				selectRow: null,
 				allAlign: null,
 				response: {
-					status:1,
-					selectRow: null,
-					showEdit: false,
-				    data:[
-				        {
-				            userId:"221701501",//学号
-				            password:"123456",//密码
-				            userName:"张三",//姓名
-				            classId:1,//班级
-				            groupId:1,//小组
-				            status:1,//职务
-							telephone:13200000000,//电话号码
-				        },
-				        {
-				            userId:"221701502",//学号
-				            password:"123456",//密码
-				            userName:"李四",//姓名
-				            classId:2,//班级
-				            groupId:1,//小组
-				            status:2,//职务
-							telephone:13200000000,//电话号码
-				        }
-				    ]
+					status:'',
+				    data:[]
 				},
 				tableData: [
 				],
@@ -251,17 +232,7 @@
 					status: null,
 					groupNum: null,
 				},
-				classList: [{
-						classId: 1, //班级id
-						name: "2020软件工程S班", //班级名
-						groupNum: 10 //这个班级的小组数量
-					},
-					{
-						classId: 2, //班级id
-						name: "2020软件工程W班", //班级名
-						groupNum: 11 //这个班级的小组数量
-					}
-				],
+				classList: [],
 				classOption: [],
 				teamOption: [],
 				statusOption: [
@@ -284,7 +255,6 @@
 			this.init();
 			this.getTeamList();
 			this.getClassOption();
-			this.tableData = this.response.data;
 		},
 		methods: {
 			init() {
@@ -294,26 +264,25 @@
 				var self = this;
 				axios.get(api.adminUserList,null)
 				.then(function(res) {
-					console.log(res);
-					if(res.data.status == 1) {
-					self.response = res.data;
+					if(res.status == 200 && res.data.status == 1) {
+						self.tableData = res.data.data;
 					}
 					else {
-						console.log(res.msg);
+						alert(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
 				})
 			},
 			formatterClass({ cellValue }) {
-				let item = this.classOption.find(item => item.classId === cellValue)
+				let item = this.classOption.find(item => item.classId == cellValue)
 				return item ? item.name : ''
 			},
 			formatterStatus({ cellValue }) {
-				let item = this.statusOption.find(item => item.value === cellValue)
+				let item = this.statusOption.find(item => item.value == cellValue)
 				return item ? item.label : ''
 			},
-			search() {//搜索功能
+			search() {
 				// this.init();
 				this.tableData = [];
 				for(let value of this.response.data){
@@ -340,18 +309,6 @@
 				}
 				
 			},
-			resetSearch () {
-				this.tableData = this.response.data;
-				var list = {
-					userId: null,
-					userName: null,
-					classId: null,
-					groupId: null,
-					status: null,
-					groupNum: null,
-				};
-				this.searchInfo = list;
-			},
 			editEvent (row) {
 				console.log(this.classList)
 				// this.$refs.xTable.setActiveRow(row)
@@ -376,18 +333,19 @@
 			},
 			removeEvent (row) {
 				var deleteInfo = {
-					userId : row.userId,
+					userId : row.userId
 				}
-				
 					this.$XModal.confirm('您确定要删除该数据?').then(type => {
 						if (type === 'confirm') {
 						this.$refs.xTable.remove(row)
 					}
 				})
 				
+				var self = this;
 				axios.post(api.adminUserDelete,deleteInfo)
 				.then(function(res){
-					alert(res.msg);
+					alert(res.data.msg);
+					self.reload();
 				}).catch(function(error){
 					console.log(error);
 				})
@@ -449,7 +407,8 @@
 				let self = this;
 				axios.post(api.adminUserUpdate,self.updateInfo)
 				.then(function(res) {
-					alert(res.msg);
+					alert(res.data.msg);
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

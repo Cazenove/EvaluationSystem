@@ -22,9 +22,9 @@
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label for="userName" class="col-form-label">姓名</label>
-								<input type="text" class="form-control" id="userName" v-model="request.userName" />
-								<span class="error" v-if="errors['request.userName']">{{errors['request.userName']}}</span>
+								<label for="name" class="col-form-label">姓名</label>
+								<input type="text" class="form-control" id="name" v-model="request.name" />
+								<span class="error" v-if="errors['request.name']">{{errors['request.name']}}</span>
 							</div>
 							<div class="form-group">
 								<label for="telephone" class="col-form-label">电话号码</label>
@@ -34,7 +34,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary" @click="onSubmit">修改</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" @click="onSubmit">修改</button>
 						</div>
 					</div>
 				</div>
@@ -52,6 +52,7 @@
 	Vue.use(Vuerify)
 	
 	export default {
+		inject: ['reload'],
 		components: {
 			UserNav
 		},
@@ -61,7 +62,7 @@
 					userId: null,
 					password: null,
 					telephone: null,
-					userName: null
+					name: null
 				},
 				response: {
 					
@@ -69,9 +70,9 @@
 			}
 		},
 		vuerify: {
-			'request.userName': {
+			'request.name': {
 				test: function() {
-					if (!this.request.userName) {
+					if (!this.request.name) {
 						return false;
 					} else {
 						return true;
@@ -88,18 +89,18 @@
 			this.$data.request.userId = this.$store.state.userInfo.userId;
 			this.$data.request.password = this.$store.state.userInfo.password;
 			this.$data.request.telephone = this.$store.state.userInfo.telephone;
-			this.$data.request.userName = this.$store.state.userInfo.userName;
+			this.$data.request.name = this.$store.state.userInfo.userName;
 		},
 		methods: {
 			onSubmit() {
 				//修改个人信息
-				let verifyList = ['request.userName', 'request.telephone'];
+				let verifyList = ['request.name', 'request.telephone'];
 				// check() 校验所有规则，参数可以设置需要校验的数组
 				if (!this.$vuerify.check(verifyList)) {
 					return;
 				}
 				if (this.$data.request.telephone === this.$store.state.userInfo.telephone &&
-					this.$data.request.userName === this.$store.state.userInfo.userName) {
+					this.$data.request.name === this.$store.state.userInfo.userName) {
 					//信息没有变化
 					alert("信息没有变化！");
 					return;
@@ -108,10 +109,19 @@
 				
 				this.request.userId = this.$store.state.userInfo.userId;
 				this.request.password = this.$store.state.userInfo.password;
-				console.log(this.request);
+				
+				var self = this;
 				axios.post(api.userUpdate,this.request)
 				.then(function(res) {
-					
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						self.$store.state.userInfo.telephone = self.request.telephone;
+						self.$store.state.userInfo.userName = self.request.name;
+						alert("修改成功！");
+					} else {
+						alert(res.data.msg);
+					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

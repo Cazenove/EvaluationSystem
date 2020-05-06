@@ -16,6 +16,7 @@
 	import axios from 'axios'
 	import api from '../router/httpConfig.js'
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				request: { //通过班级组号请求列表

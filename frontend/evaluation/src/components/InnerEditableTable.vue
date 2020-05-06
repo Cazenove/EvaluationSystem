@@ -31,6 +31,7 @@
 	import XEUtils from 'xe-utils'
 	
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				validRules: {

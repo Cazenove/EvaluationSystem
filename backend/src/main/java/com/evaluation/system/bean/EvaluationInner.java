@@ -25,8 +25,8 @@ public class EvaluationInner {
     private int classId;
     @Type(type = "json")
     private Map<String,Object> content;
-    private Date releaseTime;
-    private Date endTime;
+    private String releaseTime;
+    private String endTime;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
@@ -37,11 +37,11 @@ public class EvaluationInner {
 
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -85,11 +85,11 @@ public class EvaluationInner {
         this.content = content;
     }
 
-    public Date getReleaseTime() {
+    public String getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(Date releaseTime) {
+    public void setReleaseTime(String releaseTime) {
         this.releaseTime = releaseTime;
     }
 }

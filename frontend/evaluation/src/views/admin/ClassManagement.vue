@@ -30,7 +30,7 @@
 					</div>
 					<div class="form-group">
 						<label for="add-startTime">开始时间</label>
-						<input v-model="submitData.startTime" type="datetime-local" class="form-control" />
+						<input v-model="submitData.startTime" type="date" class="form-control" />
 					</div>
 				</div>
 				
@@ -136,7 +136,7 @@
 					</div>
 					<div class="form-group">
 						<label for="add-startTime">开始时间</label>
-						<input v-model="editData.startTime" type="datetime-local" class="form-control" />
+						<input v-model="editData.startTime" type="date" class="form-control" />
 					</div>
 				</div>
 				
@@ -159,6 +159,7 @@
 	import ManageNav from '../../components/ManageNav.vue'
 	
 	export default {
+		inject: ['reload'],
 		name: 'ClassManagement',
 		components: {
 			ManageNav,
@@ -197,9 +198,8 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
-						self.tableData = res.data.date;
+						self.tableData = res.data.data;
 					} else {
 						console.log(res.data.msg);
 					}
@@ -208,6 +208,10 @@
 				})
 			},
 			createClass() {
+				// console.log(Number(new Date()));
+				// this.submitData.startTime = Number(this.submitData.startTime);
+				// console.log(this.submitData.startTime);
+				var self = this;
 				axios.post(api.adminClassCreate,this.submitData)
 				.then(function(res) {
 					console.log(res);
@@ -216,6 +220,7 @@
 					} else {
 						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})
@@ -233,15 +238,17 @@
 				.then(function(res) {
 					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
-						alert("删除成功！")
+						alert("删除成功！");
 					} else {
 						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})
 			},
 			endClass() {
+				var self = this;
 				axios.post(api.adminClassEnd,{
 					classId:this.$data.endClassId
 				})
@@ -252,6 +259,7 @@
 					} else {
 						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})
@@ -271,6 +279,7 @@
 					} else {
 						alert(res.data.msg);
 					}
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

@@ -27,6 +27,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	export default {
+		inject: ['reload'],
 		components: {
 			ManageNav,
 		},
@@ -39,39 +40,13 @@
                 request: {
                 },
                 response: {
-					status:1,
-					data:[
-						{
-							userId:"221701000",
-							userName:"张三",
-							classId:1,
-							className:"2020软件工程S班",
-							groupId:1,
-							groupName:"第一组",
-							content: {
-								list:[
-									{
-										evaluationInnerId:1,
-										evaluationInnerName:"第一次团队合作_组内评分表",
-										decision:"前端",//分工
-										contribution:40//贡献率
-									},
-									{
-										evaluationInnerId:2,
-										evaluationInnerName:"第二次团队合作_组内评分表",
-										decision:"前端",//分工
-										contribution:60//贡献率
-									}
-								]
-							}
-						}
-					]
+					status:'',
+					data:[]
 				}
 			}
 		},
         created() {
             this.init();
-			this.tableData = this.response.data;
         },
         methods: {
             getRequest() {
@@ -80,8 +55,9 @@
 				var self = this;
 				axios.get(api.adminUserScoreList,null)
 				.then(function(res) {
-					if(res.status === 1) {
-						self.response = res;
+					if(res.status == 200 && res.data.status == 1) {
+						self.response = res.data;
+						self.tableData = self.response.data;
 					}
 					else {
 						console.log(res.msg);
