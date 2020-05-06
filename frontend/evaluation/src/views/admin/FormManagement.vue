@@ -30,15 +30,14 @@
 				</vxe-table-column>
 			</vxe-table>
 		</div>
-		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
-			<vxe-table
-			 highlight-hover-row
-			 highlight-current-row
-			 border 
-			 :data="detailData" >
-				<vxe-table-column field="item" title="评分项"></vxe-table-column>
-				<vxe-table-column field="maxScore" title="分值"></vxe-table-column>
-			</vxe-table>
+		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize destroy-on-close>
+			<vxe-grid
+			 border
+			 resizable
+			 keep-source
+			 :columns="tableColumn"
+			 :data="detailData">
+			</vxe-grid>
 		</vxe-modal>
 		<vxe-modal v-model="showCreate" title="创建评分表" width="850" height="600" :mask="false" :lock-view="false" resize>
 			<CreateForm />
@@ -68,7 +67,8 @@
 					data: []
 				},
 				tableData: [],
-				detailData: []
+				detailData: [],
+				tableColumn: []
 			}
 		},
 		created() {
@@ -85,6 +85,7 @@
 				var self = this;
 				axios.get(api.adminEvaluationDetails, null)
 				.then(function(res) {
+					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						for (let item of res.data.data){
 							if(item.releaseTime != "")
@@ -110,14 +111,27 @@
 				})
 			},
 			detailsEvent(row) {
-				console.log(row);
-				this.detailData = row.content.details[0].content;
+				for(var i=0;i<row.content.tableColumn.length;i++) {
+					var str = 'name'+i;
+					this.tableColumn[i]={
+						field: str,
+						title: row.content.tableColumn[i]
+					};
+				}
+				for(var i=0;i<row.content.tableData.length;i++) {
+					var item = []
+					for(var j=0;j<row.content.tableColumn.length;j++) {
+						var str = 'name'+j;
+						item[str] = row.content.tableData[i][j];
+					}
+					this.detailData[i] = item;
+				}
 				this.showDetails = true
 			},
 			removeEvent(row) {
 				this.$XModal.confirm('您确定要删除这份评分表吗?删除评分表的同时会删除提交记录，请慎重考虑').then(type => {
 					if (type === 'confirm') {
-						console.log(row.evaluationOuterId);
+						var self = this;
 						axios.post(api.adminEvaluationDelete,{
 							evaluationOuterId: row.evaluationOuterId
 						}).then(function(res) {

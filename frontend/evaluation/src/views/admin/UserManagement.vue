@@ -71,9 +71,7 @@
 					</template>
 				</vxe-table-column>
 			</vxe-table>
-			
 		</div>
-		
 		
 		<!-- 模态框 -->
 		<div class="modal fade" id="AddModal">

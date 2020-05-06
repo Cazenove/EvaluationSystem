@@ -1,14 +1,14 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="AdminUserCreateModal">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#adminUserCreateModal">添加用户</button>
+		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button>
 		<!-- 注册模态框 -->
-		<div class="modal fade" id="adminUserCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="adminUserCreateModalLabel">添加用户</h5>
+						<h5 class="modal-title" id="registerModalLabel">添加用户</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -25,9 +25,9 @@
 							<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
 						</div>
 						<div class="form-group">
-							<label for="userName" class="col-form-label">姓名</label>
-							<input type="text" class="form-control" id="userName" v-model="registerInfo.name" />
-							<span class="error" v-if="errors['registerInfo.userName']">{{errors['registerInfo.userName']}}</span>
+							<label for="name" class="col-form-label">姓名</label>
+							<input type="text" class="form-control" id="name" v-model="registerInfo.name" />
+							<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="telephone" class="col-form-label">电话号码</label>
@@ -62,7 +62,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">取消</button>
-						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">添加用户</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">添加</button>
 					</div>
 				</div>
 			</div>
@@ -110,7 +110,7 @@
 				test: /^[^]{6,16}$/,
 				message: '密码长度为6-16'
 			},
-			'registerInfo.userName': {
+			'registerInfo.name': {
 				test: function() {
 					if (!this.registerInfo.name) {
 						return false;
@@ -160,7 +160,6 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					console.log(res);
 					self.classList = res.data.data;
 				}).catch(function(error) {
 					console.log(error);
@@ -168,9 +167,10 @@
 			},
 			close() {},
 			register() {
+				console.log(this.registerInfo);
 				//注册功能
 				//先检验表单
-				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.userName', 'registerInfo.telephone',
+				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.name', 'registerInfo.telephone',
 					'registerInfo.classId', 'registerInfo.groupNum', 'registerInfo.status'
 				];
 				// check() 校验所有规则，参数可以设置需要校验的数组
@@ -178,13 +178,13 @@
 					return;
 				}
 				console.log('验证通过');
-				
 				//然后发送表单
-				let self = this;
-				axios.post(api.register,self.registerInfo)
+				var self = this;
+				console.log(this.registerInfo);
+				axios.post(api.register,this.registerInfo)
 				.then(function(res) {
-					console.log(res);
 					alert(res.data.msg);
+					self.reload();
 				}).catch(function(error) {
 					console.log(error);
 				})

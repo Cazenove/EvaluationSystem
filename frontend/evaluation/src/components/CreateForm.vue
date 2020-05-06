@@ -25,6 +25,7 @@
 		</vxe-toolbar>
 		<vxe-table
 		 border 
+		 keep-source
 		 show-footer
 		 highlight-hover-row 
 		 export-config 
@@ -71,7 +72,7 @@
 				tableData: [{
 					item:null,
 					maxScore:null,
-					socre:""
+					score:""
 				}],
 				classList: [
 				],
@@ -83,9 +84,11 @@
 					classId:null,
 				    releaseTime:"",//发布时间
 				    endTime:"",//结束时间
-				    content: {
-				        details:[]
-				    }
+				    content:{
+						tableColumn:['groupId','groupNum','groupName'],
+						maxScore:[0,0,0],
+						tableData:[]
+					}
 				},
 				check: false//表单验证结果
 			}
@@ -199,7 +202,7 @@
 			release() {
 				//表头校验
 				if(!this.submitForm.name || !this.submitForm.endTime || !this.submitForm.classId) {
-					this.$XModal.message({ status: 'error', message: '表头信息不能为空' })
+					this.$XModal.message({ status: 'error', message: '表头信息不能为空' });
 					this.getTimeStamp(this.submitForm.endTime);
 					return;
 				} else {
@@ -210,23 +213,36 @@
 							//校验不通过
 							return;
 						} else {
+							self.submitForm.releaseTime = Number(new Date());
 							//校验通过，生成表单
+							// console.log(self.tableData);
+							
+							for(var i=0;i<self.tableData.length;i++) {
+								self.submitForm.content.tableColumn[i+3] = self.tableData[i].item;
+								self.submitForm.content.maxScore[i+3] = self.tableData[i].maxScore;
+							}
+							self.submitForm.content.tableColumn[self.tableData.length+3] = '总分';
+							self.submitForm.content.tableColumn[self.tableData.length+4] = '建议';
+							self.submitForm.content.maxScore[self.tableData.length+3] = 100;
+							self.submitForm.content.maxScore[self.tableData.length+4] = 0;
+							
+							var index=0;
 							for(var i=0; i<self.teamList.length; i++) {
-								if(self.teamList[i].classId === self.submitForm.classId) {
-									var item = {
-										groupId:self.teamList[i].groupId,
-										groupName:self.teamList[i].groupName,
-										groupNum:self.teamList[i].groupNum,
-										score:'',
-										content:self.tableData
-									};
-									self.submitForm.content.details[i] = item;
+								if(self.teamList[i].classId == self.submitForm.classId) {
+									var teamItem = [];
+									teamItem[0] = self.teamList[i].groupId;
+									teamItem[1] = self.teamList[i].groupNum;
+									teamItem[2] = self.teamList[i].groupName;
+									var k;
+									for(k = 3; k < self.tableData.length + 3; k++) {
+										teamItem[k] = 0;
+									}
+									teamItem[k++] = 0;
+									teamItem[k] = '';
+									self.submitForm.content.tableData[index++] = teamItem;
 								}
 							}
-							var time = Number(new Date());
-							//获取本地时间作为表单的发布时间
-							self.submitForm.releaseTime = time;
-							console.log(self.submitForm);
+							
 							//提交表单
 							axios.post(api.adminEvaluationCreate,self.submitForm)
 							.then(function(res) {

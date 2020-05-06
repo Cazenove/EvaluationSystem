@@ -24,24 +24,41 @@ Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 
 //路由守卫
-router.beforeEach((to, from, next) => {
-	//路由中设置的needLogin字段就在to当中 
-	if (window.sessionStorage.data) {
-		console.log(to.path) //每次跳转的路径
-		if(to.path === '/login') {
-			next({path: '/home'});
-		} else {
-			next();
-		}
-	} else {
-		// 如果没有session ,访问任何页面。都会进入到 登录页
-		if (to.path === '/') { // 如果是登录页面的话，直接next() -->解决注销后的循环执行bug
-			next();
-		} else { // 否则 跳转到登录页面
-			next({path: '/'});
-		}
-	}
-})
+// router.beforeEach((to, from, next) => {
+// 	//用户可登录页面
+// 	const userList = ['/home', '/team', '/member', '/outer', '/inner', '/account', '/changepassword']
+// 	//管理员可登录页面
+// 	const adminList = ['/admin/user', '/admin/class', '/admin/assistant', '/admin/team', '/admin/form', '/admin/evaluationouter', '/admin/evaluationinner', '/admin/suggestion', '/admin/teamscore', '/admin/personscore', '/admin/teamfinalscore', '/admin/personfinalscore']
+// 	//路由中设置的needLogin字段就在to当中 
+// 	if (window.sessionStorage.data) {
+// 		if(store.state.loginState == 1 || store.state.loginState == 2) {
+// 			if(to.path == '/' || to.path == '/login') {
+// 				next({path: '/home'});
+// 			} else if(userList.indexOf(to.path) !== -1) {
+// 				//进入用户可访问的页面
+// 				next();
+// 			} else {
+// 				next({path: '/home'});
+// 			}
+// 		} else if(store.state.loginState == 3 || store.state.loginState == 4) {
+// 			if(to.path == '/' || to.path == '/login') {
+// 					next({path: '/admin/user'});
+// 			} else if(adminList.indexOf(to.path) !== -1) {
+// 				//进入管理员可访问的页面
+// 				next();
+// 			} else {
+// 				next({path: '/admin/user'});
+// 			}
+// 		}
+// 	} else {
+// 		// 如果没有session ,访问任何页面。都会进入到 登录页
+// 		if (to.path === '/') { // 如果是登录页面的话，直接next() -->解决注销后的循环执行bug
+// 			next();
+// 		} else { // 否则 跳转到登录页面
+// 			next({path: '/'});
+// 		}
+// 	}
+// })
 
 new Vue({
 	router,

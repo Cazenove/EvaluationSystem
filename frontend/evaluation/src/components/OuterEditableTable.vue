@@ -1,12 +1,12 @@
 <!-- 组间评价表内容 -->
 <template>
 	<div id="OuterEditableTable" class="container col-md-10 offset-md-1" style="margin: 50px auto;">
-		<h2>{{this.$data.response.data.name}}</h2>
+		<h2>{{this.$data.title}}</h2>
 		<vxe-grid
-		 v-if="validRules"
+		 v-if="ready"
 		 border
-		 resizable
 		 keep-source
+		 resizable
 		 ref="xTable"
 		 :columns="tableColumn"
 		 :data="tableData"
@@ -26,16 +26,19 @@
 		inject: ['reload'],
 		data() {
 			return {
+				ready:false,
+				showDetails:false,
+				title:'',
 				validRules: {
-					score0: [{required:true, message:'此项必填'}],
-					score1: [{required:true, message:'此项必填'}],
-					score2: [{required:true, message:'此项必填'}],
-					score3: [{required:true, message:'此项必填'}],
-					score4: [{required:true, message:'此项必填'}],
-					score5: [{required:true, message:'此项必填'}],
-					score6: [{required:true, message:'此项必填'}],
-					score7: [{required:true, message:'此项必填'}],
-					score8: [{required:true, message:'此项必填'}],
+					name0: [{required:true, message:'此项必填'}],
+					name1: [{required:true, message:'此项必填'}],
+					name2: [{required:true, message:'此项必填'}],
+					name3: [{required:true, message:'此项必填'}],
+					name4: [{required:true, message:'此项必填'}],
+					name5: [{required:true, message:'此项必填'}],
+					name6: [{required:true, message:'此项必填'}],
+					name7: [{required:true, message:'此项必填'}],
+					name8: [{required:true, message:'此项必填'}],
 					suggestion:[{required:true, message:'建议为必填项'}]
 				},
 				request: {
@@ -43,106 +46,23 @@
 					groupId:null,
 					evaluationOuterId:null//组间评分表的id
 				},
-				response: {
-					status:1,
-					data: {
-						evaluationOuterId:1,
-						name:"第一次团队合作_组间评分表",
-						releaseTime:"",//发布时间
-						endTime:"",//截止时间，在截止时间之后就不能提交
-						content: {
-							details:[
-								{
-									groupId:1,
-									groupNum: 1,// 填表的时候看的是自己班级里的第几组
-									groupName:"第一组",
-									score:null,//总分
-									content:[
-										{
-											item:"创新性",
-											maxScore:40,
-											score:"",//未填状态
-										},
-										{
-											item:"实用性",
-											maxScore:60,
-											score:null,
-										}
-									],
-									suggestion:"对第一组的建议..."
-								},
-								{
-									groupId:2,
-									groupNum: 2,
-									groupName:"第二组",
-									score:null,//总分
-									content:[
-										{
-											item:"创新性",
-											maxScore:40,
-											score:"",//未填状态
-										},
-										{
-											item:"实用性",
-											maxScore:60,
-											score:"",
-										}
-									],
-									suggestion:"对第二组的建议..."
-								}
-							]
-						}
-					}
-				},
+				response: {},
 				tableColumn: [
-					{
-						field:"groupId",
-						title:"小组id"
-					},
-					{
-						field:"groupName",
-						title:"组名"
-					}
+					{title:'小组ID',field:'0'},
+					{title:'小组序号',field:'1'},
+					{title:'小组名称',field:'2'}
 				],
 				tableData: []
 			}
 		},
 		created() {
 			this.init();
-			// 获取表头
-			var content = this.$data.response.data.content.details[0].content,
-				len = content.length;
-			for (var i = 2; i < len+2; i++) {
-				this.$data.tableColumn[i] = {
-					field: "score" + (i-2),
-					title: content[i-2].item+"("+content[i-2].maxScore+")",
-					"editRender": {name: '$input', props: {type: 'number', min: 0, max: content[i-2].maxScore}}
-				};
-			}
-			this.$data.tableColumn[i] = {
-				field: "suggestion",
-				title: "建议",
-				editRender: {name: 'textarea'}
-			};
-			
-			// 获取表的内容
-			content = this.$data.response.data.content.details;
-			var conlen = content.length;
-			for(var i = 0; i < conlen; i++) {
-				var item = {
-					groupId: content[i].groupId,
-					groupName: content[i].groupName,
-					suggestion: content[i].suggestion
-				}
-				for(var j = 0; j < len; j++) {
-					var str = "score" + j;
-					item[str] = content[i].content[j].score;
-				}
-				this.$data.tableData[i] = item;
-			}
 		},
 		props: ['evaluationOuterId'],
 		methods: {
+			show() {
+				this.showDetails = true;
+			},
 			async fullValidEvent () {
 				const errMap = await this.$refs.xTable.fullValidate().catch(errMap => errMap)
 				if (errMap) {
@@ -187,12 +107,59 @@
 			},
 			getResponse() {
 				var self = this;
-				axios.get(api.userEvaluationOuter, self.request)
-					.then(function(res) {
-						self.response = res;
-					}).catch(function(error) {
-						console.log(error);
-					})
+				console.log(self.request);
+				axios.post(api.userEvaluationOuter, self.request)
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=res.data.data.length-1;i>=0;i--) {
+							if(res.data.data[i].evaluationOuterId == self.request.evaluationOuterId) {
+								self.response = res.data.data[i];
+								break;
+							}
+						}
+						console.log(self.response);
+						self.title = self.response.name;
+						
+						//构建表头
+						var i;
+						for(i=3;i<self.response.content.tableColumn.length-2;i++) {
+							var str = i.toString();
+							self.tableColumn[i] = {
+								field: i,
+								title: self.response.content.tableColumn[i]+"("+self.response.content.maxScore[i]+")",
+								editRender: {name: '$input', props: {type: 'number', min: 0, max: self.response.content.maxScore[i]}}
+								
+							};
+						}
+						self.tableColumn[i] = {
+							field: i,
+							title: '总分'
+						};
+						self.tableColumn[++i] = {
+							field: i,
+							title: '建议',
+							editRender: {name: 'textarea'}
+						};
+						//表体
+						for(var i=0;i<self.response.content.tableData.length;i++) {
+							var item = []
+							for(var j=0;j<self.response.content.tableColumn.length;j++) {
+								var str = j;
+								item[str] = self.response.content.tableData[i][j];
+							}
+							self.tableData[i] = item;
+						}
+						
+						console.log(self.tableColumn);
+						console.log(self.tableData);
+						self.ready = true;
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getRequest(),
@@ -201,16 +168,20 @@
 			sumbit() {
 				// 提交表格
 				// 将修改的数据保存到表单，然后进行提交
-				var len = this.$data.tableData.length,
-					conlen = this.$data.tableColumn.length;
-				for(var i = 0; i < len; i++) {
-					for(var j = 0; j < conlen-3; j++) {
-						var str = "score" + j;
-						this.$data.response.data.content.details[i].content[j].score = this.$data.tableData[i][str];
+				for(var i=0; i<this.response.content.tableData.length; i++) {
+					this.response.content.tableData[i][0] = this.tableData[i][0];
+					this.response.content.tableData[i][1] = this.tableData[i][1];
+					this.response.content.tableData[i][2] = this.tableData[i][2];
+					var sum = 0,
+						j = 3;
+					for(var j=3; j<this.response.content.tableColumn.length-2; j++) {
+						sum += Number(this.tableData[i][j]);
+						this.response.content.tableData[i][j] = this.tableData[i][j];
 					}
-					this.$data.response.data.content.details[i].suggestion = this.$data.tableData[i]["suggestion"];
+					this.response.content.tableData[i][j] = sum;
+					j++;
+					this.response.content.tableData[i][j] = this.tableData[i][j];
 				}
-				
 				//判断表单完整性
 				var self = this;
 				this.fullValidEvent().then(function(res) {
@@ -219,20 +190,19 @@
 					} else {
 						//发送
 						var submitForm = {};
-						submitForm['evaluationOuterId'] = self.$data.response.data.evaluationOuterId;
+						submitForm['evaluationOuterId'] = self.$data.response.evaluationOuterId;
 						submitForm['groupId'] = self.$data.request.groupId;
-						var time = new Date();
-						submitForm['submitTime'] = time;
-						submitForm['content'] = self.$data.response.data.content;
+						submitForm['submitTime'] = Number(new Date());
+						submitForm['content'] = self.$data.response.content;
 						
 						console.log(submitForm);
-						// 提交
+						//提交
 						axios.post(api.userEvaluationOuterSubmit,submitForm)
 						.then(function(res) {
-							if(res.status === 1) {
-								this.$XModal.message({ status: 'success', message: '提交成功！' });
+							if(res.status == 200 && res.data.status == 1) {
+								alert(res.data.msg);
 							} else {
-								this.$XModal.message({ status: 'error', message: status.msg });
+								alert(res.data.msg);
 							}
 						}).catch(function(error) {
 							console.log(error);
