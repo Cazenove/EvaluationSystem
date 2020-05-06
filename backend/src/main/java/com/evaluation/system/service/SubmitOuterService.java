@@ -39,7 +39,8 @@ public class SubmitOuterService {
                 result.put("data", getSubmitOuter);
             }
             else {
-                List<EvaluationOuter> evaluationOuter = evaluationOuterRepository.findAllByClassId(submitOuter.getClassId());
+                EvaluationOuter evaluationOuter = evaluationOuterRepository.findAllByClassIdAndEvaluationOuterId(
+                        submitOuter.getClassId(),submitOuter.getEvaluationOuterId());
                 result.put("status",1);
                 result.put("data",evaluationOuter);
             }
