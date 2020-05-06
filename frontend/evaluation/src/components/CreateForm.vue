@@ -190,10 +190,17 @@
 				console.log(rowIndex);
 				this.tableData.pop(rowIndex);
 			},
+			getTimeStamp(data){
+				var str = data.replace(/-/g,'/');
+				var date = new Date(str);
+				var time = date.getTime()/1000;
+				data = time;
+			},
 			release() {
 				//表头校验
 				if(!this.submitForm.name || !this.submitForm.endTime || !this.submitForm.classId) {
 					this.$XModal.message({ status: 'error', message: '表头信息不能为空' })
+					this.getTimeStamp(this.submitForm.endTime);
 					return;
 				} else {
 					//表单校验
