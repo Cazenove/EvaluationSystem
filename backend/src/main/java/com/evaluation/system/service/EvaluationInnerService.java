@@ -37,9 +37,10 @@ public class EvaluationInnerService {
                 result.put("msg","未找到对应评分表");
             }
         } catch (Exception e) {
-            result.put("status",0);
-            result.put("msg",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status",0);
+            result.put("msg","查询发生错误");
+            return result;
         }
          return result;
     }
@@ -70,9 +71,10 @@ public class EvaluationInnerService {
                 result.put("msg","未找到对应评分表");
             }
         } catch (Exception e) {
-            result.put("status",0);
-            result.put("msg",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status",0);
+            result.put("msg","查询发生错误");
+            return result;
         }
         return result;
     }

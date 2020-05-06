@@ -151,11 +151,11 @@ public class TeamService {
             dataMap.put("data",evaluationInfoList);
             result.put("data",dataMap);
         } catch (Exception e) {
-            result.put("status", 0);
-            result.put("msg", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status", 0);
+            result.put("msg", "查询发生错误");
+            return result;
         }
-
         return result;
     }
 
@@ -184,9 +184,10 @@ public class TeamService {
             result.put("status",1);
             result.put("data",dataMap);
         } catch (Exception e) {
-            result.put("status", 0);
-            result.put("msg", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.put("status", 0);
+            result.put("msg", "查询发生错误");
+            return result;
         }
         return result;
     }
