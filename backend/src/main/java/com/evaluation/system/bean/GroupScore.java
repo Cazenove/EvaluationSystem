@@ -23,10 +23,8 @@ public class GroupScore {
     private int groupId;
     @Column(name = "evaluation_outer_id")
     private int evaluationOuterId;
-
-    @Type(type = "json")
-    @Column(columnDefinition = "json")
-    private Map<String,Object> content;
+    @Column(name = "content")
+    private int content;
 
     @Transient
     private int classId;
@@ -63,11 +61,11 @@ public class GroupScore {
         this.evaluationOuterId = evaluationOuterId;
     }
 
-    public Map<String, Object> getContent() {
+    public int getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(int content) {
         this.content = content;
     }
 

@@ -20,4 +20,13 @@ public interface GroupScoreRepository extends JpaRepository<GroupScore,Integer> 
      */
     @Query("SELECT a FROM GroupScore a WHERE a.evaluationOuterId = :evaluationOuterId")
     public GroupScore findOneByEvaluationOuterId(@Param("evaluationOuterId")int evaluationOuterId);
+
+    /**
+     *
+     * @param evaluationOuterId
+     * @param groupId
+     * @return GroupScore
+     */
+    @Query("SELECT a FROM GroupScore a WHERE a.evaluationOuterId = :evaluationOuterId and a.groupId = :groupId")
+    public GroupScore findOneByIdAndGourp(@Param("evaluationOuterId")int evaluationOuterId ,@Param("groupId")int groupId);
 }

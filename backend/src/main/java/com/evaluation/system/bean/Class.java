@@ -24,8 +24,6 @@ public class Class {
     private String endTime;
     private String status;
 
-    @OneToMany(mappedBy = "classInfo")
-    private Set<EvaluationOuter> list = new HashSet<EvaluationOuter>();
 
     public Class(){
 

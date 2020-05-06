@@ -26,9 +26,7 @@ public class PersonScore {
     @Column(name = "user_id")
     private String userId;
 
-    @Type(type = "json")
-    @Column(columnDefinition = "json")
-    private Map<String,Object> content;
+    private int content;
 
     @Transient
     private String className;
@@ -75,11 +73,11 @@ public class PersonScore {
         this.userId = userId;
     }
 
-    public Map<String, Object> getContent() {
+    public int getContent() {
         return content;
     }
 
-    public void setContent(Map<String, Object> content) {
+    public void setContent(int content) {
         this.content = content;
     }
 

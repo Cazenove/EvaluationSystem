@@ -4,11 +4,13 @@ import com.evaluation.system.bean.Class;
 import com.evaluation.system.bean.EvaluationInner;
 import com.evaluation.system.bean.EvaluationOuter;
 import com.evaluation.system.bean.SubmitOuter;
+import com.evaluation.system.config.PublishTimedTask;
 import com.evaluation.system.controller.EvaluationOuterController;
 import com.evaluation.system.dao.ClassRepository;
 import com.evaluation.system.dao.EvaluationInnerRepository;
 import com.evaluation.system.dao.EvaluationOuterRepository;
 import com.evaluation.system.dao.SubmitOuterRepository;
+import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.support.CronTrigger;
@@ -38,6 +40,10 @@ public class EvaluationOuterService {
     @Autowired
     private SubmitOuterRepository submitOuterRepository;
 
+    @Autowired
+    private PublishTimedTask publishTimedTask;
+
+
 
     @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> saveEvaluationOuter(EvaluationOuter evaluationOuter,int flag)
@@ -46,25 +52,57 @@ public class EvaluationOuterService {
         result.put("status","0");
         result.put("msg","班级不存在");
         try {
-            EvaluationInner evaluationInner = new EvaluationInner();
+            EvaluationInner evaluationInner;
+            if(flag!=1)
+            {
+                evaluationInner = evaluationInnerRepository.findOneByEvaluationInnerId(evaluationOuter.getEvaluationOuterId());
+            }
+            else
+            {
+                evaluationInner = new EvaluationInner();
+            }
             Class c = classRepository.findByClassId(evaluationOuter.getClassId());
             if(c == null) {
                 return result;
             }
             evaluationInner.setClassInfo(c);
             evaluationInner.setContent(evaluationOuter.getContent());
-            evaluationInner.setName(evaluationOuter.getName());
+            evaluationInner.setName(evaluationOuter.getName() + "_组内评分表");
             evaluationInner.setReleaseTime(evaluationOuter.getReleaseTime());
             evaluationInner.setEndTime(evaluationOuter.getEndTime());
             evaluationOuter.setClassInfo(c);
+            evaluationOuter.setName(evaluationOuter.getName()+"_组间评分表");
             EvaluationOuter e = evaluationOuterRepository.save(evaluationOuter);
             evaluationInner.setEvaluationInnerId(e.getEvaluationOuterId());
             evaluationInnerRepository.save(evaluationInner);
             if(flag==1){
+
+                long endTime = Long.parseLong(e.getEndTime()) * 1000;
+                Integer id = e.getEvaluationOuterId();
+                if(System.currentTimeMillis() < endTime)
+                {
+                    publishTimedTask.publishTask(getCronString(endTime),System.currentTimeMillis(),endTime,
+                            id.toString(),id.toString());
+                }
                 result.put("status","1");
                 result.put("msg","创建成功");
             }
             else{
+
+                long endTime = Long.parseLong(e.getEndTime()) * 1000;
+                Integer id = e.getEvaluationOuterId();
+                if(System.currentTimeMillis() < endTime)
+                {
+                    TriggerKey triggerKey = new TriggerKey("trigger-" + id.toString(), "triggerGroup-" + id.toString());
+                    if (publishTimedTask.getScheduler().getTrigger(triggerKey)==null)
+                    {
+                        publishTimedTask.publishTask(getCronString(endTime),System.currentTimeMillis(),endTime,
+                                id.toString(),id.toString());
+                    }
+                    else{
+                        publishTimedTask.changeTaskTime(id.toString(),endTime,id.toString());
+                    }
+                }
                 result.put("status","1");
                 result.put("msg","修改成功");
             }
@@ -109,15 +147,25 @@ public class EvaluationOuterService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> deleteEvaluationOuter(EvaluationOuter evaluationOuter)
     {
-        int id = evaluationOuter.getEvaluationOuterId();
+        Integer id = evaluationOuter.getEvaluationOuterId();
+        EvaluationOuter e = evaluationOuterRepository.findOneByEvaluationOuterId(id);
         Map<String,Object> result =new HashMap<>();
         try {
             evaluationOuterRepository.deleteById(id);
             evaluationInnerRepository.deleteById(id);
+            long endTime = Long.parseLong(e.getEndTime()) * 1000;
+            if(System.currentTimeMillis() < endTime)
+            {
+                TriggerKey triggerKey = new TriggerKey("trigger-" + id.toString(), "triggerGroup-" + id.toString());
+                if(publishTimedTask.getScheduler().getTrigger(triggerKey)!=null){
+                    publishTimedTask.deleteTaskTime(id.toString());
+                }
+
+            }
             result.put("status","1");
             result.put("msg","删除成功");
         }
-        catch (Exception e){
+        catch (Exception ex){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             result.put("status","0");
             result.put("msg","删除失败");
@@ -125,108 +173,17 @@ public class EvaluationOuterService {
         return result;
     }
 
-    /**
-     * 统计这次作业各个小组分数，由于json太多嵌套map写的很乱
-     * @param evaluationOuter
-     * @return Map
-     */
-    public Map<String,Object> statEvaluationOuter(EvaluationOuter evaluationOuter)
-    {
-        Map<String,Object> result =new HashMap<>();
-        try {
-            EvaluationOuter e = evaluationOuterRepository.getOne(evaluationOuter.getEvaluationOuterId());
-            List<SubmitOuter> subList = submitOuterRepository.findByEvaluationOuterId(e.getEvaluationOuterId());
-            int groupNum = e.getClassInfo().getGroupNum();
-            if (subList.size() != groupNum) {
-                result.put("status", "0");
-                result.put("msg", "还有小组未提交评分表，还无法统计");
-                return result;
-            }
-            Map<Integer, Map<String,Double>> statis = new HashMap<>();
-            for (SubmitOuter submitOuter : subList) {
-                Map content = submitOuter.getContent();
-                List<Map> details = (List) content.get("details");
-                for (Map map : details) {
-                    int groupId = (int) map.get("groupId");
-                    if (!statis.containsKey(groupId)) {
-                        statis.put(groupId, new HashMap<String, Double>(0));
-                    }
-                    Double sum = this.toDouble((Integer) map.get("score"));
-                    List<Map> itemContent = (List) map.get("content");
-                    if (!statis.get(groupId).containsKey("score")) {
-                        statis.get(groupId).put("score", sum);
-                    } else {
-                        Double d = (Double) statis.get(groupId).get("score");
-                        statis.get(groupId).put("score", d + sum);
-                    }
-                    for (Map itemMap : itemContent) {
-                        Map<String, Double> items;
-                        if (!statis.containsKey(groupId)) {
-                            items = new HashMap<>();
-                        } else {
-                            items = statis.get(groupId);
-                        }
-                        String item = (String) itemMap.get("item");
-                        Double score = this.toDouble((Integer) itemMap.get("score"));
-                        if (!items.containsKey(item)) {
-                            items.put(item, score);
-                        } else {
-                            Double d = items.get(item);
-                            items.put(item, d + score);
-                        }
-                    }
-                }
-            }
 
-            for(Integer groupId:statis.keySet())
-            {
-                Map<String,Double> map= statis.get(groupId);
-                for(String item :map.keySet())
-                {
-                    Double sum = map.get(item);
-                    map.put(item,sum / (groupNum - 1));
-                }
-            }
-
-            Map<String,Object> origin = e.getContent();
-            List originDetails = (List)origin.get("details");
-            for(int i = 0 ; i < originDetails.size() ;i++)
-            {
-                Map groupScore = (Map)originDetails.get(i);
-                int id = (int)groupScore.get("groupId");
-                groupScore.put("score",statis.get(id).get("score").intValue());
-                List<Map> detailScore = (List)groupScore.get("content");
-                for(Map map:detailScore)
-                {
-                    String item = (String)map.get("item");
-                    map.put("score",statis.get(id).get(item).intValue());
-                }
-            }
-            evaluationOuterRepository.save(e);
-
-        }
-        catch (Exception e)
-        {
-            result.put("status", "0");
-            result.put("msg", "还有小组未提交评分表，还无法统计");
-            return result;
-        }
-
-
-        return result;
-
-    }
-
-    public Double toDouble (Integer i)
-    {
-        String s = String.valueOf(i);
-        return Double.valueOf(s);
-    }
-
-    public int toInt (Double d)
-    {
-        int a = d.intValue();
-        return a;
+    public String getCronString(long timeStamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(sdf.format(new Date()));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sd = simpleDateFormat.format(new Date(timeStamp));
+        String[] s = sd.split(" ");
+        String[] timePrefix = s[0].split("-");
+        String[] timeSuffix = s[1].split(":");
+        return timeSuffix[2] + " " + timeSuffix[1] + " " + timeSuffix[0] + " " +
+                timePrefix[2] + " " + timePrefix[1] + " ? *";
     }
 
 }

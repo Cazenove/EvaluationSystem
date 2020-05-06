@@ -1,9 +1,12 @@
 package com.evaluation.system.service;
 
 import com.evaluation.system.bean.Class;
+import com.evaluation.system.bean.Team;
 import com.evaluation.system.dao.ClassRepository;
+import com.evaluation.system.dao.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,12 +23,26 @@ public class ClassService {
 
     @Autowired
     ClassRepository classRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
+
+    @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> saveClass(Class classInfo,int flag)
     {
-        Map<String,Object> result =new HashMap<>();
+        Map<String,Object> result =new HashMap<>(16);
         try {
-            classRepository.save(classInfo);
+            Class c = classRepository.save(classInfo);
             if(flag==1) {
+                for(int i = 0 ; i < c.getGroupNum(); i++)
+                {
+                    Integer num = i + 1;
+                    Team team = new Team();
+                    team.setClassId(c.getClassId());
+                    team.setGroupName("第"+ num.toString() + "组");
+                    team.setGroupNum(num);
+                    teamRepository.save(team);
+                }
                 result.put("status","1");
                 result.put("msg","创建成功");
             }
@@ -36,6 +53,7 @@ public class ClassService {
         }
         catch (Exception e)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             if(flag==1){
                 result.put("status","0");
                 result.put("msg","班级名已存在，或其他信息填写不正确");
