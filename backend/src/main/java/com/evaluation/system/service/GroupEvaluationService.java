@@ -31,9 +31,6 @@ public class GroupEvaluationService {
             Map<String, Object> empty = new HashMap<>(2);
             if (!evaluationOuters.isEmpty()) {
                 result.put("status", 1);
-                for (int i = 0; i < evaluationOuters.size(); i++) {
-                    evaluationOuters.get(i).setContent(empty);
-                }
                 result.put("data", evaluationOuters);
             }
         }

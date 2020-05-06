@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.ArrayList;
 
 public interface SubmitOuterRepository extends JpaRepository<SubmitOuter,Integer> {
-    public SubmitOuter findByEvaluationOuterIdAndGroupId(int evaluationId,int groupId);
+    @Query("SELECT a FROM SubmitOuter a where a.evaluationOuterId = :evaluationOuterId and a.groupId = :groupId")
+    public SubmitOuter findByEvaluationOuterIdAndGroupId(@Param("evaluationOuterId") Integer evaluationOuterId,
+                                                         @Param("groupId") int groupId);
 
     @Query("SELECT a FROM SubmitOuter a WHERE a.evaluationOuterId = :evaluationOuterId")
     public ArrayList<SubmitOuter> findByEvaluationOuterId(@Param("evaluationOuterId") Integer evaluationOuterId);
