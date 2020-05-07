@@ -59,21 +59,18 @@ public class SubmitOuterService {
     public Map<String, Object> submitEvaluationOuter(SubmitOuter submitOuter){
         int flag = 0;
         String msg = "提交失败";
-        HashMap<String,Object> result = new HashMap<>();
+        Map<String,Object> result = new HashMap<>();
         try {
             SubmitOuter saveEvaluation = new SubmitOuter();
             saveEvaluation.setContent(submitOuter.getContent());
             saveEvaluation.setGroupId(submitOuter.getGroupId());
             saveEvaluation.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
             saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
-            if (submitOuterRepository.save(saveEvaluation).getContent() != null) {
-                flag = 1;
-                msg = "提交成功";
-            }
+            submitOuterRepository.save(saveEvaluation);
                 //提交suggestions至GroupSuggestion表
                 List<List> list = (List<List>) submitOuter.getContent().get("tableData");
                 for (int i = 0; i < list.size(); i++) {
-                    String str = (String) list.get(i).get(6);
+                    String str = (String) list.get(i).get(list.get(i).size()-1);
                     int id = (int) list.get(i).get(0);
                     GroupSuggestion groupSuggestion = new GroupSuggestion();
                     groupSuggestion.setSuggestion(str);
@@ -81,6 +78,8 @@ public class SubmitOuterService {
                     groupSuggestion.setGroupId(id);
                     groupSuggestionRepository.save(groupSuggestion);
                 }
+                flag = 1;
+                msg = "提交成功";
                 result.put("status", flag);
                 result.put("msg", msg);
 
