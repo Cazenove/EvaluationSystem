@@ -3,6 +3,7 @@
 	<div id="OuterEditableTable" class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 		<h2>{{this.$data.response.data.name}}</h2>
 		<vxe-grid
+		 v-if="ready"
 		 border 
 		 show-footer 
 		 resizable 
@@ -16,7 +17,7 @@
 		 :data="tableData" 
 		 :edit-config="{trigger: 'click', mode: 'cell', showStatus: true, icon: 'fa fa-file-text-o'}">
 			<vxe-table-column field="userId" title="学号"></vxe-table-column>
-			<vxe-table-column field="userName" title="姓名"></vxe-table-column>
+			<vxe-table-column field="name" title="姓名"></vxe-table-column>
 			<vxe-table-column field="decision" title="分工" :edit-render="{name: 'input', attrs: {type: 'text'}}"></vxe-table-column>
 			<vxe-table-column field="contribution" title="贡献率" :edit-render="{name: '$input', props: {type: 'number',min: 0,max: 100}}"></vxe-table-column>
 		</vxe-grid>
@@ -34,6 +35,7 @@
 		inject: ['reload'],
 		data() {
 			return {
+				ready:false,
 				validRules: {
 					decision: [
 						{required:true, message:'分工为必填项'}
@@ -43,45 +45,32 @@
 					]
 				},
 				request: {
-					classId:1,
-					groupId:1,
-					evaluationInnerId:1//组内评分表的id
+					params:{
+						classId:'',
+						groupId:'',
+						evaluationInnerId:''//组内评分表的id
+					}
 				},
 				response: {
 					status:1,
 					data: {
-						evaluationInnerId:1,
-						name:"第一次团队合作_组内评分表",
-						groupId:1,
-						groupName:"第一组",
-						releaseTime:"",//发布时间
-						endTime:"",//截止时间
-						content: {
-							details: [
-								{
-									userId:"221701000",//id，学号
-									userName:"张三",//姓名
-									decision:"",//分工
-									contribution:""//贡献率
-								},
-								{
-									userId:"221701001",//id，学号
-									userName:"李四",//姓名
-									decision:"",//分工
-									contribution:""//贡献率
-								}
-							]
-						}
+						evaluationInnerId:'',
+						name:'',
+						groupId:'',
+						groupName:'',
+						releaseTime:'',//发布时间
+						endTime:'',//截止时间
+						content: {}
 					}
 				},
-				sum: null,
-				tableData: []
+				tableData:[],
+				teamInfo:{},
+				sum: null
 			}
 		},
 		props: ['evaluationInnerId'],
 		created() {
 			this.init();
-			this.$data.tableData = this.$data.response.data.content.details;
 		},
 		methods: {
 			async fullValidEvent () {
@@ -113,22 +102,55 @@
 				}
 			},
 			getRequest() {
-				this.$data.request.classId = this.$store.state.userInfo.classId;
-				this.$data.request.groupId = this.$store.state.userInfo.groupId;
-				this.$data.request.evaluationInnerId = this.$props.evaluationInnerId;
+				this.$data.request.params.classId = this.$store.state.userInfo.classId;
+				this.$data.request.params.groupId = this.$store.state.userInfo.groupId;
+				this.$data.request.params.evaluationInnerId = this.$props.evaluationInnerId;
 			},
 			getResponse() {
 				var self = this;
 				axios.get(api.userEvaluationInner, self.request)
-					.then(function(res) {
-						self.response = res;
-					}).catch(function(error) {
-						console.log(error);
-					})
+				.then(function(res) {
+					self.response = res.data;
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getTeamInfo() {
+				const self = this;
+				axios.get(api.userGroupDetails, {
+					params:{
+						groupId: self.$store.state.userInfo.groupId
+					}
+				}).then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						self.teamInfo = res.data.data;
+						console.log(self.tableData);
+						self.tableData[0] = {
+							userId:self.teamInfo.leader.userId,
+							name:self.teamInfo.leader.name,
+							decision:'',
+							contribution:0
+						}
+						for(var i=0;i<self.teamInfo.member.length;i++) {
+							self.tableData[i+1] = {
+								userId:self.teamInfo.member[i].userId,
+								name:self.teamInfo.member[i].name,
+								decision:'',
+								contribution:0
+							}
+						}
+						self.ready = true;
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getRequest(),
-				this.getResponse()
+				this.getResponse(),
+				this.getTeamInfo()
 			},
 			footerCellClassName({
 				$rowIndex,
@@ -165,12 +187,6 @@
 				if(this.sum !== 100) {
 					this.$XModal.message({ status: 'error', message: '贡献度总和需为100！' })
 				} else {
-					// 保存修改的数据
-					var len = this.$data.tableData.length;
-					for(var i = 0; i < len; i++) {
-						this.$data.response.data.content.details[i].contribution = this.$data.tableData[i].contribution;
-					}
-					
 					//完整性验证
 					var self = this;
 					this.fullValidEvent().then(function(res) {
@@ -180,19 +196,27 @@
 							//提交
 							var submitForm = {};
 							submitForm['evaluationInnerId'] = self.$data.response.data.evaluationInnerId;
-							submitForm['groupId'] = self.$data.request.groupId;
+							submitForm['groupId'] = self.$data.request.params.groupId;
 							var time = new Date();
-							submitForm['submitTime'] = time;
-							submitForm['content'] = self.$data.response.data.content;
+							submitForm['submitTime'] = parseInt(time.getTime()/1000);
 							
-							console.log(submitForm);
+							var content = {
+								tableColumn:['userId','name','decision','contribution'],
+								tableData:[]
+							};
+							for(var i=0; i<self.$data.tableData.length; i++) {
+								content.tableData[i] = [self.$data.tableData[i].userId,self.$data.tableData[i].name,self.$data.tableData[i].decision,self.tableData[i].contribution];
+							}
+							submitForm['content'] = content;
+							
 							// 提交
+							var that = self;
 							axios.post(api.userEvaluationInnerSubmit,submitForm)
 							.then(function(res) {
-								if(res.status === 1) {
-									this.$XModal.message({ status: 'success', message: '提交成功！' })
+								if(res.status == 200 && res.data.status == 1) {
+									that.$XModal.message({ status: 'success', message: '提交成功！' })
 								} else {
-									this.$XModal.message({ status: 'error', message: res.msg })
+									that.$XModal.message({ status: 'error', message: res.data.msg })
 								}
 							}).catch(function(error) {
 								console.log(error);

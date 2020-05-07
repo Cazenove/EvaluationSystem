@@ -21,14 +21,14 @@
 			</vxe-table>
 		</div>
 		
-		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
+		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize destroy-on-close>
 			<vxe-table
 			 highlight-hover-row
 			 highlight-current-row
 			 border 
 			 :data="detailData" >
 				<vxe-table-column field="userId" title="学号"></vxe-table-column>
-				<vxe-table-column field="userName" title="用户名"></vxe-table-column>
+				<vxe-table-column field="name" title="用户名"></vxe-table-column>
 				<vxe-table-column field="decision" title="分工"></vxe-table-column>
 				<vxe-table-column field="contribution" title="贡献率"></vxe-table-column>
 			</vxe-table>
@@ -65,7 +65,14 @@
         },
         methods: {
 			cellClickEvent ({ row }) {
-				this.detailData = row.content;
+				for(var i=0; i<row.content.tableData.length; i++) {
+					this.detailData[i] = {
+						userId:row.content.tableData[i][0],
+						name:row.content.tableData[i][1],
+						decision:row.content.tableData[i][2],
+						contribution:row.content.tableData[i][3]
+					}
+				}
 				this.showDetails = true
 			},
             getResponse() {
@@ -75,6 +82,9 @@
 					if(res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
+						for(var i=0; i<self.tableData.length; i++) {
+							self.tableData[i].submitTime = self.getDate(self.tableData[i].submitTime);
+						}
 					}
 					else {
 						console.log(res.data.msg);
@@ -85,7 +95,18 @@
             },
             init() {
                 this.getResponse();
-            }
+            },
+			getDate(source) {
+				var timeStamp = new Date(parseInt(source*1000));
+				var year = timeStamp.getFullYear();
+				var month = timeStamp.getMonth() + 1;
+				var date = timeStamp.getDate();
+				var h = timeStamp.getHours();
+				var m = timeStamp.getMinutes();
+				var s = timeStamp.getSeconds();
+				var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
+				return time;
+			}
         }
         
 	}

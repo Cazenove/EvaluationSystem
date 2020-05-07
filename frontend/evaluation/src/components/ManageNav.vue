@@ -40,10 +40,10 @@
 							统计
 						</a>
 						<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-							<router-link class="nav-link" to="/admin/TeamScore">小组历次评分</router-link>
-							<router-link class="nav-link" to="/admin/PersonScore">个人历次评分</router-link>
-							<router-link class="nav-link" to="/admin/TeamFinalScore">小组综合评分</router-link>
-							<router-link class="nav-link" to="/admin/PersonFinalScore">个人综合评分</router-link>
+							<router-link class="nav-link" to="/admin/teamscore">小组历次评分</router-link>
+							<router-link class="nav-link" to="/admin/personscore">个人历次评分</router-link>
+							<router-link class="nav-link" to="/admin/teamfinalscore">小组综合评分</router-link>
+							<router-link class="nav-link" to="/admin/personfinalscore">个人综合评分</router-link>
 						</div>
 					</li>
 					<li class="nav-item">
@@ -60,7 +60,7 @@
 		name: "ManageNav",
 		methods: {
 			loginOut() {
-				window.sessionStorage.removeItem('data');
+				window.sessionStorage.removeItem('loginState');
 				this.$router.push('/');
 				alert("已注销");
 			},

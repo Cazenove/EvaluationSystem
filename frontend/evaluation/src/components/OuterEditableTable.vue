@@ -112,12 +112,7 @@
 				.then(function(res) {
 					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
-						for(var i=res.data.data.length-1;i>=0;i--) {
-							if(res.data.data[i].evaluationOuterId == self.request.evaluationOuterId) {
-								self.response = res.data.data[i];
-								break;
-							}
-						}
+						self.response = res.data.data;
 						console.log(self.response);
 						self.title = self.response.name;
 						
@@ -189,16 +184,18 @@
 						return;
 					} else {
 						//发送
+						var time = new Date();
 						var submitForm = {};
 						submitForm['evaluationOuterId'] = self.$data.response.evaluationOuterId;
 						submitForm['groupId'] = self.$data.request.groupId;
-						submitForm['submitTime'] = Number(new Date());
+						submitForm['submitTime'] = parseInt(time.getTime()/1000);
 						submitForm['content'] = self.$data.response.content;
 						
 						console.log(submitForm);
 						//提交
 						axios.post(api.userEvaluationOuterSubmit,submitForm)
 						.then(function(res) {
+							console.log(res);
 							if(res.status == 200 && res.data.status == 1) {
 								alert(res.data.msg);
 							} else {

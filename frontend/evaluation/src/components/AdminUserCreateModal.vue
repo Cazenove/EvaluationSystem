@@ -195,8 +195,15 @@
 				return this.$vuerify.$errors
 			},
 			getGroupNum: function() {
-				return this.$data.registerInfo.classId !== null ? this.$data.classList[this.$data.registerInfo.classId - 1].groupNum :
-					null;
+				if(this.$data.registerInfo.classId === null) {
+					return null;
+				} else {
+					for(var i=0;i<this.classList.length;i++) {
+						if(this.classList[i].classId == this.registerInfo.classId) {
+							return this.classList[i].groupNum;
+						}
+					}
+				}
 			}
 		}
 	}

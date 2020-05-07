@@ -39,7 +39,7 @@
 			 :data="detailData">
 			</vxe-grid>
 		</vxe-modal>
-		<vxe-modal v-model="showCreate" title="创建评分表" width="850" height="600" :mask="false" :lock-view="false" resize>
+		<vxe-modal v-model="showCreate" title="创建评分表" width="850" height="600" :mask="false" :lock-view="false" resize destroy-on-close>
 			<CreateForm />
 		</vxe-modal>
 	</div>
@@ -85,18 +85,28 @@
 				var self = this;
 				axios.get(api.adminEvaluationDetails, null)
 				.then(function(res) {
-					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						for (let item of res.data.data){
 							if(item.releaseTime != "")
 							{
-								var timeStamp = new Date(parseInt(item.releaseTime));
+								var timeStamp = new Date(parseInt(item.releaseTime*1000));
 								var year = timeStamp.getFullYear();
 								var month = timeStamp.getMonth() + 1;
 								var date = timeStamp.getDate();
 								var time = year+"-"+month+"-"+date;
 							}
 							item.releaseTime = time;
+						}
+						for (let item of res.data.data){
+							if(item.endTime != "")
+							{
+								var timeStamp = new Date(parseInt(item.endTime*1000));
+								var year = timeStamp.getFullYear();
+								var month = timeStamp.getMonth() + 1;
+								var date = timeStamp.getDate();
+								var time = year+"-"+month+"-"+date;
+							}
+							item.endTime = time;
 						}
 						self.response = res.data;
 						self.tableData = self.response.data;

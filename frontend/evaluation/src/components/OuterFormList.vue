@@ -6,7 +6,8 @@
 				<router-link :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
 					{{item.evaluationOuterId}}.{{item.name}}
 				</router-link>
-				<p>发布时间：{{item.releaseTime}} 截止时间：{{item.endTime}}</p>
+				<p>发布时间：{{getDate(item.releaseTime)}}
+				截止时间：{{getDate(item.endTime)}}</p>
 			</li>
 		</ul>
 	</div>
@@ -46,6 +47,17 @@
 			init() {
 				this.getRequest(),
 				this.getResponse()
+			},
+			getDate(source) {
+				var timeStamp = new Date(parseInt(source*1000));
+				var year = timeStamp.getFullYear();
+				var month = timeStamp.getMonth() + 1;
+				var date = timeStamp.getDate();
+				var h = timeStamp.getHours();
+				var m = timeStamp.getMinutes();
+				var s = timeStamp.getSeconds();
+				var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
+				return time;
 			}
 		},
 		created() {

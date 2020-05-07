@@ -15,7 +15,7 @@
 			</div>
 			<div class="form-group col-md-4 mb-3">
 				<label>选择截止时间：</label>
-				<input v-model="submitForm.endTime" type="date" class="form-control" />
+				<input v-model="submitForm.endTime" type="datetime-local" class="form-control" />
 			</div>
 		</div>
 		<vxe-toolbar>
@@ -194,16 +194,17 @@
 				this.tableData.pop(rowIndex);
 			},
 			getTimeStamp(data){
-				var str = data.replace(/-/g,'/');
+				var str = data.replace('/','-');
+				str = str.replace('T',' ');
+				str = str+':00';
 				var date = new Date(str);
 				var time = date.getTime()/1000;
-				data = time;
+				return time;
 			},
 			release() {
 				//表头校验
 				if(!this.submitForm.name || !this.submitForm.endTime || !this.submitForm.classId) {
 					this.$XModal.message({ status: 'error', message: '表头信息不能为空' });
-					this.getTimeStamp(this.submitForm.endTime);
 					return;
 				} else {
 					//表单校验
@@ -213,9 +214,10 @@
 							//校验不通过
 							return;
 						} else {
-							self.submitForm.releaseTime = Number(new Date());
+							let release = new Date();
+							self.submitForm.releaseTime = parseInt(release.getTime()/1000);
+							self.submitForm.endTime = self.getTimeStamp(self.submitForm.endTime);
 							//校验通过，生成表单
-							// console.log(self.tableData);
 							
 							for(var i=0;i<self.tableData.length;i++) {
 								self.submitForm.content.tableColumn[i+3] = self.tableData[i].item;
@@ -242,7 +244,7 @@
 									self.submitForm.content.tableData[index++] = teamItem;
 								}
 							}
-							
+							console.log(self.submitForm);
 							//提交表单
 							axios.post(api.adminEvaluationCreate,self.submitForm)
 							.then(function(res) {

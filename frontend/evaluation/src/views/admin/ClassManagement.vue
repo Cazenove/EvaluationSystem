@@ -245,10 +245,10 @@
 				this.$data.endClassId = classId;
 			},
 			deleteClass() {
+				var self = this;
 				axios.post(api.adminClassDelete,{
 					classId:this.$data.deleteClassId
-				})
-				.then(function(res) {
+				}).then(function(res) {
 					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						alert("删除成功！");

@@ -65,7 +65,7 @@
 							self.$store.state.userInfo.password = res.data.data.password;
 							self.$store.state.userInfo.telephone = res.data.data.telephone;
 							self.$store.state.userInfo.classId = res.data.data.classId;
-							ses.setItem('data', res.token);
+							ses.setItem('loginState', res.data.status);
 							self.$router.push('/home');
 						} else if(res.data.status == 3) {
 							self.$store.state.adminInfo.assistantId = res.data.data.assistantId;
@@ -74,11 +74,11 @@
 							self.$store.state.adminInfo.password = res.data.data.password;
 							self.$store.state.adminInfo.telephone = res.data.data.telephone;
 							self.$store.state.adminInfo.status = 3;
-							ses.setItem('data', res.token);
+							ses.setItem('loginState', res.data.status);
 							self.$router.push('/admin/user');
 						} else if(res.data.status == 4) {
 							self.$store.state.adminInfo.status = 4;
-							ses.setItem('data', res.token);
+							ses.setItem('loginState', res.data.status);
 							self.$router.push('/admin/user');
 						} else {
 							alert(res.data.msg);

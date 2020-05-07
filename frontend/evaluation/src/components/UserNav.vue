@@ -38,7 +38,7 @@
 	export default {
 		methods: {
 			loginOut() {
-				window.sessionStorage.removeItem('data');
+				window.sessionStorage.removeItem('loginState');
 				this.$router.push('/');
 				alert("已注销");
 			},
