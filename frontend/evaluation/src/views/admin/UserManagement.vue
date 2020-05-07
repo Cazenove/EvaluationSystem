@@ -143,7 +143,7 @@
 					<div class="form-group">
 						<label for="update-name">姓名</label>
 						<input type="text" class="form-control" id="update-name" v-model="updateInfo.name"/>
-						<span class="error" v-if="errors['updateInfo.name']">{{errors['updateInfo.name']}}</span>
+						<span class="error" v-if="errors['updateInfo.userName']">{{errors['updateInfo.userName']}}</span>
 					</div>
 					<div class="form-group">
 						<label for="telephone" class="col-form-label">电话号码</label>
@@ -226,7 +226,7 @@
 					userId: null,
 					password: null,
 					telephone: null,
-					name: null,
+					userName: null,
 					classId: null,
 					groupId: null,
 					status: null,
@@ -244,17 +244,14 @@
 						label: "组长",
 						value: 2,
 					},
-					{
-						label: "助教",
-						value: 3,
-					},
 				],
 			}
 		},
 		created() {
 			this.getTeamList();
-			this.init();
 			// this.getClassOption();
+			// setTimeout(this.init(),5000);
+			
 			console.log(this.classOption);
 		},
 		methods: {
@@ -364,6 +361,7 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
+				this.init();
 			},
 			getClassOption(data) {
 				for (let value of data) {
@@ -402,7 +400,7 @@
 				console.log(this.updateInfo);
 				//注册功能
 				//先检验表单
-				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.name', 'updateInfo.telephone',
+				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.userName', 'updateInfo.telephone',
 					'updateInfo.classId', 'updateInfo.groupNum', 'updateInfo.status'
 				];
 				// check() 校验所有规则，参数可以设置需要校验的数组
