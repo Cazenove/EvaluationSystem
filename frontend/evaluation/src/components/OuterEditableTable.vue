@@ -144,6 +144,13 @@
 							}
 							self.tableData[i] = item;
 						}
+						for(var i=0; i<self.tableData.length; i++) {
+							if(self.tableData[i][0] == self.request.groupId) {
+								self.tableData.splice(i,1);
+								console.log(self.tableData);
+								break;
+							}
+						}
 						self.ready = true;
 					} else {
 						alert(res.data.msg);
@@ -186,6 +193,13 @@
 						submitForm['groupId'] = self.$data.request.groupId;
 						submitForm['submitTime'] = parseInt(time.getTime()/1000);
 						submitForm['content'] = self.$data.response.content;
+						
+						for(var i=0; i<submitForm.content.tableData.length; i++) {
+							if(submitForm.content.tableData[i][0] == self.request.groupId) {
+								submitForm.content.tableData.splice(i,1);
+								break;
+							}
+						}
 						
 						console.log(submitForm);
 						//提交
