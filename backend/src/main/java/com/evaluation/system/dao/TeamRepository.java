@@ -21,6 +21,9 @@ public interface TeamRepository extends JpaRepository<Team,Integer> {
     public List<Team> findByClassId(Integer classId);
 
     /**
+     * 通过groupId来获取小组
+     * @param groupId 小组id
+     * @return Team
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM Team a WHERE a.groupId = :groupId")

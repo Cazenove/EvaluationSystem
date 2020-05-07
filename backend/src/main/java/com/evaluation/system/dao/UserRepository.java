@@ -18,18 +18,29 @@ public interface UserRepository extends JpaRepository<User,String> {
     public User findByUserId(String userId);
 
     /**
+     * 通过groupId、status来获取组长（一人）
+     * @param groupId 小组id
+     * @param status 状态
+     * @return User
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM User a WHERE a.groupId = :groupId and a.status =:status")
     public User findOneByGroupIdAndAndStatus(@Param("groupId") Integer groupId,@Param("status") String status);
 
     /**
+     * 通过groupId、status来获取组员（多人）
+     * @param groupId 小组id
+     * @param status 状态
+     * @return ArrayList<User>
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM User a WHERE a.groupId = :groupId and a.status =:status")
     public ArrayList<User> findByGroupIdAndStatus(@Param("groupId") Integer groupId,@Param("status") String status);
 
     /**
+     * 通过userId来获取用户
+     * @param userId 小组id
+     * @return User
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM User a WHERE a.userId = :userId")

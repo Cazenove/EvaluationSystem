@@ -17,6 +17,9 @@ public interface GroupSuggestionRepository extends JpaRepository<GroupSuggestion
     public GroupSuggestion findByGroupSuggestionId(int groupSuggestionId);
 
     /**
+     * 通过groupId来获取小组收到的建议列表
+     * @param groupId 小组id
+     * @return ArrayList<GroupSuggestion>
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM GroupSuggestion a WHERE a.groupId = :groupId")

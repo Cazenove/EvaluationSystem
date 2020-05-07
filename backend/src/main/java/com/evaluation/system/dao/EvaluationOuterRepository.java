@@ -19,7 +19,11 @@ public interface EvaluationOuterRepository extends JpaRepository<EvaluationOuter
                                                                @Param("evaluationOuterId")int evaluationOuterId);
     @Query("SELECT a FROM EvaluationOuter a WHERE a.classInfo.classId = :classId")
     List<EvaluationOuter> findAllByClassId(@Param("classId")int classId);
+
     /**
+     * 通过evaluationOuterId来获取一份组间评分表
+     * @param evaluationOuterId 组间评分表id
+     * @return EvaluationOuter
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM EvaluationOuter a WHERE a.evaluationOuterId = :evaluationOuterId")

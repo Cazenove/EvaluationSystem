@@ -16,6 +16,9 @@ public interface GroupScoreRepository extends JpaRepository<GroupScore,Integer> 
     public GroupScore findByGroupId(int groupId);
 
     /**
+     * 通过evaluationOuterId来获取小组历次分数
+     * @param evaluationOuterId 组间评分表id
+     * @return GroupScore
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM GroupScore a WHERE a.evaluationOuterId = :evaluationOuterId")

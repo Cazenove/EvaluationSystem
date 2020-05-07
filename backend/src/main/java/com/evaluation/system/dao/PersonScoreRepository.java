@@ -12,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 public interface PersonScoreRepository extends JpaRepository<PersonScore,Integer> {
 
     /**
+     * 通过userId来获取个人分工和贡献
+     * @param userId 用户id
+     * @return PersonScore
      * @author 221701310_陈家祯
      */
     @Query("SELECT a FROM PersonScore a WHERE a.userId = :userId")
