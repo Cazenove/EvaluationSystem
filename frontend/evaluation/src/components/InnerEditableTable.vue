@@ -110,6 +110,7 @@
 				var self = this;
 				axios.get(api.userEvaluationInner, self.request)
 				.then(function(res) {
+					console.log(res);
 					self.response = res.data;
 				}).catch(function(error) {
 					console.log(error);
@@ -117,31 +118,58 @@
 			},
 			getTeamInfo() {
 				const self = this;
-				axios.get(api.userGroupDetails, {
-					params:{
-						groupId: self.$store.state.userInfo.groupId
-					}
-				}).then(function(res) {
-					if(res.status == 200 && res.data.status == 1) {
-						self.teamInfo = res.data.data;
-						console.log(self.tableData);
-						self.tableData[0] = {
-							userId:self.teamInfo.leader.userId,
-							name:self.teamInfo.leader.name,
-							decision:'',
-							contribution:0
+				// axios.get(api.userGroupDetails, {
+				// 	params:{
+				// 		groupId: self.$store.state.userInfo.groupId
+				// 	}
+				// }).then(function(res) {
+				// 	console.log(res);
+				// 	if(res.status == 200 && res.data.status == 1) {
+				// 		self.teamInfo = res.data.data;
+				// 		console.log(self.tableData);
+				// 		self.tableData[0] = {
+				// 			userId:self.teamInfo.leader.userId,
+				// 			name:self.teamInfo.leader.name,
+				// 			decision:'',
+				// 			contribution:0
+				// 		}
+				// 		for(var i=0;i<self.teamInfo.member.length;i++) {
+				// 			self.tableData[i+1] = {
+				// 				userId:self.teamInfo.member[i].userId,
+				// 				name:self.teamInfo.member[i].name,
+				// 				decision:'',
+				// 				contribution:0
+				// 			}
+				// 		}
+				// 		self.ready = true;
+				// 	} else {
+				// 		alert(res.data.msg);
+				// 	}
+				// }).catch(function(error) {
+				// 	console.log(error);
+				// })
+				axios.get(api.adminTeamList, null)
+				.then(function(res) {
+					console.log(res);
+					if (res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							if(self.$store.state.userInfo.groupId == res.data.data[i].groupId) {
+								self.teamInfo = res.data.data[i];
+								break;
+							}
 						}
-						for(var i=0;i<self.teamInfo.member.length;i++) {
-							self.tableData[i+1] = {
-								userId:self.teamInfo.member[i].userId,
-								name:self.teamInfo.member[i].name,
+						for(var i=0;i<self.teamInfo.members.length;i++) {
+							self.tableData[i] = {
+								userId:self.teamInfo.members[i].userId,
+								name:self.teamInfo.members[i].name,
 								decision:'',
 								contribution:0
 							}
 						}
+						console.log(self.tableData);
 						self.ready = true;
 					} else {
-						alert(res.data.msg);
+						console.log(res.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
@@ -205,10 +233,9 @@
 								tableData:[]
 							};
 							for(var i=0; i<self.$data.tableData.length; i++) {
-								content.tableData[i] = [self.$data.tableData[i].userId,self.$data.tableData[i].name,self.$data.tableData[i].decision,self.tableData[i].contribution];
+								content.tableData[i] = [self.$data.tableData[i].userId,self.$data.tableData[i].name,self.$data.tableData[i].decision,Number(self.tableData[i].contribution)];
 							}
 							submitForm['content'] = content;
-							
 							// 提交
 							var that = self;
 							axios.post(api.userEvaluationInnerSubmit,submitForm)

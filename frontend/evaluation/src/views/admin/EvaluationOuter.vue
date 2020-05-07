@@ -16,37 +16,23 @@
 				<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
 				<vxe-table-column field="evaluationOuterId" title="组间评分表ID"></vxe-table-column>
 				<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
-				<vxe-table-column type="expand" title="内容">
-					<template v-slot:content="{row, rowIndex}">
-						<vxe-table
-						 highlight-hover-row
-						 highlight-current-row
-						 border 
-						 :data="tableData[rowIndex].content" 
-						 @cell-click="cellClickEvent">
-							<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
-							<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
-							<vxe-table-column field="score" title="总分"></vxe-table-column>
-							<vxe-table-column field="suggestion" title="建议"></vxe-table-column>
-							<vxe-table-column>
-								<button class="btn btn-info">详情</button>
-							</vxe-table-column>
-						</vxe-table>
+				<vxe-table-column title="操作">
+					<template v-slot="{ row }">
+						<button type="button" class="btn btn-info" @click="showDetail(row)" data-toggle="modal" data-target="#UpdateModal">详情</button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
 		</div>
 		
-		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize>
-			<vxe-table
-			 highlight-hover-row
-			 highlight-current-row
-			 border 
-			 :data="detailData" >
-				<vxe-table-column field="item" title="评分项"></vxe-table-column>
-				<vxe-table-column field="maxScore" title="分值"></vxe-table-column>
-				<vxe-table-column field="score" title="得分"></vxe-table-column>
-			</vxe-table>
+		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize destroy-on-close>
+			<vxe-grid
+			 border
+			 keep-source
+			 resizable
+			 ref="xTable"
+			 :columns="tableColumn"
+			 :data="detailData">
+			</vxe-grid>
 		</vxe-modal>
 	</div>
 </template>
@@ -65,6 +51,7 @@
 				showDetails: false,
 				allAlign: null,
 				title: "组间评分表提交记录",
+				tableColumn: [],
 				tableData: [],
 				detailData: [],
 				request: {},
@@ -79,7 +66,62 @@
 		},
 		methods: {
 			cellClickEvent ({ row }) {
-				this.detailData = row.content;
+				console.log(row);
+				var i;
+				for(i=3;i<row.content.tableColumn.length-2;i++) {
+					var str = i.toString();
+					self.tableColumn[i] = {
+						field: i,
+						title: row.content.tableColumn[i]+"("+row.content.maxScore[i]+")"
+					};
+				}
+				self.tableColumn[i] = {
+					field: i,
+					title: '总分'
+				};
+				self.tableColumn[++i] = {
+					field: i,
+					title: '建议'
+				};
+				//表体
+				for(var i=0;i<row.content.tableData.length;i++) {
+					var item = []
+					for(var j=0;j<row.content.tableColumn.length;j++) {
+						var str = j;
+						item[str] = row.content.tableData[i][j];
+					}
+					self.tableData[i] = item;
+				}
+				this.showDetails = true
+			},
+			showDetail(row) {
+				console.log(row);
+				var i;
+				for(i=3;i<row.content.tableColumn.length-2;i++) {
+					var str = i.toString();
+					this.tableColumn[i] = {
+						field: i,
+						title: row.content.tableColumn[i]+"("+row.content.maxScore[i]+")"
+					};
+				}
+				this.tableColumn[i] = {
+					field: i,
+					title: '总分'
+				};
+				this.tableColumn[++i] = {
+					field: i,
+					title: '建议'
+				};
+				//表体
+				for(var i=0;i<row.content.tableData.length;i++) {
+					var item = []
+					for(var j=0;j<row.content.tableColumn.length;j++) {
+						var str = j;
+						item[str] = row.content.tableData[i][j];
+					}
+					this.detailData[i] = item;
+				}
+				console.log(this.detailData);
 				this.showDetails = true
 			},
 			getRequest() {},
@@ -91,6 +133,9 @@
 					if (res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
+						for(var i=0; i<self.tableData.length; i++) {
+							self.tableData[i].submitTime = self.getDate(self.tableData[i].submitTime);
+						}
 					} else {
 						console.log(res.msg);
 					}
@@ -101,6 +146,17 @@
 			init() {
 				this.getRequest();
 				this.getResponse();
+			},
+			getDate(source) {
+				var timeStamp = new Date(parseInt(source*1000));
+				var year = timeStamp.getFullYear();
+				var month = timeStamp.getMonth() + 1;
+				var date = timeStamp.getDate();
+				var h = timeStamp.getHours();
+				var m = timeStamp.getMinutes();
+				var s = timeStamp.getSeconds();
+				var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
+				return time;
 			}
 		}
 

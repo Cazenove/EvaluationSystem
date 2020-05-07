@@ -230,46 +230,12 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     evaluationOuterId:1,
     groupId:3,//提交评分表的小组的id，不能对自己的小组进行评分和建议
     submitTime:"",//提交时间
-    content: {
-        details: [
-            {
-                groupId:1,
-                groupNum:1,
-                groupName:"第一组",
-                score:100,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:40,//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:60,
-                    }
-                ],
-                suggestion:"对第一组的建议..."
-            },
-            {
-                groupId:2,
-                groupNum:2,
-                groupName:"第二组",
-                score:98,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:39,//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:59,
-                    }
-                ],
-                suggestion:"对第二组的建议..."
-            }
+    content:{
+        tableColumn:['groupId','groupNum','groupName','实用性','创新性','总分','建议'],
+        maxScore:[0,0,0,40,60,100,0],
+        tableData:[
+            [1,1,'第一组',40,50,90,'建议1'],
+            [2,2,'第二组',39,48,88,'建议2']
         ]
     }
 }
@@ -333,19 +299,10 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
         releaseTime:"",//发布时间
         endTime:"",//截止时间
         content: {
-            details: [
-                {
-                    userId:"221701000",//id，学号
-                    userName:"张三",//姓名
-                    decision:"",//分工
-                    contribution:""//贡献率
-                },
-                {
-                    userId:"221701001",//id，学号
-                    userName:"李四",//姓名
-                    decision:"",//分工
-                    contribution:""//贡献率
-                }
+            tableColumn: ['userId','name','decision','contribution'],
+            tableData: [
+                ['221701000','张三','前端',50],
+                ['221701001','李四','后端',50]
             ]
         }
     }

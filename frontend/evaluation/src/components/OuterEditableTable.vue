@@ -124,7 +124,6 @@
 								field: i,
 								title: self.response.content.tableColumn[i]+"("+self.response.content.maxScore[i]+")",
 								editRender: {name: '$input', props: {type: 'number', min: 0, max: self.response.content.maxScore[i]}}
-								
 							};
 						}
 						self.tableColumn[i] = {
@@ -145,9 +144,6 @@
 							}
 							self.tableData[i] = item;
 						}
-						
-						console.log(self.tableColumn);
-						console.log(self.tableData);
 						self.ready = true;
 					} else {
 						alert(res.data.msg);

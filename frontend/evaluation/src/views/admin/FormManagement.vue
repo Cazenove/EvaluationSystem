@@ -93,7 +93,10 @@
 								var year = timeStamp.getFullYear();
 								var month = timeStamp.getMonth() + 1;
 								var date = timeStamp.getDate();
-								var time = year+"-"+month+"-"+date;
+								var h = timeStamp.getHours();
+								var m = timeStamp.getMinutes();
+								var s = timeStamp.getSeconds();
+								var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
 							}
 							item.releaseTime = time;
 						}
@@ -104,7 +107,10 @@
 								var year = timeStamp.getFullYear();
 								var month = timeStamp.getMonth() + 1;
 								var date = timeStamp.getDate();
-								var time = year+"-"+month+"-"+date;
+								var h = timeStamp.getHours();
+								var m = timeStamp.getMinutes();
+								var s = timeStamp.getSeconds();
+								var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
 							}
 							item.endTime = time;
 						}
@@ -125,7 +131,7 @@
 					var str = 'name'+i;
 					this.tableColumn[i]={
 						field: str,
-						title: row.content.tableColumn[i]
+						title: row.content.tableColumn[i]+"("+row.content.maxScore[i]+")"
 					};
 				}
 				for(var i=0;i<row.content.tableData.length;i++) {
