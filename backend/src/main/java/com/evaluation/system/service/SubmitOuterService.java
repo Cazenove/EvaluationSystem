@@ -65,29 +65,27 @@ public class SubmitOuterService {
             saveEvaluation.setContent(submitOuter.getContent());
             saveEvaluation.setGroupId(submitOuter.getGroupId());
             saveEvaluation.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
-            Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String time = formatter.format(date);
-            saveEvaluation.setSubmitTime(time);
-            if (submitOuterRepository.save(saveEvaluation).getContent()!=null) {
+            saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
+            if (submitOuterRepository.save(saveEvaluation).getContent() != null) {
                 flag = 1;
                 msg = "提交成功";
             }
-        //提交suggestions至GroupSuggestion表
-            GroupSuggestion groupSuggestion = new GroupSuggestion();
-            List list = (List) submitOuter.getContent().get("details");
-            Map content = (Map) list.get(0);
-            String str = (String) content.get("suggestion");
-            System.out.println();
-            groupSuggestion.setSuggestion(str);
-            groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
-            groupSuggestion.setGroupId(submitOuter.getGroupId());
-            groupSuggestionRepository.save(groupSuggestion);
-            result.put("status",flag);
-            result.put("msg",msg);
+                //提交suggestions至GroupSuggestion表
+                List<List> list = (List<List>) submitOuter.getContent().get("tableData");
+                for (int i = 0; i < list.size(); i++) {
+                    String str = (String) list.get(i).get(6);
+                    int id = (int) list.get(i).get(0);
+                    GroupSuggestion groupSuggestion = new GroupSuggestion();
+                    groupSuggestion.setSuggestion(str);
+                    groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
+                    groupSuggestion.setGroupId(id);
+                    groupSuggestionRepository.save(groupSuggestion);
+                }
+                result.put("status", flag);
+                result.put("msg", msg);
+
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 result.put("status",flag);
                 result.put("msg",msg);
