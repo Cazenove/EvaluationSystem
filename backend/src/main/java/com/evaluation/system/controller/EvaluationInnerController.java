@@ -32,7 +32,6 @@ public class EvaluationInnerController {
     /**
      * 9.获取一份组内评分表内容
      * @author 221701310_陈家祯
-     * "找不到再生成一份空的"没有完成
      */
     @GetMapping(value = "/user/evaluation/inner")
     public Map<String, Object> evaluationInnerFindOne(@RequestParam("evaluationInnerId") Integer id,
