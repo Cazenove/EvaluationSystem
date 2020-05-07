@@ -91,23 +91,48 @@ public class TeamService {
      */
     public Map<String, Object> getGroupInfo(Integer groupId) {
         Map<String, Object> result = new HashMap<>();
+
+        Map<String, Object> dataMap = new HashMap<>();
+        result.put("status", 1);
+        dataMap.put("groupId",groupId);
+        dataMap.put("groupName",null);
+        dataMap.put("classId",null);
+        dataMap.put("className",null);
+        dataMap.put("groupNum",null);
+        dataMap.put("leader",null);
+        dataMap.put("member",null);
+        dataMap.put("data",null);
+        result.put("data",dataMap);
+
+        //有小组为1，无小组为0
+        int flag = 0;
+
         try{
             //获取groupName，classId，groupNum
             Team group = teamRepository.findOneByGroupId(groupId);
             String groupName = group.getGroupName();
             int classId = group.getClassId();
             int groupNum = group.getGroupNum();
+            dataMap.put("groupId",groupId);
+            dataMap.put("groupName",groupName);
+            dataMap.put("classId",classId);
+            dataMap.put("groupNum",groupNum);
+
+            flag = 1;
 
             //获取className by classId
             String className = classRepository.findByClassId(classId).getClassName();
+            dataMap.put("className",className);
 
             //获取leader的userId，userName
             User leader = userRepository.findOneByGroupIdAndAndStatus(groupId,"2");
             String leaderUserId = leader.getUserId();
             String leaderName = leader.getName();
+            dataMap.put("leader",leader);
 
             //获取member的userId，userName
             ArrayList<User> memberList = userRepository.findByGroupIdAndStatus(groupId,"1");
+            dataMap.put("member",memberList);
 
             //evaluationInfo组成的List
             ArrayList<Object> evaluationInfoList = new ArrayList<>();
@@ -138,25 +163,19 @@ public class TeamService {
                 evaluationInfoList.add(evaluationInfo);
 
             }
-
-            Map<String, Object> dataMap = new HashMap<>();
-            result.put("status", 1);
-            dataMap.put("groupId",groupId);
-            dataMap.put("groupName",groupName);
-            dataMap.put("classId",classId);
-            dataMap.put("className",className);
-            dataMap.put("groupNum",groupNum);
-            dataMap.put("leader",leader);
-            dataMap.put("member",memberList);
             dataMap.put("data",evaluationInfoList);
-            result.put("data",dataMap);
         } catch (Exception e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            result.put("status", 0);
-            result.put("msg", "查询发生错误");
+            if(flag == 0){
+                //小组不存在
+                result.put("status", 0);
+                result.put("msg", "小组不存在");
+            }
+            return result;
+        } finally {
+            //小组存在但是信息不齐全
             return result;
         }
-        return result;
+
     }
 
     @Autowired
