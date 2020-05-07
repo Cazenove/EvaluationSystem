@@ -25,11 +25,11 @@
 						<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
 					</el-col>
 					<el-col :span="3">
-						<el-input offser="3" placeholder="姓名" v-model="searchInfo.userName"></el-input>
+						<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
 					</el-col>
 					<el-col :span="3">
 						<el-select offser="5" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
-							<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.name"></el-option>
+							<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
 						</el-select>
 					</el-col>
 					<el-col :span="3">
@@ -71,7 +71,9 @@
 					</template>
 				</vxe-table-column>
 			</vxe-table>
+			
 		</div>
+		
 		
 		<!-- 模态框 -->
 		<div class="modal fade" id="AddModal">
@@ -91,8 +93,8 @@
 						<input type="text" class="form-control" id="add-userId"/>
 					</div>
 					<div class="form-group">
-						<label for="add-userName">姓名</label>
-						<input type="text" class="form-control" id="add-userName"/>
+						<label for="add-name">姓名</label>
+						<input type="text" class="form-control" id="add-name"/>
 					</div>
 					<div class="form-group">
 						<label for="add-classId">班级</label>
@@ -139,9 +141,9 @@
 						<span class="error" v-if="errors['updateInfo.userId']">{{errors['updateInfo.userId']}}</span>
 					</div>
 					<div class="form-group">
-						<label for="update-userName">姓名</label>
-						<input type="text" class="form-control" id="update-userName" v-model="updateInfo.userName"/>
-						<span class="error" v-if="errors['updateInfo.userName']">{{errors['updateInfo.userName']}}</span>
+						<label for="update-name">姓名</label>
+						<input type="text" class="form-control" id="update-name" v-model="updateInfo.name"/>
+						<span class="error" v-if="errors['updateInfo.name']">{{errors['updateInfo.name']}}</span>
 					</div>
 					<div class="form-group">
 						<label for="telephone" class="col-form-label">电话号码</label>
@@ -151,7 +153,7 @@
 					<div class="form-group">
 						<label for="update-classId">班级</label>
 						<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
-							<option :value="item.classId" v-for="item in classOption"> {{ item.name }} </option>
+							<option :value="item.classId" v-for="item in classOption"> {{ item.className }} </option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -214,7 +216,7 @@
 				],
 				searchInfo: {
 					userId: null,
-					userName: null,
+					name: null,
 					classId: null,
 					groupId: null,
 					status: null,
@@ -224,7 +226,7 @@
 					userId: null,
 					password: null,
 					telephone: null,
-					userName: null,
+					name: null,
 					classId: null,
 					groupId: null,
 					status: null,
@@ -250,9 +252,10 @@
 			}
 		},
 		created() {
-			this.init();
 			this.getTeamList();
-			this.getClassOption();
+			this.init();
+			// this.getClassOption();
+			console.log(this.classOption);
 		},
 		methods: {
 			init() {
@@ -263,6 +266,7 @@
 				axios.get(api.adminUserList,null)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
+						console.log(res.data.data)
 						self.tableData = res.data.data;
 					}
 					else {
@@ -274,7 +278,7 @@
 			},
 			formatterClass({ cellValue }) {
 				let item = this.classOption.find(item => item.classId == cellValue)
-				return item ? item.name : ''
+				return item ? item.className : ''
 			},
 			formatterStatus({ cellValue }) {
 				let item = this.statusOption.find(item => item.value == cellValue)
@@ -282,14 +286,16 @@
 			},
 			search() {
 				// this.init();
+				console.log(this.tableData)
+				var data = this.tableData;
 				this.tableData = [];
-				for(let value of this.response.data){
+				for(let value of data){
 					let flag = 1;
 					
 					if (value.userId != this.searchInfo.userId && this.searchInfo.userId != null && this.searchInfo.userId != ""){
 						flag = 0;
 					}
-					if (value.userName != this.searchInfo.userName && this.searchInfo.userName != null && this.searchInfo.userName != ""){
+					if (value.name != this.searchInfo.name && this.searchInfo.name != null && this.searchInfo.name != ""){
 						flag = 0;
 					}
 					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != ""){
@@ -314,7 +320,7 @@
 					userId: row.userId,
 					password: row.password,
 					telephone: row.telephone,
-					userName: row.userName,
+					name: row.name,
 					classId: row.classId,
 					groupId: row.groupId,
 					status: row.status,
@@ -352,20 +358,23 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					self.classList = res.data;
+					console.log(res.data.data);
+					self.getClassOption(res.data.data);
+					self.classList = res.data.data;
 				}).catch(function(error) {
 					console.log(error);
 				})
 			},
-			getClassOption() {
-				for (let value of this.classList) {
+			getClassOption(data) {
+				for (let value of data) {
 					var option = {
-						name: value.name,
+						className: value.className,
 						classId: value.classId,
 						groupNum: value.groupNum,
 					}
 					this.classOption.push(option);
 				}
+				console.log(this.classOption)
 			},
 			// getTeamOption({ data }) {
 			// 	this.teamOption = []
@@ -393,7 +402,7 @@
 				console.log(this.updateInfo);
 				//注册功能
 				//先检验表单
-				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.userName', 'updateInfo.telephone',
+				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.name', 'updateInfo.telephone',
 					'updateInfo.classId', 'updateInfo.groupNum', 'updateInfo.status'
 				];
 				// check() 校验所有规则，参数可以设置需要校验的数组
@@ -422,9 +431,9 @@
 				test: /^[^]{6,16}$/,
 				message: '密码长度为6-16'
 			},
-			'updateInfo.userName': {
+			'updateInfo.name': {
 				test: function() {
-					if (!this.updateInfo.userName) {
+					if (!this.updateInfo.name) {
 						return false;
 					} else {
 						return true;
