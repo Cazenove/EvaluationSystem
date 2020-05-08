@@ -726,47 +726,11 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     releaseTime:"",//发布时间
     endTime:"",//结束时间
     content: {
-        details:[//登录的时候
-            {
-                groupId:1,
-                groupNum: 1,
-                groupName:"第一组",
-                score:null,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:null,
-                    }
-                ],
-                suggestion:"对第一组的建议..."
-            },
-            {
-                groupId:2,
-                groupNum: 2,
-                groupName:"第二组",
-                score:null,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:"",
-                    }
-                ],
-                suggestion:"对第二组的建议..."
-            }
-        ]
-    }
+	"tableColumn":["groupId","groupNum","groupName","A","总分","建议"],
+	"maxScore":[0,0,0,"100",100,0],
+	"tableData":[[4,1,"第1组",0,0,""],[5,2,"第2组",0,0,""]]
+	
+      }
 }
 返回结果：
 {
@@ -806,47 +770,11 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     releaseTime:"",//发布时间
     endTime:"",//结束时间
     content: {
-        details:[//登录的时候
-            {
-                groupId:1,
-                groupNum: 1,
-                groupName:"第一组",
-                score:null,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:null,
-                    }
-                ],
-                suggestion:""
-            },
-            {
-                groupId:2,
-                groupNum: 2,
-                groupName:"第二组",
-                score:null,//总分
-                content:[
-                    {
-                        item:"创新性",
-                        maxScore:40,
-                        score:"",//未填状态
-                    },
-                    {
-                        item:"实用性",
-                        maxScore:60,
-                        score:"",
-                    }
-                ],
-                suggestion:""
-            }
-        ]
-    }
+	"tableColumn":["groupId","groupNum","groupName","A","总分","建议"],
+	"maxScore":[0,0,0,"100",100,0],
+	"tableData":[[4,1,"第1组",0,0,""],[5,2,"第2组",0,0,""]]
+	
+      }
 }
 返回结果：
 {
@@ -872,47 +800,11 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
         releaseTime:"",//发布时间
         endTime:"",//结束时间
         content: {
-            details:[//登录的时候
-                {
-                    groupId:1,
-                    groupNum: 1,
-                    groupName:"第一组",
-                    score:null,//总分
-                    content:[
-                        {
-                            item:"创新性",
-                            maxScore:40,
-                            score:"",//未填状态
-                        },
-                        {
-                            item:"实用性",
-                            maxScore:60,
-                            score:null,
-                        }
-                    ],
-                    suggestion:""
-                },
-                {
-                    groupId:2,
-                    groupNum: 2,
-                    groupName:"第二组",
-                    score:null,//总分
-                    content:[
-                        {
-                            item:"创新性",
-                            maxScore:40,
-                            score:"",//未填状态
-                        },
-                        {
-                            item:"实用性",
-                            maxScore:60,
-                            score:"",
-                        }
-                    ],
-                    suggestion:""
-                }
-            ]
-        },
+	"tableColumn":["groupId","groupNum","groupName","A","总分","建议"],
+	"maxScore":[0,0,0,"100",100,0],
+	"tableData":[[4,1,"第1组",0,0,""],[5,2,"第2组",0,0,""]]
+	
+              },
         {
             ...
         }

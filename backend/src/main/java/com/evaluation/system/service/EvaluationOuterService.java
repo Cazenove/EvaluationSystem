@@ -1,15 +1,10 @@
 package com.evaluation.system.service;
 
+import com.evaluation.system.bean.*;
 import com.evaluation.system.bean.Class;
-import com.evaluation.system.bean.EvaluationInner;
-import com.evaluation.system.bean.EvaluationOuter;
-import com.evaluation.system.bean.SubmitOuter;
 import com.evaluation.system.config.PublishTimedTask;
 import com.evaluation.system.controller.EvaluationOuterController;
-import com.evaluation.system.dao.ClassRepository;
-import com.evaluation.system.dao.EvaluationInnerRepository;
-import com.evaluation.system.dao.EvaluationOuterRepository;
-import com.evaluation.system.dao.SubmitOuterRepository;
+import com.evaluation.system.dao.*;
 import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -42,6 +37,9 @@ public class EvaluationOuterService {
 
     @Autowired
     private PublishTimedTask publishTimedTask;
+
+    @Autowired
+    private SubmitInnerRepository submitInnerRepository;
 
 
 
@@ -103,6 +101,14 @@ public class EvaluationOuterService {
                         publishTimedTask.changeTaskTime(id.toString(),endTime,id.toString());
                     }
                 }
+                List<SubmitOuter> subOuterList= submitOuterRepository.findByEvaluationOuterId(id);
+                List<SubmitInner> subInnerList= submitInnerRepository.findByEvaluationInnerId(id);
+                for(SubmitInner submitInner:subInnerList){
+                    submitInnerRepository.delete(submitInner);
+                }
+                for(SubmitOuter submitOuter:subOuterList){
+                    submitOuterRepository.delete(submitOuter);
+                }
                 result.put("status","1");
                 result.put("msg","修改成功");
             }
@@ -130,6 +136,10 @@ public class EvaluationOuterService {
         Map<String,Object> result =new HashMap<>();
         try {
             List<EvaluationOuter> e = evaluationOuterRepository.findAll();
+            for(EvaluationOuter evaluationOuter:e)
+            {
+                evaluationOuter.setClassId(evaluationOuter.getClassInfo().getClassId());
+            }
             result.put("status","1");
             result.put("data",e);
 
