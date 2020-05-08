@@ -28,30 +28,29 @@ public class AdminService {
      * @author 1890
      */
     /*管理员添加用户*/
-    public HashMap<String, Object> userCreate(String id, String password, String name, int classId, int groupId, String status,
-                                              String tel){
+    public HashMap<String, Object> userCreate(User userInfo){
         int flag = 0;
         String msg = "添加成功";
         HashMap<String,Object> result = new HashMap<>();
-        User user = userRepository.findByUserId(id);
-        User user2 = userRepository.findByTelephone( tel );
+        User user = userRepository.findByUserId(userInfo.getUserId());
+        User user2 = userRepository.findByTelephone(userInfo.getTelephone());
         if (user==null){
             if(user2==null){
                 User user1 = new User();
-                if (classRepository.findByClassId( classId ) == null) {
+                if (classRepository.findByClassId(userInfo.getClassId()) == null) {
                     msg = "班级不存在";
                 } else {
-                    if(groupRepository.findByGroupId(groupId)==null){
+                    if(groupRepository.findByGroupId(userInfo.getGroupId())==null){
                         msg = "组不存在";
                     }
                     else{
-                        user1.setUser_id(id);
-                        user1.setPassword(password);
-                        user1.setName(name);
-                        user1.setClass_id(classId);
-                        user1.setGroupId(groupId);
-                        user1.setStatus(status);
-                        user1.setTelephone(tel);
+                        user1.setUserId(userInfo.getUserId());
+                        user1.setPassword(userInfo.getPassword());
+                        user1.setName(userInfo.getName());
+                        user1.setClassId(userInfo.getClassId());
+                        user1.setGroupId(userInfo.getGroupId());
+                        user1.setStatus(userInfo.getStatus());
+                        user1.setTelephone(userInfo.getStatus());
                         userRepository.save(user1);
                         flag = 1;
                     }
@@ -69,16 +68,16 @@ public class AdminService {
     }
 
     /*管理员删除用户*/
-    public HashMap<String, Object> userDelete(String id) {
+    public HashMap<String, Object> userDelete(User userInfo) {
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "删除成功";
-        User user = userRepository.findByUserId(id);
+        User user = userRepository.findByUserId(userInfo.getUserId());
         if(user==null){
             msg = "该用户不存在";
         }
         else{
-            userRepository.deleteById( id );
+            userRepository.deleteById(userInfo.getUserId());
             flag=1;
         }
         result.put("status",flag);
@@ -87,30 +86,29 @@ public class AdminService {
     }
 
     /*管理员修改用户信息*/
-    public HashMap<String,Object> userUpdate(String id, String password, String name, int classId, int groupId, String status,
-                                             String tel){
+    public HashMap<String,Object> userUpdate(User userInfo){
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "修改成功";
-        User user = userRepository.findByUserId(id);
+        User user = userRepository.findByUserId(userInfo.getUserId());
         if(user!=null) {
             User user1 = user;
-            User user2 = userRepository.findByTelephone( tel );
-            if (!password.equals( "" )&&!name.equals( "" )&&!status.equals( "" )) {
-                user1.setPassword( password );
-                user1.setName( name );
-                user1.setStatus( status );
-                if (classRepository.findByClassId( classId ) == null) {
+            User user2 = userRepository.findByTelephone(userInfo.getTelephone());
+            if (!userInfo.getPassword().equals( "" )&&!userInfo.getName().equals( "" )&&!userInfo.getStatus().equals( "" )) {
+                user1.setPassword(userInfo.getPassword());
+                user1.setName(userInfo.getName());
+                user1.setStatus(userInfo.getStatus());
+                if (classRepository.findByClassId(userInfo.getClassId()) == null) {
                     msg = "班级不存在";
                 } else {
-                    user1.setClass_id( classId );
-                    if(groupRepository.findByGroupId(groupId)==null){
+                    user1.setClassId(userInfo.getClassId());
+                    if(groupRepository.findByGroupId(userInfo.getGroupId(  ))==null){
                         msg = "组不存在";
                     }
                     else{
-                        user1.setGroupId( groupId );
-                        if (!tel.equals( "" )) {
-                            user1.setTelephone( tel );
+                        user1.setGroupId(userInfo.getGroupId());
+                        if (!userInfo.getTelephone().equals( "" )) {
+                            user1.setTelephone(userInfo.getTelephone());
                             flag = 1;
                         }
                     }
@@ -119,8 +117,9 @@ public class AdminService {
             else{
                 msg="输入不为空";
             }
-            if(flag==1)
+            if(flag==1){
                 userRepository.save(user1);
+            }
         }
         else{
             msg = "账号不存在";
@@ -146,22 +145,22 @@ public class AdminService {
     }
 
     /*管理员添加助教*/
-    public HashMap<String, Object> assistantCreate(String id, String password, String name, int classId,String tel){
+    public HashMap<String, Object> assistantCreate(Assistant assistantInfo){
         int flag = 0;
         String msg = "添加成功";
         HashMap<String,Object> result = new HashMap<>();
-        Assistant assistant = assistantRepository.findByAssistantId( id );
-        Assistant assistant2 = assistantRepository.findByTelephone(tel);
+        Assistant assistant = assistantRepository.findByAssistantId(assistantInfo.getAssistantId());
+        Assistant assistant2 = assistantRepository.findByTelephone(assistantInfo.getTelephone());
         if (assistant==null&&assistant2==null){
             Assistant assistant1 = new Assistant();
-            if (classRepository.findByClassId( classId ) == null) {
+            if (classRepository.findByClassId(assistantInfo.getClassId()) == null) {
                 msg = "班级不存在";
             } else {
-                assistant1.setAssistantId( id );
-                assistant1.setPassword(password);
-                assistant1.setName(name);
-                assistant1.setClassId(classId);
-                assistant1.setTelephone(tel);
+                assistant1.setAssistantId(assistantInfo.getAssistantId());
+                assistant1.setPassword(assistantInfo.getPassword());
+                assistant1.setName(assistantInfo.getName());
+                assistant1.setClassId(assistantInfo.getClassId());
+                assistant1.setTelephone(assistantInfo.getTelephone());
                 assistantRepository.save(assistant1);
                 flag = 1;
             }
@@ -176,16 +175,16 @@ public class AdminService {
     }
 
     /*管理员删除助教*/
-    public HashMap<String, Object> assistantDelete(String id) {
+    public HashMap<String, Object> assistantDelete(Assistant assistantInfo) {
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "删除成功";
-        Assistant assistant = assistantRepository.findByAssistantId(id);
+        Assistant assistant = assistantRepository.findByAssistantId(assistantInfo.getAssistantId());
         if(assistant==null){
             msg = "该助教不存在";
         }
         else{
-            assistantRepository.deleteById( id );
+            assistantRepository.deleteById(assistantInfo.getAssistantId());
             flag=1;
         }
         result.put("status",flag);
@@ -194,24 +193,24 @@ public class AdminService {
     }
 
     /*管理员修改助教信息*/
-    public HashMap<String,Object> assistantUpdate(String id, String password, String name, int classId, String tel){
+    public HashMap<String,Object> assistantUpdate(Assistant assistantInfo){
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "修改成功";
-        if(assistantRepository.findByAssistantId( id )!=null) {
-            Assistant assistant=assistantRepository.findByAssistantId( id );
+        if(assistantRepository.findByAssistantId(assistantInfo.getAssistantId())!=null) {
+            Assistant assistant=assistantRepository.findByAssistantId(assistantInfo.getAssistantId());
             Assistant assistant1=assistant;
-            if (!name.equals( "" )) {
-                if(!password.equals( "" )){
-                    assistant.setName( name );
-                    assistant.setPassword(password);
-                    if (classRepository.findByClassId( classId ) == null) {
+            if (!assistantInfo.getName().equals( "" )) {
+                if(!assistantInfo.getPassword().equals( "" )){
+                    assistant.setName(assistantInfo.getName());
+                    assistant.setPassword(assistantInfo.getPassword());
+                    if (classRepository.findByClassId(assistantInfo.getClassId()) == null) {
                         msg = "班级不存在";
                     } else {
-                        if (tel.equals( "" )) {
+                        if (assistantInfo.getTelephone().equals( "" )) {
                             msg = "手机号不能为空";
                         } else{
-                            assistant1.setTelephone( tel );
+                            assistant1.setTelephone(assistantInfo.getTelephone());
                             flag = 1;
                         }
                     }
@@ -223,8 +222,10 @@ public class AdminService {
             else{
                 msg = "姓名不为空";
             }
-            if(flag==1)
-                assistantRepository.save(assistant1);
+            if(flag==1){
+
+            }
+            assistantRepository.save(assistant1);
         }
         else{
             msg = "账号不存在";
