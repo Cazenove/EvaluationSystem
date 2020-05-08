@@ -6,6 +6,7 @@ import com.evaluation.system.dao.EvaluationInnerRepository;
 import com.evaluation.system.dao.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class EvaluationInnerService {
      * 根据班级id找组内评分表
      * @author 221701310_陈家祯
      */
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> getEvaluationInnersByClassId(int classId) {
         Map<String, Object> result = new HashMap<>();
         try {
