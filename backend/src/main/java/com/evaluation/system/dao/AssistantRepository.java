@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssistantRepository extends JpaRepository<Assistant,String> {
     //助教id查询
-    @Query("select a from Assistant as a where a.assistantId = :assistant_id")
-    Assistant findByAssistantId(@Param("assistant_id") String assistant_id);
+    @Query("select a from Assistant as a where a.assistantId = :assistantId")
+    Assistant findByAssistantId(@Param("assistantId") String assistantId);
     //助教电话查询
     @Query("select a from Assistant as a where a.telephone = :telephone")
     Assistant findByTelephone(@Param("telephone") String telephone);

@@ -9,6 +9,12 @@ import java.util.HashMap;
 
 @RestController
 public class AdminController {
+    /**
+     * @author 221701324
+     * 管理员操作
+     */
+
+
     @Autowired
     private  AssistantRepository assistantRepository;
     @Autowired
@@ -19,10 +25,10 @@ public class AdminController {
      * */
     @ResponseBody
     @PostMapping(value = "/admin/user/create")
-    public HashMap<String, Object> user_Create(@RequestParam("user_id") String id, @RequestParam("password") String password,
-                                                @RequestParam("name") String name, @RequestParam("class_id") int class_id,
-                                                @RequestParam("group_id") int group_id, @RequestParam("status") String status,
-                                                @RequestParam("telephone") String telephone){
+    public HashMap<String, Object> user_Create(@RequestParam("userId") String id, @RequestParam("password") String password,
+                                               @RequestParam("name") String name, @RequestParam("classId") int class_id,
+                                               @RequestParam("groupId") int group_id, @RequestParam("status") String status,
+                                               @RequestParam("telephone") String telephone){
         return adminService.userCreate(id,password,name,class_id,group_id,status,telephone);
     }
 
@@ -30,8 +36,8 @@ public class AdminController {
      * 成功返回true
      * */
     @ResponseBody
-    @DeleteMapping(value="/admin/user/delete")
-    public HashMap<String, Object> user_Delete(@RequestParam("user_id") String id){
+    @PostMapping(value="/admin/user/delete")
+    public HashMap<String, Object> user_Delete(@RequestParam("userId") String id){
         return adminService.userDelete(id);
     }
 
@@ -40,10 +46,10 @@ public class AdminController {
      * */
     @ResponseBody
     @PostMapping(value = "/admin/user/update")
-    public HashMap<String,Object> user_Update(@RequestParam("user_id") String id, @RequestParam("password") String password,
-                                               @RequestParam("name") String name, @RequestParam("class_id") int class_id,
-                                               @RequestParam("group_id") int group_id, @RequestParam("status") String status,
-                                               @RequestParam("telephone") String telephone){
+    public HashMap<String,Object> user_Update(@RequestParam("userId") String id, @RequestParam("password") String password,
+                                              @RequestParam("name") String name, @RequestParam("classId") int class_id,
+                                              @RequestParam("groupId") int group_id, @RequestParam("status") String status,
+                                              @RequestParam("telephone") String telephone){
         return adminService.userUpdate(id,password,name,class_id,group_id,status,telephone);
     }
 
@@ -60,9 +66,9 @@ public class AdminController {
      * */
     @ResponseBody
     @PostMapping(value = "/admin/assistant/create")
-    public HashMap<String, Object> assistant_Create(@RequestParam("assistant_id") String id, @RequestParam("password") String password,
-                                                @RequestParam("name") String name, @RequestParam("class_id") int class_id,
-                                                @RequestParam("telephone") String telephone){
+    public HashMap<String, Object> assistant_Create(@RequestParam("assistantId") String id, @RequestParam("password") String password,
+                                                    @RequestParam("name") String name, @RequestParam("classId") int class_id,
+                                                    @RequestParam("telephone") String telephone){
         return adminService.assistantCreate(id,password,name,class_id,telephone);
     }
 
@@ -70,8 +76,8 @@ public class AdminController {
      * 成功返回true
      * */
     @ResponseBody
-    @DeleteMapping(value="/admin/assistant/delete")
-    public HashMap<String, Object> assistant_Delete(@RequestParam("assistant_id") String id){
+    @PostMapping(value="/admin/assistant/delete")
+    public HashMap<String, Object> assistant_Delete(@RequestParam("assistantId") String id){
         return adminService.assistantDelete(id);
     }
 
@@ -80,9 +86,9 @@ public class AdminController {
      * */
     @ResponseBody
     @PostMapping(value = "/admin/assistant/update")
-    public HashMap<String,Object> assistant_Update(@RequestParam("assistant_id") String id, @RequestParam("password") String password,
-                                               @RequestParam("name") String name, @RequestParam("class_id") int class_id,
-                                               @RequestParam("telephone") String telephone){
+    public HashMap<String,Object> assistant_Update(@RequestParam("assistantId") String id, @RequestParam("password") String password,
+                                                   @RequestParam("name") String name, @RequestParam("classId") int class_id,
+                                                   @RequestParam("telephone") String telephone){
         return adminService.assistantUpdate(id,password,name,class_id,telephone);
     }
 

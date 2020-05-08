@@ -29,7 +29,7 @@ public class AdminService {
      */
     /*管理员添加用户*/
     public HashMap<String, Object> userCreate(String id, String password, String name, int classId, int groupId, String status,
-                                               String tel){
+                                              String tel){
         int flag = 0;
         String msg = "添加成功";
         HashMap<String,Object> result = new HashMap<>();
@@ -45,10 +45,10 @@ public class AdminService {
                         msg = "组不存在";
                     }
                     else{
-                        user1.setUserId(id);
+                        user1.setUser_id(id);
                         user1.setPassword(password);
                         user1.setName(name);
-                        user1.setClassId(classId);
+                        user1.setClass_id(classId);
                         user1.setGroupId(groupId);
                         user1.setStatus(status);
                         user1.setTelephone(tel);
@@ -88,7 +88,7 @@ public class AdminService {
 
     /*管理员修改用户信息*/
     public HashMap<String,Object> userUpdate(String id, String password, String name, int classId, int groupId, String status,
-                                              String tel){
+                                             String tel){
         HashMap<String,Object> result = new HashMap<>();
         int flag = 0;
         String msg = "修改成功";
@@ -103,7 +103,7 @@ public class AdminService {
                 if (classRepository.findByClassId( classId ) == null) {
                     msg = "班级不存在";
                 } else {
-                    user1.setClassId( classId );
+                    user1.setClass_id( classId );
                     if(groupRepository.findByGroupId(groupId)==null){
                         msg = "组不存在";
                     }
