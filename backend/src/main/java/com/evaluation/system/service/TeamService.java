@@ -187,25 +187,36 @@ public class TeamService {
      */
     public Map<String, Object> getGroupMemberInfo(String userId) {
         Map<String, Object> result = new HashMap<>();
-        try {
-            Map<String, Object> dataMap = new HashMap<>();
-            ArrayList<Object> evaluationInfoList = new ArrayList<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("userId", userId);
+        dataMap.put("userName", null);
+        result.put("status",null);
+        result.put("data",dataMap);
 
+        try {
             //获取组员姓名
             String name = userRepository.findOneByUserId(userId).getName();
-            dataMap.put("userId",userId);
-            dataMap.put("userName",name);
-            //存放组员贡献率分工情况
-            PersonScore personScore = personScoreRepository.findByUserId(userId);
-
-            dataMap.put("content",personScore.getContent());
-
-            result.put("status",1);
-            result.put("data",dataMap);
+            dataMap.put("userId", userId);
+            dataMap.put("userName", name);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             result.put("status", 0);
             result.put("msg", "查询发生错误");
+            return result;
+        }
+
+        try{
+            //存放组员贡献率分工情况
+            PersonScore personScore = personScoreRepository.findByUserId(userId);
+            dataMap.put("content",personScore.getContent());
+            result.put("status",1);
+            result.put("data",dataMap);
+
+        } catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            dataMap.put("content",null);
+            result.put("status",1);
+            result.put("data",dataMap);
             return result;
         }
         return result;
