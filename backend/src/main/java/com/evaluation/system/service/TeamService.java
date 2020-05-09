@@ -211,7 +211,6 @@ public class TeamService {
             dataMap.put("content",personScore.getContent());
             result.put("status",1);
             result.put("data",dataMap);
-
         } catch(Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             dataMap.put("content",null);
