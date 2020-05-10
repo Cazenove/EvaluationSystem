@@ -134,13 +134,12 @@
 				var self = this;
 				axios.get(api.adminSuggestionList,null)
 				.then(function(res) {
-					console.log(res)
 					if(res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
 					}
 					else {
-						alert(res.msg);
+						alert(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

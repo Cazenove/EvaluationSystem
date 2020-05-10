@@ -107,13 +107,10 @@
 			},
 			getResponse() {
 				var self = this;
-				console.log(self.request);
 				axios.post(api.userEvaluationOuter, self.request)
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						self.response = res.data.data;
-						console.log(self.response);
 						self.title = self.response.name;
 						
 						//构建表头
@@ -147,7 +144,6 @@
 						for(var i=0; i<self.tableData.length; i++) {
 							if(self.tableData[i][0] == self.request.groupId) {
 								self.tableData.splice(i,1);
-								console.log(self.tableData);
 								break;
 							}
 						}
@@ -201,11 +197,9 @@
 							}
 						}
 						
-						console.log(submitForm);
 						//提交
 						axios.post(api.userEvaluationOuterSubmit,submitForm)
 						.then(function(res) {
-							console.log(res);
 							if(res.status == 200 && res.data.status == 1) {
 								alert(res.data.msg);
 							} else {

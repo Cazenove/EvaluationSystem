@@ -60,7 +60,7 @@
 						self.tableData = self.response.data;
 					}
 					else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

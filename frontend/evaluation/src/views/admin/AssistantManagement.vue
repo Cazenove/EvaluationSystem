@@ -26,7 +26,7 @@
 					<template v-slot="{ row }">
 						<!-- <button type="button" @click="editEvent(row)" class="btn btn-light"  data-toggle="modal" data-target="#modal">修改</button>
 						 -->
-						 <AdminAssistantUpdateModal :modalTitle="updateModalTitle" :registerInfo="row"></AdminAssistantUpdateModal>
+						<AdminAssistantUpdateModal :registerInfo="row"></AdminAssistantUpdateModal>
 						&nbsp;
 						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
 					</template>
@@ -64,7 +64,7 @@
 					<div class="form-group">
 						<label for="update-classId">管理的班级</label>
 						<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
-							<option :value="item.classId" v-for="item in classList"> {{ item.className }} </option>
+							<option :value="item.classId" v-for="item in classList" :key="item.classId"> {{ item.className }} </option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -136,7 +136,7 @@
 						self.response = res.data;
 						self.tableData = self.response.data;
 					} else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
@@ -149,25 +149,23 @@
 				var deleteInfo = {
 					assistantId : row.assistantId,
 				}
-				
-					this.$XModal.confirm('您确定要删除该数据?').then(type => {
-						if (type === 'confirm') {
-						this.$refs.xTable.remove(row)
+				this.$XModal.confirm('您确定要删除该数据?').then(type => {
+					if (type === 'confirm') {
+						var self = this;
+						axios.post(api.adminAssistantDelete,deleteInfo)
+						.then(function(res){
+							alert(res.data.msg);
+							self.reload();
+						}).catch(function(error){
+							console.log(error);
+						})
 					}
-				})
-				
-				axios.post(api.adminAssistantDelete,deleteInfo)
-				.then(function(res){
-					alert(res.msg);
-				}).catch(function(error){
-					console.log(error);
 				})
 			},
 			getClassList() {
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					console.log(res.data.data);
 					self.classList = res.data.data;
 				}).catch(function(error) {
 					console.log(error);

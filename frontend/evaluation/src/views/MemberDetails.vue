@@ -50,7 +50,6 @@
 						userId:this.$route.query.userId
 					}
 				}).then(function(res) {
-					console.log(res);
 					self.response = res.data;
 				}).catch(function(error) {
 					console.log(error);

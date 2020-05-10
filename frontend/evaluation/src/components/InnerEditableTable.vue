@@ -110,7 +110,6 @@
 				var self = this;
 				axios.get(api.userEvaluationInner, self.request)
 				.then(function(res) {
-					console.log(res);
 					self.response = res.data;
 				}).catch(function(error) {
 					console.log(error);
@@ -150,7 +149,6 @@
 				// })
 				axios.get(api.adminTeamList, null)
 				.then(function(res) {
-					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						for(var i=0; i<res.data.data.length; i++) {
 							if(self.$store.state.userInfo.groupId == res.data.data[i].groupId) {
@@ -166,10 +164,9 @@
 								contribution:0
 							}
 						}
-						console.log(self.tableData);
 						self.ready = true;
 					} else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

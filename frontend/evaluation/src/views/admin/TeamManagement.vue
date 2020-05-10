@@ -63,12 +63,11 @@
 				var self = this;
 				axios.get(api.adminTeamList, null)
 				.then(function(res) {
-					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
 					} else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

@@ -167,7 +167,6 @@
 			},
 			close() {},
 			register() {
-				console.log(this.registerInfo);
 				//注册功能
 				//先检验表单
 				let verifyList = ['registerInfo.userId', 'registerInfo.password', 'registerInfo.name', 'registerInfo.telephone',
@@ -180,7 +179,6 @@
 				console.log('验证通过');
 				//然后发送表单
 				var self = this;
-				console.log(this.registerInfo);
 				axios.post(api.register,this.registerInfo)
 				.then(function(res) {
 					alert(res.data.msg);

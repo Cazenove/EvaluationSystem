@@ -66,7 +66,6 @@
 		},
 		methods: {
 			cellClickEvent ({ row }) {
-				console.log(row);
 				var i;
 				for(i=3;i<row.content.tableColumn.length-2;i++) {
 					var str = i.toString();
@@ -95,7 +94,6 @@
 				this.showDetails = true
 			},
 			showDetail(row) {
-				console.log(row);
 				var i;
 				for(i=3;i<row.content.tableColumn.length-2;i++) {
 					var str = i.toString();
@@ -121,7 +119,6 @@
 					}
 					this.detailData[i] = item;
 				}
-				console.log(this.detailData);
 				this.showDetails = true
 			},
 			getRequest() {},
@@ -129,7 +126,6 @@
 				var self = this;
 				axios.get(api.adminEvaluationOuterSubmit, null)
 				.then(function(res) {
-					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
@@ -137,7 +133,7 @@
 							self.tableData[i].submitTime = self.getDate(self.tableData[i].submitTime);
 						}
 					} else {
-						console.log(res.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);

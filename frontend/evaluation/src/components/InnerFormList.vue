@@ -45,7 +45,6 @@ export default {
 			axios.get(api.userEvaluationInnerList,self.request)
 			.then(function(res) {
 				self.response = res.data;
-				console.log(self.response);
 			}).catch(function(error) {
 				console.log(error);
 			})

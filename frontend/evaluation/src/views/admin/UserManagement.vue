@@ -45,13 +45,15 @@
 					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
 				</el-row>
 			</div>
-			<vxe-table border
-				resizable
-				row-key
-				highlight-hover-row
-				keep-source
-				ref="xTable"
-				:data="tableData">
+			<vxe-table
+			 v-if="classList"
+			 border
+			 resizable
+			 row-key
+			 highlight-hover-row
+			 keep-source
+			 ref="xTable"
+			 :data="tableData">
 				<vxe-table-column field="userId" title="学号"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
@@ -251,8 +253,6 @@
 			this.getTeamList();
 			// this.getClassOption();
 			// setTimeout(this.init(),5000);
-			
-			console.log(this.classOption);
 		},
 		methods: {
 			init() {
@@ -263,7 +263,6 @@
 				axios.get(api.adminUserList,null)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
-						console.log(res.data.data)
 						self.tableData = res.data.data;
 					}
 					else {
@@ -283,7 +282,6 @@
 			},
 			search() {
 				// this.init();
-				console.log(this.tableData)
 				var data = this.tableData;
 				this.tableData = [];
 				for(let value of data){
@@ -311,7 +309,6 @@
 				
 			},
 			editEvent (row) {
-				console.log(this.classList)
 				// this.$refs.xTable.setActiveRow(row)
 				this.updateInfo = {
 					userId: row.userId,
@@ -328,7 +325,6 @@
 						this.updateInfo.groupNum = value.groupNum;
 					}
 				}
-				console.log(this.updateInfo)
 				// this.selectRow = row;
 				// this.showEdit = true;
 			},
@@ -355,7 +351,6 @@
 				var self = this;
 				axios.get(api.adminClassList,null)
 				.then(function(res) {
-					console.log(res.data.data);
 					self.getClassOption(res.data.data);
 					self.classList = res.data.data;
 				}).catch(function(error) {
@@ -372,7 +367,6 @@
 					}
 					this.classOption.push(option);
 				}
-				console.log(this.classOption)
 			},
 			// getTeamOption({ data }) {
 			// 	this.teamOption = []
@@ -397,7 +391,6 @@
 				}
 			},
 			update() {
-				console.log(this.updateInfo);
 				//注册功能
 				//先检验表单
 				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.userName', 'updateInfo.telephone',

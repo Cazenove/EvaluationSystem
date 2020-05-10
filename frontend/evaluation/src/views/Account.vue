@@ -113,7 +113,6 @@
 				var self = this;
 				axios.post(api.userUpdate,this.request)
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						self.$store.state.userInfo.telephone = self.request.telephone;
 						self.$store.state.userInfo.userName = self.request.name;

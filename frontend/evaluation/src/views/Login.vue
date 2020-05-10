@@ -54,7 +54,6 @@
 					password:this.$data.password
 				}).then(function(res) {
 					var ses = window.sessionStorage;
-					console.log(res);
 					if(res.status == 200) {
 						self.$store.state.loginState = res.data.status;
 						if(res.data.status == 1 || res.data.status == 2) {

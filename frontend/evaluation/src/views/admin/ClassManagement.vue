@@ -227,7 +227,6 @@
 				var self = this;
 				axios.post(api.adminClassCreate,this.submitData)
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						alert("创建成功！")
 					} else {
@@ -249,7 +248,6 @@
 				axios.post(api.adminClassDelete,{
 					classId:this.$data.deleteClassId
 				}).then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						alert("删除成功！");
 					} else {
@@ -266,7 +264,6 @@
 					classId:this.$data.endClassId
 				})
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						alert("结束成功！")
 					} else {
@@ -285,10 +282,8 @@
 			},
 			editClass() {
 				this.getTimeStamp(this.$data.editData);
-				console.log(this.$data.editData.startTime);
 				axios.post(api.adminClassUpdate,this.$data.editData)
 				.then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						alert("修改成功！")
 					} else {

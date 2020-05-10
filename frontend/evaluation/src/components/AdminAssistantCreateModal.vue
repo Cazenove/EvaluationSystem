@@ -16,27 +16,27 @@
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="assistantId" class="col-form-label">助教ID</label>
-							<input type="text" class="form-control" id="assistantId" v-model="registerInfo.assistantId" />
+							<input type="text" class="form-control" id="assistantId1" v-model="registerInfo.assistantId" />
 							<span class="error" v-if="errors['registerInfo.assistantId']">{{errors['registerInfo.assistantId']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-form-label">密码</label>
-							<input type="password" class="form-control" id="password" v-model="registerInfo.password" />
+							<input type="password" class="form-control" id="password1" v-model="registerInfo.password" />
 							<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="name" class="col-form-label">姓名</label>
-							<input type="text" class="form-control" id="name" v-model="registerInfo.name" />
+							<input type="text" class="form-control" id="name1" v-model="registerInfo.name" />
 							<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="telephone" class="col-form-label">电话号码</label>
-							<input type="text" class="form-control" id="telephone" v-model="registerInfo.telephone" />
+							<input type="text" class="form-control" id="telephone1" v-model="registerInfo.telephone" />
 							<span class="error" v-if="errors['registerInfo.telephone']">{{errors['registerInfo.telephone']}}</span>
 						</div>
 						<div class="form-group">
 							<label for="classId" class="col-form-label">管理的班级</label>
-							<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
+							<select class="form-control" v-model="registerInfo.classId">
 								<option disabled="disabled" :value="null">请选择</option>
 								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
 							</select>
@@ -72,13 +72,11 @@
 					password: null,
 					name: null,
 					telephone: null,
-					classId: null,
-					groupNum: null,
-					status: null
+					classId: null
 				},
 				response: {
 				},
-				modalTitle: "",
+				title: "",
 			}
 		},
 		created() {
@@ -132,7 +130,6 @@
 			},
 			close() {},
 			register() {
-				console.log(this.registerInfo);
 				//注册功能
 				//先检验表单
 				let verifyList = ['registerInfo.assistantId', 'registerInfo.password', 'registerInfo.name', 'registerInfo.telephone',
@@ -145,7 +142,6 @@
 				console.log('验证通过');
 				//然后发送表单
 				var self = this;
-				console.log(this.registerInfo);
 				axios.post(api.adminAssistantCreate,this.registerInfo)
 				.then(function(res) {
 					alert(res.data.msg);
@@ -158,10 +154,6 @@
 		computed: {
 			errors() {
 				return this.$vuerify.$errors
-			},
-			getGroupNum: function() {
-				return this.$data.registerInfo.classId !== null ? this.$data.classList[this.$data.registerInfo.classId - 1].groupNum :
-					null;
 			}
 		}
 	}

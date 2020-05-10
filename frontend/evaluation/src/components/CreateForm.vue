@@ -190,7 +190,6 @@
 				});
 			},
 			removeEvent (rowIndex) {
-				console.log(rowIndex);
 				this.tableData.pop(rowIndex);
 			},
 			getTimeStamp(data){
@@ -244,15 +243,13 @@
 									self.submitForm.content.tableData[index++] = teamItem;
 								}
 							}
-							console.log(self.submitForm);
 							//提交表单
 							axios.post(api.adminEvaluationCreate,self.submitForm)
 							.then(function(res) {
-								console.log(res);
 								if(res.status == 200 && res.data.status == 1) {
 									alert("创建成功！");
 								} else {
-									alert(res.msg);
+									alert(res.data.msg);
 								}
 								self.reload();
 							}).catch(function(error) {

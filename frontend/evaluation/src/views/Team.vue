@@ -99,7 +99,6 @@
 						groupId: self.$store.state.userInfo.groupId
 					}
 				}).then(function(res) {
-					console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 					} else {
