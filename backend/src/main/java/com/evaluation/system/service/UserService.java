@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
 
@@ -34,16 +35,20 @@ public class UserService {
         User user1 = userRepository.findByUserId(user.getUserId());
         Assistant assistant = assistantRepository.findByAssistantId(user.getUserId());
         Admin admin = adminRepository.findByAdminId(user.getUserId());
-        if (user1!=null && user1.getPassword().equals(user.getPassword())){
+
+        //输入密码加密,密文为 md5Password
+        String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+
+        if (user1!=null && user1.getPassword().equals(md5Password)){
             flag = user1.getStatus();
             result.put("status",flag);
             result.put("data",user1);
         }
-        else if (assistant!=null && assistant.getPassword().equals(user.getPassword())){
+        else if (assistant!=null && assistant.getPassword().equals(md5Password)){
             result.put("status",3);
             result.put("data",assistant);
         }
-        else if (admin!=null && admin.getPassword().equals(user.getPassword())){
+        else if (admin!=null && admin.getPassword().equals(md5Password)){
             result.put("status",4);
         }
         else {
@@ -68,7 +73,12 @@ public class UserService {
             if (user1 == null && user2 == null) {
                 User user3 = new User();
                 user3.setUserId(user.getUserId());
-                user3.setPassword(user.getPassword());
+
+                //输入密码加密,密文为 md5Password
+                String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+
+                user3.setPassword(md5Password);
+
                 user3.setName(user.getName());
                 user3.setClassId(user.getClassId());
                 user3.setGroupId(team.getGroupId());
@@ -127,7 +137,10 @@ public class UserService {
         HashMap<String,Object> result = new HashMap<>();
         try {
             if (user1!=null){
-                user1.setPassword(user.getPassword());
+                //输入密码加密,密文为 md5Password
+                String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+
+                user1.setPassword(md5Password);
                 userRepository.save(user1);
                 result.put("status",1);
                 result.put("msg","修改成功");
