@@ -51,4 +51,21 @@ public class GroupCompositeScoreService {
         }
         return map;
     }
+
+    public Map<String,Object> getGroupCompsiteScore(Map<String,Object> content){
+        Map<String,Object> map=new HashMap<>();
+        try{
+            GroupCompositeScore groupCompositeScore=groupCompositeScoreRepository.findByGroupId((int)content.get("groupId"));
+            map.put("data",groupCompositeScore);
+            map.put("status","1");
+
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status","0");
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
+
+
 }

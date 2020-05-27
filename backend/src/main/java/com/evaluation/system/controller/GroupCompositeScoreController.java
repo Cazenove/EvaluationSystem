@@ -22,4 +22,10 @@ public class GroupCompositeScoreController {
     public Map<String,Object> listGroupCompositeScore(){
         return groupCompositeScoreService.listGroupScore();
     }
+
+    /**获取小组的综合得分,待测试**/
+    @GetMapping(value="admin/group/score")
+    public Map<String,Object> getGroupCompositeScore(Map<String,Object> content){
+        return groupCompositeScoreService.getGroupCompsiteScore(content);
+    }
 }

@@ -55,4 +55,20 @@ public class PersonCompositeScoreService {
         }
         return map;
     }
+
+    /**获取个人综合得分的方法，尚未测试**/
+    public Map<String,Object> getPersonCompositeScore(Map<String,Object> content){
+        Map<String,Object> map = new HashMap<String,Object>();
+        try{
+
+            PersonCompositeScore personCompositeScore=personCompositeScoreRepository.findByUserId((String)content.get("userId"));
+            map.put("data",personCompositeScore);
+            map.put("status","1");
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status","0");
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
 }

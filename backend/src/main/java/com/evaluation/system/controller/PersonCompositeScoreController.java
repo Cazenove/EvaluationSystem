@@ -24,4 +24,10 @@ public class PersonCompositeScoreController {
     public Map<String, Object> listPersonCompositeScore(){
         return personCompositeScoreService.listPersonCompositeScore();
     }
+
+    /**获取个人的综合得分,尚未测试**/
+    @GetMapping(value="admin/user/score")
+    public Map<String, Object> getPersonCompositeScore(Map<String,Object> content){
+        return personCompositeScoreService.getPersonCompositeScore(content);
+    }
 }
