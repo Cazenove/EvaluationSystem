@@ -2,6 +2,14 @@
 	<div>
 		<ManageNav />
 		<div class="container">
+			<div class="form-group">
+				<label for="classId" class="col-form-label">班级</label>
+				<select class="form-control" v-model="classId" @change="getClassInfo()">
+					<option disabled="disabled" :value="null">请选择</option>
+					<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
+				</select>
+			</div>
+			
 			<div id="myChart" :style="{width: '500px', height: '500px'}"></div>
 		</div>
 	</div>
@@ -13,7 +21,7 @@
 	import ManageNav from '../../components/ManageNav.vue'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
-	
+
 	export default {
 		inject: ['reload'],
 		components: {
@@ -21,26 +29,19 @@
 		},
 		data() {
 			return {
-				
-			}
-		},
-		mounted(){
-		    this.drawLine();
-		  },
-		  methods: {
-		    drawLine(){
-		        // 基于准备好的dom，初始化echarts实例
-		        let myChart = this.$echarts.init(document.getElementById('myChart'))
-		        // 绘制图表
-		        myChart.setOption({
+				classList: [],
+				classId: '',
+				classInfo: {
+				},
+				option: {
 					title: {
-						text: '折线图堆叠'
+						text: '小组得分折线图'
 					},
 					tooltip: {
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+						data: ['第一组']
 					},
 					grid: {
 						left: '3%',
@@ -56,46 +57,117 @@
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+						data: []
 					},
 					yAxis: {
 						type: 'value'
 					},
-					series: [
-						{
-							name: '邮件营销',
-							type: 'line',
-							stack: '总量',
-							data: [120, 132, 101, 134, 90, 230, 210]
-						},
-						{
-							name: '联盟广告',
-							type: 'line',
-							stack: '总量',
-							data: [220, 182, 191, 234, 290, 330, 310]
-						},
-						{
-							name: '视频广告',
-							type: 'line',
-							stack: '总量',
-							data: [150, 232, 201, 154, 190, 330, 410]
-						},
-						{
-							name: '直接访问',
-							type: 'line',
-							stack: '总量',
-							data: [320, 332, 301, 334, 390, 330, 320]
-						},
-						{
-							name: '搜索引擎',
-							type: 'line',
-							stack: '总量',
-							data: [820, 932, 901, 934, 1290, 1330, 1320]
+					series: [{
+						name: '第一组',
+						type: 'line',
+						stack: '总量',
+						data: [120, 132, 101, 134, 90, 230, 210]
+					}]
+				}
+			}
+		},
+		mounted() {
+			this.getClassList();
+		},
+		methods: {
+			getClassList() {
+				var self = this;
+				axios.get(api.adminClassList,null)
+				.then(function(res) {
+					self.classList = res.data.data;
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getClassInfo() {
+				var self = this;
+				this.init();
+				axios.post(api.userEvaluationOuterList,{
+					classId:this.classId
+				}).then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.option.xAxis.data[i] = res.data.data[i].name
 						}
-					]
-				});
-		    }
-		  }
+						self.drawLine();
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+				axios.get(api.adminGroupScoreList,null)
+				.then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						var data = {};
+						for(var i=0; i<res.data.data.length; i++) {
+							if(res.data.data[i].classId == self.classId) {
+								if(!data[res.data.data[i].groupId]) {
+									data[res.data.data[i].groupId] = {
+										name: res.data.data[i].groupName,
+										type: 'line',
+										stack: '分数',
+										data: []
+									};
+									data[res.data.data[i].groupId].data.push(res.data.data[i].content);
+								} else {
+									data[res.data.data[i].groupId].data.push(res.data.data[i].content);
+								}
+							}
+						}
+						var j = 0;
+						for(var i in data) {
+							self.option.series[j++] = data[i];
+						}
+						console.log(self.option);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			init() {
+				this.option = {
+					title: {
+						text: '小组得分折线图'
+					},
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+						data: []
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					toolbox: {
+						feature: {
+							saveAsImage: {}
+						}
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						data: []
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: []
+				}
+			},
+			drawLine() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById('myChart'))
+				// 绘制图表
+				myChart.setOption(this.option);
+			}
+		}
 	}
 </script>
 
