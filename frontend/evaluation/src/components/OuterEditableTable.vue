@@ -15,7 +15,13 @@
 		 @edit-disabled="editDisabledEvent">
 		</vxe-grid>
 		<br />
-		<button class="btn btn-success" @click="sumbit">提交</button>
+		<el-row>
+			<el-col :span="8" :offset="10">
+				<div class="grid-content bg-purple-light">
+					<button class="btn btn-success btn-lg" @click="sumbit">提交</button>
+				</div>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 
@@ -30,15 +36,12 @@
 				showDetails:false,
 				title:'',
 				validRules: {
-					name0: [{required:true, message:'此项必填'}],
-					name1: [{required:true, message:'此项必填'}],
-					name2: [{required:true, message:'此项必填'}],
-					name3: [{required:true, message:'此项必填'}],
-					name4: [{required:true, message:'此项必填'}],
-					name5: [{required:true, message:'此项必填'}],
-					name6: [{required:true, message:'此项必填'}],
-					name7: [{required:true, message:'此项必填'}],
-					name8: [{required:true, message:'此项必填'}],
+					'3': [{required:true, message:'此项必填'}],
+					'4': [{required:true, message:'此项必填'}],
+					'5': [{required:true, message:'此项必填'}],
+					'6': [{required:true, message:'此项必填'}],
+					'7': [{required:true, message:'此项必填'}],
+					'8': [{required:true, message:'此项必填'}],
 					suggestion:[{required:true, message:'建议为必填项'}]
 				},
 				request: {
@@ -141,12 +144,6 @@
 							}
 							self.tableData[i] = item;
 						}
-						for(var i=0; i<self.tableData.length; i++) {
-							if(self.tableData[i][0] == self.request.groupId) {
-								self.tableData.splice(i,1);
-								break;
-							}
-						}
 						self.ready = true;
 					} else {
 						alert(res.data.msg);
@@ -162,6 +159,7 @@
 			sumbit() {
 				// 提交表格
 				// 将修改的数据保存到表单，然后进行提交
+				console.log(this.tableData);
 				for(var i=0; i<this.response.content.tableData.length; i++) {
 					this.response.content.tableData[i][0] = this.tableData[i][0];
 					this.response.content.tableData[i][1] = this.tableData[i][1];

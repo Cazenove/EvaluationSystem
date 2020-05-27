@@ -2,12 +2,23 @@
 <template>
 	<div id="OuterFormList">
 		<ul>
-			<li v-for="item in response.data" :key="item.evaluationOuterId">
-				<router-link :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
-					{{item.evaluationOuterId}}.{{item.name}}
-				</router-link>
-				<p>发布时间：{{getDate(item.releaseTime)}}
-				截止时间：{{getDate(item.endTime)}}</p>
+			<li v-for="item in response.data" v-if="item.endTime>time" :key="item.evaluationOuterId">
+				<div>
+					<router-link :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
+						{{item.evaluationOuterId}}.{{item.name}}
+					</router-link>
+					<p>发布时间：{{getDate(item.releaseTime)}}
+					截止时间：{{getDate(item.endTime)}}</p>
+				</div>
+			</li>
+			<li v-else>
+				<div>
+					<p>
+						[已截止]{{item.evaluationOuterId}}.{{item.name}}
+					</p>
+					<p>发布时间：{{getDate(item.releaseTime)}}
+					截止时间：{{getDate(item.endTime)}}</p>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -26,7 +37,8 @@
 				response: {
 					status: 1,
 					data: []
-				}
+				},
+				time:''
 			}
 		},
 		methods: {
@@ -61,6 +73,7 @@
 			}
 		},
 		created() {
+			this.time = parseInt(Number(new Date())/1000);
 			//创建的时候根据班级小组来获取评分表
 			this.init();
 		},

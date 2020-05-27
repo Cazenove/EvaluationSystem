@@ -7,17 +7,11 @@
 		<br />
 		<div class="text-left offset-md-1">
 			<h2>组员详情</h2>
-			<p>姓名：{{response.data.name}}</p>
+			<p>姓名：{{response.data.userName}}</p>
 			<p>学号：{{response.data.userId}}</p>
 			<hr />
 			<h2>历次贡献率</h2>
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item" v-for="item in response.data.data" :key="item.evaluationInnerId">
-					{{item.name}}<br />
-					{{item.decision}}<br />
-					{{item.contribution}}
-				</li>
-			</ul>
+			<p>{{response.data.content}}</p>
 		</div>
 	</div>
 </template>
@@ -50,6 +44,7 @@
 						userId:this.$route.query.userId
 					}
 				}).then(function(res) {
+					console.log(res);
 					self.response = res.data;
 				}).catch(function(error) {
 					console.log(error);

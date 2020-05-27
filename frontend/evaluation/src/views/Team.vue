@@ -40,11 +40,11 @@
 			</p>
 			<hr />
 			<h2>团队作业概况</h2>
-			<div v-for="item in response.data.data" :key="item.evaluationOuterId">
-				<p>{{item.evaluationOuterId}}</p>
-				<p>{{item.name}}</p>
-				<p>{{item.score}}</p>
-				<p>{{item.suggestion}}</p>
+			<div v-for="item in groupScore" :key="item.evaluationOuterId">
+				<p>{{item.evaluationOuterId}}:{{item.content}}</p>
+			</div>
+			<div v-for="item in suggestion" :key="item.groupSuggestionId">
+				<p>{{item.evaluationOuterId}}:{{item.suggestion}}</p>
 			</div>
 		</div>
 	</div>
@@ -78,7 +78,9 @@
 					    member: [],
 					    data: []
 					}
-				}
+				},
+				groupScore: [],
+				suggestion: []
 			}
 		},
 		created() {
@@ -108,9 +110,49 @@
 					console.log(error);
 				})
 			},
+			getGroupScore() {
+				var self = this;
+				axios.get(api.adminGroupScoreList, {})
+				.then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						var j=0;
+						for(var i=0; i<res.data.data.length; i++) {
+							if(res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
+								self.groupScore[j++] = res.data.data[i];
+							}
+						}
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getSuggestion() {
+				var self = this;
+				axios.get(api.adminSuggestionList, {})
+				.then(function(res) {
+					console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						var j=0;
+						for(var i=0; i<res.data.data.length; i++) {
+							if(res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
+								self.suggestion[j++] = res.data.data[i];
+							}
+						}
+						console.log(self.suggestion);
+					} else {
+						alert(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
 			init() {
-				this.getRequest(),
-				this.getResponse()
+				this.getRequest();
+				this.getResponse();
+				this.getGroupScore();
+				this.getSuggestion();
 			},
 			changeGroupName() {
 				

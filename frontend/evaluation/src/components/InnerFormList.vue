@@ -2,12 +2,21 @@
 <template>
 	<div id="InnerFormList">
 		<ul>
-			<li v-for="item in response.data" :key="item.evaluationInnerId">
+			<li v-for="item in response.data" v-if="item.endTime>time" :key="item.evaluationInnerId">
 				<router-link :to="{path:'/inner',query:{evaluationInnerId:item.evaluationInnerId}}">
 					{{item.evaluationInnerId}}.{{item.name}}
 				</router-link>
 				<p>发布时间：{{getDate(item.releaseTime)}}
 				截止时间：{{getDate(item.endTime)}}</p>
+			</li>
+			<li v-else>
+				<div>
+					<p>
+						[已截止]{{item.evaluationOuterId}}.{{item.name}}
+					</p>
+					<p>发布时间：{{getDate(item.releaseTime)}}
+					截止时间：{{getDate(item.endTime)}}</p>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -28,10 +37,12 @@ export default {
 			response: {
 				status:'',
 				data:[]
-			}
+			},
+			time:''
 		}
 	},
 	created() {
+		this.time = parseInt(Number(new Date())/1000);
 		//创建时根据班级小组获取评分表列表
 		this.init();
 	},
