@@ -71,8 +71,8 @@ public class TaskJob implements Job {
             EvaluationInner e = evaluationInnerRepository.findOneByEvaluationInnerId(kid);
             List<SubmitInner> subList = submitInnerRepository.findByEvaluationInnerId(kid);
             int groupNum = e.getClassInfo().getGroupNum();
-            if (subList.size() != groupNum) {
-                System.out.println("还有小组未提交组内评分表，无法统计");
+            if (subList.size() == 0) {
+                System.out.println("当前提交的组内评分表无法进行统计");
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return;
             }
@@ -120,9 +120,27 @@ public class TaskJob implements Job {
             EvaluationOuter e = evaluationOuterRepository.findOneByEvaluationOuterId(kid);
             List<SubmitOuter> subList = submitOuterRepository.findByEvaluationOuterId(e.getEvaluationOuterId());
             int groupNum = e.getClassInfo().getGroupNum();
-            if (subList.size() != groupNum) {
-                System.out.println("还有小组未提交组间评分表，无法统计");
+            List<Integer> subGroup = new ArrayList<>();
+            // 用于判断有没有缺交
+            int flag = 0;
+            if (subList.size() <= 1) {
+                System.out.println("当前提交的互评表无法进行统计");
                 return;
+            }
+
+
+            else if(subList.size() > 1 && subList.size() < groupNum)
+            {
+
+                for(SubmitOuter submitOuter : subList)
+                {
+                    subGroup.add(submitOuter.getGroupId());
+                }
+            }
+
+            else if (subList.size() == groupNum)
+            {
+                flag = 1;
             }
 
             Map<Integer, Integer> statis = new HashMap<>(16);
@@ -148,7 +166,18 @@ public class TaskJob implements Job {
                     groupScore = new GroupScore();
                 }
                 groupScore.setGroupId(keyId);
-                groupScore.setContent(statis.get(keyId) / (groupNum - 1));
+                if(flag == 1)
+                {
+                    groupScore.setContent(statis.get(keyId) / (groupNum - 1));
+                }
+                else if(subGroup.contains(keyId))
+                {
+                    groupScore.setContent(statis.get(keyId) / (subList.size() - 1));
+                }
+                else
+                {
+                    groupScore.setContent(statis.get(keyId) / subList.size());
+                }
                 groupScore.setEvaluationOuterId(kid);
                 groupScoreRepository.save(groupScore);
             }
