@@ -175,6 +175,14 @@ const routes = [{
 		meta: {
 			requireLogin: true
 		}
+	},
+	{
+		path:'/admin/home',
+		name: 'AdminHome',
+		component: () => import('../views/admin/AdminHome'),
+		meta: {
+			requireLogin: true
+		}
 	}
 ]
 

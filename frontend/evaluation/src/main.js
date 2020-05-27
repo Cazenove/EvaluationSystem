@@ -17,18 +17,20 @@ import 'vxe-table/lib/index.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Vuerify from 'vuerify'
+import echarts from 'echarts'
 
 Vue.use(VXETable)
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
+Vue.prototype.$echarts = echarts
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
 	//用户可登录页面
 	const userList = ['/home', '/team', '/member', '/outer', '/inner', '/account', '/changepassword']
 	//管理员可登录页面
-	const adminList = ['/admin/user', '/admin/class', '/admin/assistant', '/admin/team', '/admin/form', '/admin/evaluationouter', '/admin/evaluationinner', '/admin/suggestion', '/admin/teamscore', '/admin/personscore', '/admin/teamfinalscore', '/admin/personfinalscore']
+	const adminList = ['/admin/user', '/admin/class', '/admin/assistant', '/admin/team', '/admin/form', '/admin/evaluationouter', '/admin/evaluationinner', '/admin/suggestion', '/admin/teamscore', '/admin/personscore', '/admin/teamfinalscore', '/admin/personfinalscore', '/admin/home']
 	//路由中设置的needLogin字段就在to当中
 	if (window.sessionStorage.getItem('loginState')) {
 		var loginState = window.sessionStorage.getItem('loginState');
