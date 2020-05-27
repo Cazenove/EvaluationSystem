@@ -39,10 +39,11 @@
 					</el-col>
 					<el-col :span="3">
 						<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-							<el-option v-for="item in statusOption" :key="item.value" :value="item.value">{{item.label}}</el-option>
+							<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
 						</el-select>
 					</el-col>
 					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+					<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 				</el-row>
 			</div>
 			<vxe-table
@@ -216,6 +217,8 @@
 				},
 				tableData: [
 				],
+				data: [	
+				],
 				searchInfo: {
 					userId: null,
 					name: null,
@@ -264,6 +267,7 @@
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
+						self.data = res.data.data;
 					}
 					else {
 						alert(res.data.msg);
@@ -281,8 +285,7 @@
 				return item ? item.label : ''
 			},
 			search() {
-				// this.init();
-				var data = this.tableData;
+				var data = this.data;
 				this.tableData = [];
 				for(let value of data){
 					let flag = 1;
@@ -307,6 +310,17 @@
 					}
 				}
 				
+			},
+			resetSearch() {
+				
+				this.tableData = this.data;
+				this.searchInfo = {
+					userId: null,
+					name: null,
+					classId: null,
+					groupId: null,
+					status: null,
+				}
 			},
 			editEvent (row) {
 				// this.$refs.xTable.setActiveRow(row)
