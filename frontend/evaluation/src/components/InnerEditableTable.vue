@@ -238,9 +238,11 @@
 							axios.post(api.userEvaluationInnerSubmit,submitForm)
 							.then(function(res) {
 								if(res.status == 200 && res.data.status == 1) {
-									that.$XModal.message({ status: 'success', message: '提交成功！' })
+									// that.$XModal.message({ status: 'success', message: '提交成功！' })
+									alert('提交成功！');
 								} else {
-									that.$XModal.message({ status: 'error', message: res.data.msg })
+									// that.$XModal.message({ status: 'error', message: res.data.msg })
+									alert(res.data.msg);
 								}
 							}).catch(function(error) {
 								console.log(error);

@@ -40,7 +40,7 @@
 					<div class="card-body">
 						<h5 class="card-title">{{item.name}} ： {{item.score}}</h5>
 						<ul class="list-group list-group-horizontal">
-							<li class="list-group-item active">收到的建议</li>
+							<li class="list-group-item btn-info active">收到的建议</li>
 							<li class="list-group-item" v-for="suggestion in item.suggestion" :key="suggestion">
 								{{suggestion}}
 							</li>
