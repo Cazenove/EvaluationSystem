@@ -8,6 +8,7 @@ import com.evaluation.system.dao.GroupRepository;
 import com.evaluation.system.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,11 @@ public class AdminService {
                     }
                     else{
                         user1.setUserId(userInfo.getUserId());
-                        user1.setPassword(userInfo.getPassword());
+
+                        //输入密码加密,密文为 md5Password
+                        String md5Password = DigestUtils.md5DigestAsHex(userInfo.getPassword().getBytes());
+                        user1.setPassword(md5Password);
+
                         user1.setName(userInfo.getName());
                         user1.setClassId(userInfo.getClassId());
                         user1.setGroupId(userInfo.getGroupId());
@@ -95,7 +100,11 @@ public class AdminService {
             User user1 = user;
             User user2 = userRepository.findByTelephone(userInfo.getTelephone());
             if (!userInfo.getPassword().equals( "" )&&!userInfo.getName().equals( "" )&&!userInfo.getStatus().equals( "" )) {
-                user1.setPassword(userInfo.getPassword());
+
+                //输入密码加密,密文为 md5Password
+                String md5Password = DigestUtils.md5DigestAsHex(userInfo.getPassword().getBytes());
+                user1.setPassword(md5Password);
+
                 user1.setName(userInfo.getName());
                 user1.setStatus(userInfo.getStatus());
                 if (classRepository.findByClassId(userInfo.getClassId()) == null) {
@@ -157,7 +166,11 @@ public class AdminService {
                 msg = "班级不存在";
             } else {
                 assistant1.setAssistantId(assistantInfo.getAssistantId());
-                assistant1.setPassword(assistantInfo.getPassword());
+
+                //输入密码加密,密文为 md5Password
+                String md5Password = DigestUtils.md5DigestAsHex(assistantInfo.getPassword().getBytes());
+                assistant1.setPassword(md5Password);
+
                 assistant1.setName(assistantInfo.getName());
                 assistant1.setClassId(assistantInfo.getClassId());
                 assistant1.setTelephone(assistantInfo.getTelephone());
