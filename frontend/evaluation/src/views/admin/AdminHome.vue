@@ -11,6 +11,7 @@
 			</div>
 			
 			<div id="myChart" :style="{width: '500px', height: '500px'}"></div>
+			<!-- <Ranjintu /> -->
 		</div>
 	</div>
 </template>
@@ -21,11 +22,12 @@
 	import ManageNav from '../../components/ManageNav.vue'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
-
+	import Ranjintu from '../../components/Ranjintu.vue'
 	export default {
 		inject: ['reload'],
 		components: {
 			ManageNav,
+			Ranjintu
 		},
 		data() {
 			return {
@@ -41,7 +43,7 @@
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['第一组']
+						data: []
 					},
 					grid: {
 						left: '3%',
@@ -62,12 +64,7 @@
 					yAxis: {
 						type: 'value'
 					},
-					series: [{
-						name: '第一组',
-						type: 'line',
-						stack: '总量',
-						data: [120, 132, 101, 134, 90, 230, 210]
-					}]
+					series: []
 				}
 			}
 		},
@@ -109,7 +106,6 @@
 									data[res.data.data[i].groupId] = {
 										name: res.data.data[i].groupName,
 										type: 'line',
-										stack: '分数',
 										data: []
 									};
 									data[res.data.data[i].groupId].data.push(res.data.data[i].content);

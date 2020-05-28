@@ -33,7 +33,7 @@
 				}
 			}
 		},
-		created() {
+		mounted() {
 			this.init();
 		},
 		methods: {

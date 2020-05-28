@@ -50,11 +50,11 @@
 			getResponse() {
 				var self = this;
 				axios.post(api.userEvaluationOuterList, self.request)
-					.then(function(res) {
-						self.response = res.data;
-					}).catch(function(error) {
-						console.log(error);
-					})
+				.then(function(res) {
+					self.response = res.data;
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			init() {
 				this.getRequest(),
