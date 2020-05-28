@@ -215,8 +215,8 @@ public class AdminService {
             Assistant assistant1=assistant;
             if (!assistantInfo.getName().equals( "" )) {
                 if(!assistantInfo.getPassword().equals( "" )){
-                    assistant.setName(assistantInfo.getName());
-                    assistant.setPassword(assistantInfo.getPassword());
+                    assistant1.setName(assistantInfo.getName());
+                    assistant1.setPassword(assistantInfo.getPassword());
                     if (classRepository.findByClassId(assistantInfo.getClassId()) == null) {
                         msg = "班级不存在";
                     } else {
@@ -236,9 +236,8 @@ public class AdminService {
                 msg = "姓名不为空";
             }
             if(flag==1){
-
+                assistantRepository.save(assistant1);
             }
-            assistantRepository.save(assistant1);
         }
         else{
             msg = "账号不存在";
