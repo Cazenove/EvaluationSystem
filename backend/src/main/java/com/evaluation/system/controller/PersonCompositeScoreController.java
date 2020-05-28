@@ -4,9 +4,7 @@ import com.evaluation.system.bean.PersonCompositeScore;
 import com.evaluation.system.dao.PersonCompositeScoreRepository;
 import com.evaluation.system.service.PersonCompositeScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,8 @@ public class PersonCompositeScoreController {
     }
 
     /**获取个人的综合得分,尚未测试**/
-    @GetMapping(value="admin/user/score")
-    public Map<String, Object> getPersonCompositeScore(Map<String,Object> content){
+    @GetMapping(value="admin/user/composite/score")
+    public Map<String, Object> getPersonCompositeScore(@RequestBody Map<String,Object> content){
         return personCompositeScoreService.getPersonCompositeScore(content);
     }
 }

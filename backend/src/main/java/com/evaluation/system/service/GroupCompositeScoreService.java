@@ -37,7 +37,7 @@ public class GroupCompositeScoreService {
                 int temp=groupCompositeScores.get(i).getGroupId();
                 Team team=teamRepository.findByGroupId(temp);
 
-                groupCompositeScores.get(i).setClassId(team.getGroupId());
+                groupCompositeScores.get(i).setClassId(team.getClassId());
                 groupCompositeScores.get(i).setGroupName(team.getGroupName());
                 groupCompositeScores.get(i).setGroupNum(team.getGroupNum());
             }
@@ -52,10 +52,18 @@ public class GroupCompositeScoreService {
         return map;
     }
 
-    public Map<String,Object> getGroupCompsiteScore(Map<String,Object> content){
+    public Map<String,Object> getGroupScore(Map<String,Object> content){
         Map<String,Object> map=new HashMap<>();
         try{
-            GroupCompositeScore groupCompositeScore=groupCompositeScoreRepository.findByGroupId((int)content.get("groupId"));
+            String temp=(String)content.get("groupId");
+
+            GroupCompositeScore groupCompositeScore=groupCompositeScoreRepository.findByGroupId(Integer.valueOf(temp));
+
+            Team team=teamRepository.findByGroupId(Integer.valueOf(temp));
+            groupCompositeScore.setClassId(team.getClassId());
+            groupCompositeScore.setGroupName(team.getGroupName());
+            groupCompositeScore.setGroupNum(team.getGroupNum());
+
             map.put("data",groupCompositeScore);
             map.put("status","1");
 

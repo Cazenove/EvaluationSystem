@@ -4,6 +4,7 @@ import com.evaluation.system.dao.GroupCompositeScoreRepository;
 import com.evaluation.system.service.GroupCompositeScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -24,8 +25,8 @@ public class GroupCompositeScoreController {
     }
 
     /**获取小组的综合得分,待测试**/
-    @GetMapping(value="admin/group/score")
-    public Map<String,Object> getGroupCompositeScore(Map<String,Object> content){
-        return groupCompositeScoreService.getGroupCompsiteScore(content);
+    @GetMapping(value="admin/group/composite/score")
+    public Map<String,Object> getGroupCompositeScore(@RequestBody Map<String,Object> content){
+        return groupCompositeScoreService.getGroupScore(content);
     }
 }

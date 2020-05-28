@@ -60,8 +60,15 @@ public class PersonCompositeScoreService {
     public Map<String,Object> getPersonCompositeScore(Map<String,Object> content){
         Map<String,Object> map = new HashMap<String,Object>();
         try{
+            String temp=(String)content.get("userId");
+            PersonCompositeScore personCompositeScore=personCompositeScoreRepository.findByUserId(temp);
+            User user=userRepository.findByUserId(temp);
+            personCompositeScore.setUserName(user.getName());
+            Class c = classRepository.findByClassId(user.getClassId());
+            personCompositeScore.setClassName(c.getClassName());
+            Team team=teamRepository.findByGroupId(personCompositeScore.getGroupId());
+            personCompositeScore.setGroupName(team.getGroupName());
 
-            PersonCompositeScore personCompositeScore=personCompositeScoreRepository.findByUserId((String)content.get("userId"));
             map.put("data",personCompositeScore);
             map.put("status","1");
         }catch(Exception e){
