@@ -70,12 +70,6 @@ public class TaskJob implements Job {
         try{
             EvaluationInner e = evaluationInnerRepository.findOneByEvaluationInnerId(kid);
             List<SubmitInner> subList = submitInnerRepository.findByEvaluationInnerId(kid);
-            int groupNum = e.getClassInfo().getGroupNum();
-            if (subList.size() == 0) {
-                System.out.println("当前提交的组内评分表无法进行统计");
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return;
-            }
 
             for (SubmitInner submitInner : subList){
                 Map<String,Object> content= submitInner.getContent();
