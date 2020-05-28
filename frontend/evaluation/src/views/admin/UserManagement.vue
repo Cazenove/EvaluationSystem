@@ -46,6 +46,12 @@
 					<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 				</el-row>
 			</div>
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
+					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button>
+				</template>
+			</vxe-toolbar>
 			<vxe-table
 			 v-if="classList"
 			 border
