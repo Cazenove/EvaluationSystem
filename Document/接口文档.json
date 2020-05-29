@@ -41,6 +41,11 @@
 41.查看组内评表提交记录
 42.获取班级、小组列表（注册用）
 
+43.根据用户id获取该用户的综合得分
+44.根据用户id获取该用户的历次得分
+45.根据小组id获取该小组的综合得分
+46.根据小组id获取该小组的历次得分
+
 1.用户登录//所有用户共用一个接口
 路径：/login
 请求方式：POST
@@ -1230,6 +1235,135 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
     ]
 }
 {
-    status:0,
-    msg:"失败原因"
+  status: 0,
+  msg: "失败原因"
 }
+
+43.根据用户id获取该用户的综合得分
+请求路径:admin/user/composite/score
+请求方式：GET
+请求参数：
+{
+  "userId": "221701000"
+} 
+返回结果：
+{
+  "status": 1,
+  "data":{
+      "userId": "221701000",
+      "userName": "张三",
+      "classId": 1,
+      "className": "2020软件工程S班",
+      "groupId": 1,
+      "groupName": "第一组",
+      "score": 50 //综合贡献率
+    }
+}
+{
+  "status": 0.
+  "msg": "查询发送错误"
+} 
+
+44.根据用户id获取该用户的历次得分
+请求路径:admin/user/composite/score
+请求方式：GET
+请求参数：
+{
+  "userId": "221701000"
+} 
+返回结果：
+{
+  status:1,
+  data:{
+      "userId": "221701000",
+      "userName": "张三",
+      "classId": 1,
+      "className": "2020软件工程S班",
+      "groupId": 1,
+      "groupName": "第一组",
+      "content": {
+        "list": [
+          {
+            "evaluationInnerId": 1,
+            "evaluationInnerName": "第一次团队合作_组内评分表",
+            "decision": "前端", //分工
+            "contribution": 40 //贡献率
+          },
+          {
+            "evaluationInnerId": 2,
+            "evaluationInnerName": "第二次团队合作_组内评分表",
+            "decision": "前端", //分工
+            "contribution": 60 //贡献率
+          }
+        ]
+      }
+    }
+}
+{
+  "status": 0.
+  "msg": "查询发送错误"
+} 
+
+45.根据小组id获取该小组的综合得分
+请求路径:admin/user/composite/score
+请求方式：GET
+请求参数：
+{
+  "groupId": "1"
+} 
+返回结果：
+{
+  status:1,
+  data:{
+            groupId:1,//小组表中的id
+            classId:1,
+            groupNum:1,
+            groupName:"第一组",//小组名
+            score:90//小组综合得分
+        }
+}
+{
+  "status": 0.
+  "msg": "查询发送错误"
+} 
+
+46.根据小组id获取该小组的历次得分
+请求路径:admin/user/composite/score
+请求方式：GET
+请求参数：
+{
+  "groupId": "1"
+} 
+返回结果：
+{
+  status:1,
+  data: {
+      "groupId": 1, //小组表中的id
+      "classId": 1,
+      "groupNum": 1,
+      "groupName": "第一组", //小组名
+      "content": {
+        "list": [
+          {
+            "evaluationOuterId": 1, //组间评价表号
+            "name": "第一次团队作业_组间评价表", //评价表的名称
+            "score": 85 //该次的得分
+          },
+          {
+            "evaluationOuterId": 2,
+            "name": "第二次团队作业_组间评价表",
+            "score": 87
+          }
+        ]
+      }
+    }
+}
+{
+  "status": 0.
+  "msg": "查询发送错误"
+} 
+
+
+
+
+
