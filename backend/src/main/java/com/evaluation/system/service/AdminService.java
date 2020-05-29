@@ -216,7 +216,11 @@ public class AdminService {
             if (!assistantInfo.getName().equals( "" )) {
                 if(!assistantInfo.getPassword().equals( "" )){
                     assistant1.setName(assistantInfo.getName());
-                    assistant1.setPassword(assistantInfo.getPassword());
+
+                    //输入密码加密,密文为 md5Password
+                    String md5Password = DigestUtils.md5DigestAsHex(assistantInfo.getPassword().getBytes());
+                    assistant1.setPassword(md5Password);
+                    
                     if (classRepository.findByClassId(assistantInfo.getClassId()) == null) {
                         msg = "班级不存在";
                     } else {
