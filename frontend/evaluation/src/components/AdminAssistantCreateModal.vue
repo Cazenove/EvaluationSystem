@@ -1,14 +1,13 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="AdminAssistantCreateModal">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">{{ modalTitle }}</button>
 		<!-- 注册模态框 -->
-		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="registerModalLabel">{{ modalTitle }}</h5>
+						<h5 class="modal-title" id="createModalLabel">{{ modalTitle }}</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -59,6 +58,7 @@
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	import UserNav from '../components/UserNav.vue'
+	import $ from 'jquery'
 	Vue.use(Vuerify)
 
 	export default {
@@ -119,6 +119,9 @@
 			},
 		},
 		methods: {
+			showModal() {
+				$('#createModal').modal('show');
+			},
 			getClassList() {
 				var self = this;
 				axios.get(api.adminClassList,null)

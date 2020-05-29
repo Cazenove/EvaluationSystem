@@ -49,9 +49,12 @@
 		methods: {
 			login() {
 				var self = this;
+				var pw = this.$md5(this.$data.password);
+				console.log(pw);
 				axios.post(api.login,{
 					userId:this.$data.userId,
 					password:this.$data.password
+					// password:pw
 				}).then(function(res) {
 					var ses = window.sessionStorage;
 					if(res.status == 200) {

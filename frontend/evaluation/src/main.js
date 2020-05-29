@@ -18,7 +18,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Vuerify from 'vuerify'
 import echarts from 'echarts'
-
+import md5 from 'js-md5'
 Vue.use(VXETable)
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
@@ -70,3 +70,5 @@ new Vue({
 	store,
 	render: h => h(App),
 }).$mount('#app')
+
+Vue.prototype.$md5 = md5

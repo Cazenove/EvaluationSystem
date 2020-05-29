@@ -14,9 +14,15 @@
 			</div>
 			<div class="row container" style="margin-bottom: 20px;">
 				<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">添加助教</button> -->
-				<AdminAssistantCreateModal :modalTitle="createModalTitle"></AdminAssistantCreateModal>
+				<button class="btn btn-primary" @click="showCreateModal()">添加助教</button>
+				<AdminAssistantCreateModal ref="AdminAssistantCreateModal" :modalTitle="createModalTitle"></AdminAssistantCreateModal>
 			</div>
-			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
+			border
+			resizable
+			row-key
+			highlight-hover-row
+			keep-source>
 				<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="telephone" title="电话"></vxe-table-column>
@@ -24,11 +30,14 @@
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
 				<vxe-table-column title="操作">
 					<template v-slot="{ row }">
-						<!-- <button type="button" @click="editEvent(row)" class="btn btn-light"  data-toggle="modal" data-target="#modal">修改</button>
-						 -->
-						<AdminAssistantUpdateModal :registerInfo="row"></AdminAssistantUpdateModal>
-						&nbsp;
+						
+						<AdminAssistantUpdateModal ref="AdminAssistantUpdateModal" :registerInfo.sync="row"></AdminAssistantUpdateModal>
+						<button type="button" class="btn btn-light" @click="showUpdateModal()">修改</button>
+	
 						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
+						<!-- <button type="button" @click="editEvent(row)" class="btn btn-light"  data-toggle="modal" data-target="#UpdateModal">修改</button>
+						&nbsp;
+						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button> -->
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -120,7 +129,7 @@
 				},
 				createModalTitle: "添加助教",
 				updateModalTitle: "修改",
-				
+				timer: "",
 			}
 		},
 		created() {
@@ -144,6 +153,12 @@
 			},
 			init() {
 				this.getResponse();
+			},
+			showCreateModal() {
+				this.$refs.AdminAssistantCreateModal.showModal();
+			},
+			showUpdateModal() {
+				this.$refs.AdminAssistantUpdateModal.showModal();
 			},
 			removeEvent (row) {
 				var deleteInfo = {
