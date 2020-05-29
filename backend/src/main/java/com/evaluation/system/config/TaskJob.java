@@ -77,6 +77,7 @@ public class TaskJob implements Job {
 
                 for(List tableRaw:tableData){
                     String userId = (String)tableRaw.get(0);
+                    String decision = (String)tableRaw.get(2);
                     int score = (int)tableRaw.get(tableRaw.size() - 1);
                     PersonScore personScore = personScoreRepository.findOneByIdAndUserId(kid,userId);
                     if(personScore == null)
@@ -87,6 +88,7 @@ public class TaskJob implements Job {
                     personScore.setContent(score);
                     personScore.setEvaluationInnerId(kid);
                     personScore.setUserId(userId);
+                    personScore.setDecision(decision);
                     personScoreRepository.save(personScore);
                 }
             }
