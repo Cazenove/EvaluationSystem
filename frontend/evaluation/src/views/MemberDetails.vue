@@ -3,15 +3,20 @@
 	<div id="MemberDetails">
 		<UserNav />
 		<br />
-		<button class="btn btn-light" @click="goBack">返回小组</button>
-		<br />
-		<div class="text-left offset-md-1">
-			<h2>组员详情</h2>
-			<p>姓名：{{response.data.userName}}</p>
-			<p>学号：{{response.data.userId}}</p>
-			<hr />
-			<h2>历次贡献率</h2>
-			<p>{{response.data.content}}</p>
+		<div class="container">
+			<button class="btn btn-light" @click="goBack">返回小组</button>
+			<br /><br />
+			<div class="row">
+				<div class="card-body col-md-4">
+					<h5 class="card-header">组员详情</h5>
+					<p>姓名：{{memberInfo.userName}}</p>
+					<p>学号：{{memberInfo.userId}}</p>
+				</div>
+				<div class="card-body col-md-8">
+					<h5 class="card-header">历次贡献率</h5>
+					
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -27,10 +32,8 @@
 		},
 		data() {
 			return {
-				response: {
-					status:'',
-					data:{}
-				}
+				response: {},
+				memberInfo: {}
 			}
 		},
 		mounted() {
@@ -38,16 +41,21 @@
 		},
 		methods: {
 			getResponse() {
-				let self = this;
+				var self = this;
 				axios.get(api.userGroupUserdetails,{
 					params: {
 						userId:this.$route.query.userId
 					}
 				}).then(function(res) {
-					console.log(res);
-					self.response = res.data;
+					self.memberInfo = res.data.data;
 				}).catch(function(error) {
 					console.log(error);
+				})
+				axios.get(api.adminUserScoreList,null)
+				.then(function(res) {
+					self.response = res.data;
+				}).catch(function(error) {
+					consle.log(error);
 				})
 			},
 			init() {

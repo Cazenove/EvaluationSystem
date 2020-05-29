@@ -43,17 +43,17 @@
 						{
 							name: '总任务量',
 							type: 'line',
-							data: [224]
+							data: [224,224]
 						},
 						{
 							name: '已经花费的时间',
 							type: 'line',
-							data: [40]
+							data: [40,62]
 						},
 						{
 							name: '剩余时间',
 							type: 'line',
-							data: [184]
+							data: [184,162]
 						},
 						{
 							name: '预期进度',

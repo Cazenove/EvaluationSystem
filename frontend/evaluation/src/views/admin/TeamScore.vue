@@ -13,8 +13,9 @@
 			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
 			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
+			<vxe-table-column field="evaluationOuterId" title="评价表ID"></vxe-table-column>
 			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
-			<vxe-table-column field="content" title="内容"></vxe-table-column>
+			<vxe-table-column field="content" title="得分"></vxe-table-column>
 		</vxe-table>
 		</div>
     </div>
