@@ -35,7 +35,7 @@ public class PersonScoreService {
     public Map<String,Object> listPersonScore(){
         Map<String,Object> map = new HashMap<String,Object>();
         try{
-            /**获取所有小组的分数**/
+            /**获取所有人的分数**/
             List<PersonScore> personScores=personScoreReposity.findAll();
 
             for(int i=0;i<personScores.size();i++)
@@ -59,4 +59,25 @@ public class PersonScoreService {
         return map;
     }
 
+    public Map<String,Object> getPersonScore(Map<String,Object> content){
+        Map<String,Object> map = new HashMap<String,Object>();
+        try{
+            String temp=(String)content.get("userId");
+            PersonScore personScore=personScoreReposity.findByUserId(temp);
+            User user=userRepository.findByUserId(personScore.getUserId());
+            personScore.setUserName(user.getName());
+            Class c = classRepository.findByClassId(user.getClassId());
+            personScore.setClassId(user.getClassId());
+            personScore.setClassName(c.getClassName());
+            Team team=teamRepository.findByGroupId(personScore.getGroupId());
+            personScore.setGroupName(team.getGroupName());
+            map.put("data",personScore);
+            map.put("status","1");
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status","0");
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
 }

@@ -50,4 +50,25 @@ public class GroupScoreService {
         }
         return map;
     }
+
+    public Map<String,Object> getGroupScore(Map<String,Object> content){
+        Map<String,Object> map = new HashMap<String,Object>();
+        try{
+            String temp=(String)content.get("groupId");
+            GroupScore groupScore=groupScoreRepository.findByGroupId(Integer.valueOf(temp));
+            Team team=teamRepository.findByGroupId(groupScore.getGroupId());
+
+            groupScore.setClassId(team.getClassId());
+            groupScore.setGroupNum(team.getGroupNum());
+            groupScore.setGroupName(team.getGroupName());
+            map.put("data",groupScore);
+            map.put("status","1");
+
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            map.put("status","0");
+            map.put("msg","查询发生错误");
+        }
+        return map;
+    }
 }

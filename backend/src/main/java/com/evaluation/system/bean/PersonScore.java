@@ -25,6 +25,8 @@ public class PersonScore {
     private int evaluationInnerId;
     @Column(name = "user_id")
     private String userId;
+    @Column(name = "decision")
+    private String decision;
 
     private int content;
 
@@ -113,4 +115,11 @@ public class PersonScore {
         this.classId = classId;
     }
 
+    public String getDecision() {
+        return decision;
+    }
+
+    public void setDecision(String decision) {
+        this.decision = decision;
+    }
 }
