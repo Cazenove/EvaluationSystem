@@ -29,7 +29,7 @@ public class UserService {
 
     /*登录检查*/
     public HashMap<String,Object> loginCheck(User user){
-        String flag ="";
+        String flag ="0";
         String msg = "账号或密码错误";
         HashMap<String,Object> result = new HashMap<>(15);
         User user1 = userRepository.findByUserId(user.getUserId());
@@ -88,6 +88,10 @@ public class UserService {
                 flag = 1;
                 result.put("status", flag);
                 result.put("msg", msg);
+            }
+            else {
+                result.put("status",flag);
+                result.put("msg","注册失败");
             }
         }
         catch (Exception e){
