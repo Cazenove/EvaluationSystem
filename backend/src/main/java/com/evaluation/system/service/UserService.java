@@ -52,7 +52,7 @@ public class UserService {
             result.put("status",4);
         }
         else {
-            result.put("status",0);
+            result.put("status",flag);
             result.put("msg",msg);
         }
         return  result;
