@@ -104,6 +104,7 @@
 					}
 				}).then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
+						console.log(res);
 						self.response = res.data;
 					} else {
 						alert(res.data.msg);

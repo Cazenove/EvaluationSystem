@@ -18,18 +18,13 @@
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['总任务量','已经花费的时间','剩余的时间','预期进度']
+						data: ['总任务量','已经花费的时间','剩余时间','预期进度']
 					},
 					grid: {
 						left: '3%',
 						right: '4%',
 						bottom: '3%',
 						containLabel: true
-					},
-					toolbox: {
-						feature: {
-							saveAsImage: {}
-						}
 					},
 					xAxis: {
 						type: 'category',
@@ -43,21 +38,45 @@
 						{
 							name: '总任务量',
 							type: 'line',
-							data: [224,224]
+							label: {
+								normal: {
+									show: true,
+									position: 'top'
+								}
+							},
+							data: [224,224,200]
 						},
 						{
 							name: '已经花费的时间',
 							type: 'line',
-							data: [40,62]
+							label: {
+								normal: {
+									show: true,
+									position: 'bottom'
+								}
+							},
+							data: [40,62,90]
 						},
 						{
 							name: '剩余时间',
 							type: 'line',
-							data: [184,162]
+							label: {
+								normal: {
+									show: true,
+									position: 'bottom'
+								}
+							},
+							data: [184,162,110]
 						},
 						{
 							name: '预期进度',
 							type: 'line',
+							label: {
+								normal: {
+									show: true,
+									position: 'top'
+								}
+							},
 							data: [192, 160, 128, 96, 64, 32, 0]
 						},
 					]

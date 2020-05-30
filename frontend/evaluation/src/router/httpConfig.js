@@ -60,7 +60,10 @@ const apiList = {
 	adminEvaluationOuterSubmit: http + '/admin/evaluation/outer/submit',
 	adminEvaluationInnerSubmit: http + '/admin/evaluation/inner/submit',
 	
-	teamList: http + '/register/team'
+	teamList: http + '/register/team',
+	
+	personScoreList: http + '/admin/user/score/single',
+	teamScoreList: http + '/admin/group/score/single'
 }
 
 export default apiList
