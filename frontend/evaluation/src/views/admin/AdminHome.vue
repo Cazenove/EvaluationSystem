@@ -38,7 +38,7 @@
 				classInfo: {},
 				option: {
 					title: {
-						text: '小组得分折线图'
+						text: '小组各次得分折线图'
 					},
 					tooltip: {
 						trigger: 'axis'
@@ -63,7 +63,7 @@
 				},
 				barOption: {
 					title: {
-						text: '各小组历次得分',
+						text: '各小组历次得分柱状图',
 					},
 					tooltip: {
 						trigger: 'axis',
@@ -75,9 +75,9 @@
 						data: []
 					},
 					grid: {
-						left: '3%',
-						right: '4%',
-						bottom: '3%',
+						left: '4%',
+						right: '5%',
+						bottom: '4%',
 						containLabel: true
 					},
 					xAxis: {
@@ -175,7 +175,7 @@
 			init() {
 				this.option = {
 					title: {
-						text: '小组得分折线图'
+						text: '小组各次得分折线图'
 					},
 					tooltip: {
 						trigger: 'axis'
@@ -184,9 +184,9 @@
 						data: []
 					},
 					grid: {
-						left: '3%',
-						right: '4%',
-						bottom: '3%',
+						left: '4%',
+						right: '5%',
+						bottom: '4%',
 						containLabel: true
 					},
 					xAxis: {
@@ -201,7 +201,7 @@
 				}
 				this.barOption = {
 					title: {
-						text: '各小组历次得分',
+						text: '各小组历次得分柱状图',
 					},
 					tooltip: {
 						trigger: 'axis',
@@ -213,9 +213,9 @@
 						data: []
 					},
 					grid: {
-						left: '3%',
-						right: '4%',
-						bottom: '3%',
+						left: '4%',
+						right: '5%',
+						bottom: '4%',
 						containLabel: true
 					},
 					xAxis: {
