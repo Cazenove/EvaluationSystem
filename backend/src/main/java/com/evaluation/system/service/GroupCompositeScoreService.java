@@ -52,14 +52,13 @@ public class GroupCompositeScoreService {
         return map;
     }
 
-    public Map<String,Object> getGroupScore(Map<String,Object> content){
+    public Map<String,Object> getGroupScore(String groupId){
         Map<String,Object> map=new HashMap<>();
         try{
-            String temp=(String)content.get("groupId");
 
-            GroupCompositeScore groupCompositeScore=groupCompositeScoreRepository.findByGroupId(Integer.valueOf(temp));
+            GroupCompositeScore groupCompositeScore=groupCompositeScoreRepository.findByGroupId(Integer.valueOf(groupId));
 
-            Team team=teamRepository.findByGroupId(Integer.valueOf(temp));
+            Team team=teamRepository.findByGroupId(Integer.valueOf(groupId));
             groupCompositeScore.setClassId(team.getClassId());
             groupCompositeScore.setGroupName(team.getGroupName());
             groupCompositeScore.setGroupNum(team.getGroupNum());

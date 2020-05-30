@@ -57,12 +57,11 @@ public class PersonCompositeScoreService {
     }
 
     /**获取个人综合得分的方法，尚未测试**/
-    public Map<String,Object> getPersonCompositeScore(Map<String,Object> content){
+    public Map<String,Object> getPersonCompositeScore(String userId){
         Map<String,Object> map = new HashMap<String,Object>();
         try{
-            String temp=(String)content.get("userId");
-            PersonCompositeScore personCompositeScore=personCompositeScoreRepository.findByUserId(temp);
-            User user=userRepository.findByUserId(temp);
+            PersonCompositeScore personCompositeScore=personCompositeScoreRepository.findByUserId(userId);
+            User user=userRepository.findByUserId(userId);
             personCompositeScore.setUserName(user.getName());
             Class c = classRepository.findByClassId(user.getClassId());
             personCompositeScore.setClassName(c.getClassName());

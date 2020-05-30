@@ -25,7 +25,7 @@ public class PersonCompositeScoreController {
 
     /**获取个人的综合得分,尚未测试**/
     @GetMapping(value="admin/user/composite/score")
-    public Map<String, Object> getPersonCompositeScore(@RequestBody Map<String,Object> content){
-        return personCompositeScoreService.getPersonCompositeScore(content);
+    public Map<String, Object> getPersonCompositeScore(@RequestParam String userId){
+        return personCompositeScoreService.getPersonCompositeScore(userId);
     }
 }

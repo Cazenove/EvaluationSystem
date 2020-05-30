@@ -51,11 +51,10 @@ public class GroupScoreService {
         return map;
     }
 
-    public Map<String,Object> getGroupScore(Map<String,Object> content){
+    public Map<String,Object> getGroupScore(String groupId){
         Map<String,Object> map = new HashMap<String,Object>();
         try{
-            String temp=(String)content.get("groupId");
-            GroupScore groupScore=groupScoreRepository.findByGroupId(Integer.valueOf(temp));
+            GroupScore groupScore=groupScoreRepository.findByGroupId(Integer.valueOf(groupId));
             Team team=teamRepository.findByGroupId(groupScore.getGroupId());
 
             groupScore.setClassId(team.getClassId());

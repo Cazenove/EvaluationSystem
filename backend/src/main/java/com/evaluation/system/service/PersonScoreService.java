@@ -59,11 +59,10 @@ public class PersonScoreService {
         return map;
     }
 
-    public Map<String,Object> getPersonScore(Map<String,Object> content){
+    public Map<String,Object> getPersonScore(String userId){
         Map<String,Object> map = new HashMap<String,Object>();
         try{
-            String temp=(String)content.get("userId");
-            PersonScore personScore=personScoreReposity.findByUserId(temp);
+            PersonScore personScore=personScoreReposity.findByUserId(userId);
             User user=userRepository.findByUserId(personScore.getUserId());
             personScore.setUserName(user.getName());
             Class c = classRepository.findByClassId(user.getClassId());
