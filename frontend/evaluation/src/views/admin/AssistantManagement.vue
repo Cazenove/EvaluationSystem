@@ -7,7 +7,7 @@
 				<li class="breadcrumb-item active" aria-current="page">{{this.title}}</li>
 			</ol>
 		</nav>
-		
+		<AdminAssistantUpdateModal ref="AdminAssistantUpdateModal"></AdminAssistantUpdateModal>
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<div style="margin-bottom: 20px;">
 				<h1>{{this.title}}</h1>
@@ -17,7 +17,8 @@
 				<button class="btn btn-primary" @click="showCreateModal()">添加助教</button>
 				<AdminAssistantCreateModal ref="AdminAssistantCreateModal" :modalTitle="createModalTitle"></AdminAssistantCreateModal>
 			</div>
-			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
+			<vxe-table 
+			:align="allAlign" :data="tableData"
 			border
 			resizable
 			row-key
@@ -31,8 +32,8 @@
 				<vxe-table-column title="操作">
 					<template v-slot="{ row }">
 						
-						<AdminAssistantUpdateModal ref="AdminAssistantUpdateModal" :registerInfo.sync="row"></AdminAssistantUpdateModal>
-						<button type="button" class="btn btn-light" @click="showUpdateModal()">修改</button>
+						
+						<button type="button" class="btn btn-light" @click="showUpdateModal(row)">修改</button>
 	
 						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
 						<!-- <button type="button" @click="editEvent(row)" class="btn btn-light"  data-toggle="modal" data-target="#UpdateModal">修改</button>
@@ -157,8 +158,8 @@
 			showCreateModal() {
 				this.$refs.AdminAssistantCreateModal.showModal();
 			},
-			showUpdateModal() {
-				this.$refs.AdminAssistantUpdateModal.showModal();
+			showUpdateModal(row) {
+				this.$refs.AdminAssistantUpdateModal.showModal(row);
 			},
 			removeEvent (row) {
 				var deleteInfo = {

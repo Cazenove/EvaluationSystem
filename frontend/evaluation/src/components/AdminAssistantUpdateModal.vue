@@ -81,7 +81,6 @@
 		created() {
 			//创建的时候获取班级小组列表
 			this.getClassList();
-			this.updateInfo = this.registerInfo;
 		},
 
 		vuerify: {
@@ -133,9 +132,9 @@
 					console.log(error);
 				})
 			},
-			showModal() {
-				console.log(this.registerInfo);
-				this.updateInfo = this.registerInfo;
+			showModal(row) {
+				console.log(row);
+				this.updateInfo = row;
 				$('#updateModal').modal('show');
 			},
 			close() {},
