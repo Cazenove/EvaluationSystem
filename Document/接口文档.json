@@ -1265,7 +1265,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 } 
 
 44.根据用户id获取该用户的历次得分
-请求路径:admin/user/composite/score
+请求路径:admin/user/score/single
 请求方式：GET
 请求参数：
 {
@@ -1305,7 +1305,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 } 
 
 45.根据小组id获取该小组的综合得分
-请求路径:admin/user/composite/score
+请求路径:admin/group/composite/score
 请求方式：GET
 请求参数：
 {
@@ -1328,7 +1328,7 @@ status: 0登录失败，1为组员，2为组长，3为助教，4为老师
 } 
 
 46.根据小组id获取该小组的历次得分
-请求路径:admin/user/composite/score
+请求路径:admin/group/score/single
 请求方式：GET
 请求参数：
 {
