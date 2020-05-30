@@ -10,8 +10,11 @@
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>用户管理</h1>
-			
-			
+			<!-- <div class="collapse" id="collapseExample">
+			  <div class="card card-body">
+			    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+			  </div>
+			</div> -->
 			<div style="margin-bottom: 20px;">
 				<div class="row container" style="margin-bottom: 20px;">
 					
@@ -20,38 +23,65 @@
 				&nbsp;
 				<button type="button" class="btn btn-light">一键导入</button>
 				</div>
-				<el-row :gutter="20">
-					<el-col :span="3">
-						<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
-					</el-col>
-					<el-col :span="3">
-						<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
-					</el-col>
-					<el-col :span="3">
-						<el-select offser="5" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
-							<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
-						</el-select>
-					</el-col>
-					<el-col :span="3">
-						<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-							<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
-						</el-select>
-					</el-col>
-					<el-col :span="3">
-						<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-							<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
-						</el-select>
-					</el-col>
-					<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-					<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
-				</el-row>
+				
 			</div>
 			<vxe-toolbar>
+				
 				<template v-slot:buttons>
-					<vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
-					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button>
+					<!-- <vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input> -->
+					<!-- <el-row :gutter="12">
+						<el-col :span="4">
+							<el-input v-model="filterName" type="search" placeholder="快速搜索"></el-input>
+						</el-col>
+					</el-row> -->
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<!-- <vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
+					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button> -->
+				</template>
+				<template v-slot:tools>
+					<!-- <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						条件搜索
+					</a> -->
+					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >条件搜索</vxe-button>
 				</template>
 			</vxe-toolbar>
+			<div class="collapse" id="collapseExample">
+			  <div class="card card-body">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					
+					<el-row :gutter="20">
+						<el-col :span="4">
+							<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
+						</el-col>
+						<el-col :span="4">
+							<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
+						</el-col>
+						<el-col :span="4">
+							<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+								<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="3">
+							<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+								<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="3">
+							<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
+								<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
+							</el-select>
+						</el-col>
+						<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+						<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+					</el-row>
+					
+				</template>
+				
+			</vxe-toolbar>
+			</div>
+			</div>
+			
 			<vxe-table
 			 v-if="classList"
 			 border
@@ -60,7 +90,8 @@
 			 highlight-hover-row
 			 keep-source
 			 ref="xTable"
-			 :data="tableData">
+			 :data="list"
+			 max-height="500">
 				<vxe-table-column field="userId" title="学号"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
@@ -80,7 +111,6 @@
 					</template>
 				</vxe-table-column>
 			</vxe-table>
-			
 		</div>
 		
 		
@@ -204,6 +234,8 @@
 	import RegisterModal from '../../components/RegisterModal.vue'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
+	import XEUtils from 'xe-utils'
+	
 	export default {
 		inject: ['reload'],
 		name: "UserManagement",
@@ -213,6 +245,8 @@
 		},
 		data () {
 			return {
+				filterName: '',
+				pulldown: false,
 				submitLoading: false,
 				showEdit: false,
 				selectRow: null,
@@ -259,9 +293,26 @@
 			}
 		},
 		created() {
+			this.$nextTick(() => {
+			              this.columns = this.$refs.xTable.getColumns()
+			})
 			this.getTeamList();
 			// this.getClassOption();
 			// setTimeout(this.init(),5000);
+			setTimeout(() => {
+			              // 将指定列设置为隐藏状态
+			              this.columns.forEach(column => {
+			                if (['password'].includes(column.property)) {
+			                  column.visible = false
+			                }
+			              })
+			              if (this.$refs.xTable) {
+			                this.$refs.xTable.refreshColumn()
+			              }
+			              this.loading = false
+			}, 0);
+			// this.init();
+			setTimeout(() => {this.init()},500);
 		},
 		methods: {
 			init() {
@@ -376,7 +427,8 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
-				this.init();
+				
+				// this.init();
 			},
 			getClassOption(data) {
 				for (let value of data) {
@@ -491,9 +543,24 @@
 			errors() {
 				return this.$vuerify.$errors
 			},
+			list () {
+			              const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+			              if (filterName) {
+			                const filterRE = new RegExp(filterName, 'gi')
+			                const searchProps = ['userId', 'name', 'classId', 'groupId', 'status']
+			                const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
+			                return rest.map(row => {
+			                  const item = Object.assign({}, row)
+			                  // searchProps.forEach(key => {
+			                  //   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+			                  // })
+			                  return item
+			                })
+			              }
+			              return this.tableData
+			            }
 		}
 	}
 </script>
-
 <style>
 </style>

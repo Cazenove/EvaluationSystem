@@ -19,6 +19,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Vuerify from 'vuerify'
 import echarts from 'echarts'
 import md5 from 'js-md5'
+import XEUtils from 'xe-utils'
+Vue.prototype.$utils = XEUtils
+Vue.prototype.$cookie = XEUtils.cookie
+// app.config.globalProperties.$utils = XEUtils
+// app.config.globalProperties.$cookie = XEUtils.cookie
 Vue.use(VXETable)
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
