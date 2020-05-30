@@ -50,9 +50,12 @@ public class TaskJob implements Job {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void execute(JobExecutionContext jobExecutionContext) {
+        JobDataMap jobDataMap = jobExecutionContext.getMergedJobDataMap();
+        String[] key = jobDataMap.getKeys();
+        int kid = Integer.parseInt(jobDataMap.getString(key[0]));
         System.out.println("正在统分....");
-        statEvaluationOuter(jobExecutionContext);
-        statEvaluationInner(jobExecutionContext);
+        statEvaluationOuter(kid);
+        statEvaluationInner(kid);
         System.out.println("任务结束...");
     }
 
@@ -62,11 +65,8 @@ public class TaskJob implements Job {
      */
     @Transactional
     @SuppressWarnings("all")
-    public void statEvaluationInner(JobExecutionContext jobExecutionContext)
+    public void statEvaluationInner(int kid)
     {
-        JobDataMap jobDataMap = jobExecutionContext.getMergedJobDataMap();
-        String[] key = jobDataMap.getKeys();
-        int kid = Integer.parseInt(jobDataMap.getString(key[0]));
         try{
             EvaluationInner e = evaluationInnerRepository.findOneByEvaluationInnerId(kid);
             List<SubmitInner> subList = submitInnerRepository.findByEvaluationInnerId(kid);
@@ -107,10 +107,7 @@ public class TaskJob implements Job {
      */
     @Transactional
     @SuppressWarnings("all")
-    public void statEvaluationOuter(JobExecutionContext jobExecutionContext){
-        JobDataMap jobDataMap = jobExecutionContext.getMergedJobDataMap();
-        String[] key = jobDataMap.getKeys();
-        int kid = Integer.parseInt(jobDataMap.getString(key[0]));
+    public void statEvaluationOuter(int kid){
 
         try {
             EvaluationOuter e = evaluationOuterRepository.findOneByEvaluationOuterId(kid);
