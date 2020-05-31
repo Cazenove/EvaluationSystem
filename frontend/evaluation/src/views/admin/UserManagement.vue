@@ -15,7 +15,7 @@
 			    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
 			  </div>
 			</div> -->
-			<div style="margin-bottom: 20px;">
+			<div>
 				<div class="row container" style="margin-bottom: 20px;">
 					
 				<!-- <button type="button" class="offset-md-1 btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button> -->

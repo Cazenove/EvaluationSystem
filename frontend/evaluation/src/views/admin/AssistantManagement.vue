@@ -9,7 +9,7 @@
 		</nav>
 		<AdminAssistantUpdateModal ref="AdminAssistantUpdateModal"></AdminAssistantUpdateModal>
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
-			<div style="margin-bottom: 20px;">
+			<div>
 				<h1>{{this.title}}</h1>
 			</div>
 			<div class="row container" style="margin-bottom: 20px;">
@@ -17,8 +17,13 @@
 				<button class="btn btn-primary" @click="showCreateModal()">添加助教</button>
 				<AdminAssistantCreateModal ref="AdminAssistantCreateModal" :modalTitle="createModalTitle"></AdminAssistantCreateModal>
 			</div>
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+				</template>
+			</vxe-toolbar>
 			<vxe-table 
-			:align="allAlign" :data="tableData"
+			:align="allAlign" :data="list"
 			border
 			resizable
 			row-key
@@ -103,7 +108,8 @@
 	import AdminAssistantCreateModal from '../../components/AdminAssistantCreateModal.vue'
 	import AdminAssistantUpdateModal from '../../components/AdminAssistantUpdateModal.vue'
 	import Vue from 'vue'
-	import Vuerify from 'vuerify'
+	import Vuerify from 'vuerify'	
+	import XEUtils from 'xe-utils'
 	export default {
 		inject: ['reload'],
 		components: {
@@ -113,6 +119,7 @@
 		},
 		data() {
 			return {
+				filterName: '',
 				updateInfo: {
 					assistantId:null,
 					password:null,
@@ -192,8 +199,25 @@
 				return item ? item.className : ''
 			},
 			
+		},
+		computed:{
+			list () {
+			              const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+			              if (filterName) {
+			                const filterRE = new RegExp(filterName, 'gi')
+			                const searchProps = ['assistantId', 'name', 'classId', 'telephone']
+			                const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
+			                return rest.map(row => {
+			                  const item = Object.assign({}, row)
+			                  // searchProps.forEach(key => {
+			                  //   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+			                  // })
+			                  return item
+			                })
+			              }
+			              return this.tableData
+			            }
 		}
-
 	}
 </script>
 

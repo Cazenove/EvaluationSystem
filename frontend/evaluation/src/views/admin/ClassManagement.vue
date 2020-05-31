@@ -48,7 +48,18 @@
 			<h1>班级管理</h1>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddModal">新增班级</button>
 			</div>
-			<vxe-table :data="tableData">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+				</template>
+			</vxe-toolbar>
+			<vxe-table :align="allAlign" :data="list"
+			border
+			resizable
+			row-key
+			highlight-hover-row
+			keep-source
+			>
 				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 				<vxe-table-column field="className" title="班级名称"></vxe-table-column>
 				<vxe-table-column field="groupNum" title="小组数量"></vxe-table-column>
@@ -166,6 +177,7 @@
 		},
 		data () {
 			return {
+				filterName: '',
 				allAlign: null,
 				response: {
 					status:'',
@@ -300,6 +312,24 @@
 				var time = date.getTime()/1000;
 				data.startTime = time;
 			},
+		},
+		computed:{
+			list () {
+			              const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+			              if (filterName) {
+			                const filterRE = new RegExp(filterName, 'gi')
+			                const searchProps = ['className', 'classId', 'groupNum']
+			                const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
+			                return rest.map(row => {
+			                  const item = Object.assign({}, row)
+			                  // searchProps.forEach(key => {
+			                  //   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+			                  // })
+			                  return item
+			                })
+			              }
+			              return this.tableData
+			            }
 		}
 	}
 </script>
