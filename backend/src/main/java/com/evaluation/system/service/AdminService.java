@@ -55,7 +55,7 @@ public class AdminService {
                         user1.setClassId(userInfo.getClassId());
                         user1.setGroupId(userInfo.getGroupId());
                         user1.setStatus(userInfo.getStatus());
-                        user1.setTelephone(userInfo.getStatus());
+                        user1.setTelephone(userInfo.getTelephone());
                         userRepository.save(user1);
                         flag = 1;
                     }
