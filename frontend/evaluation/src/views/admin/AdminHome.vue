@@ -38,7 +38,7 @@
 				classInfo: {},
 				option: {
 					title: {
-						text: '小组各次得分折线图'
+						text: '小组得分折线图'
 					},
 					tooltip: {
 						trigger: 'axis'
@@ -75,9 +75,9 @@
 						data: []
 					},
 					grid: {
-						left: '4%',
-						right: '5%',
-						bottom: '4%',
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
 						containLabel: true
 					},
 					xAxis: {
@@ -175,7 +175,7 @@
 			init() {
 				this.option = {
 					title: {
-						text: '小组各次得分折线图'
+						text: '小组得分折线图'
 					},
 					tooltip: {
 						trigger: 'axis'
@@ -184,9 +184,9 @@
 						data: []
 					},
 					grid: {
-						left: '4%',
-						right: '5%',
-						bottom: '4%',
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
 						containLabel: true
 					},
 					xAxis: {
@@ -213,9 +213,9 @@
 						data: []
 					},
 					grid: {
-						left: '4%',
-						right: '5%',
-						bottom: '4%',
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
 						containLabel: true
 					},
 					xAxis: {
@@ -250,6 +250,5 @@
 		}
 	}
 </script>
-
 <style>
 </style>
