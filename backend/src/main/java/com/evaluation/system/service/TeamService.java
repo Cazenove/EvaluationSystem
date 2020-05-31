@@ -182,7 +182,7 @@ public class TeamService {
     private PersonScoreRepository personScoreRepository;
 
     /**
-     * 获取组员详情
+     * 获取组员详情,需要修改一下
      * @author 221701310_陈家祯
      */
     public Map<String, Object> getGroupMemberInfo(String userId) {
@@ -206,9 +206,9 @@ public class TeamService {
         }
 
         try{
-            //存放组员贡献率分工情况
-            PersonScore personScore = personScoreRepository.findByUserId(userId);
-            dataMap.put("content",personScore.getContent());
+            //存放组员贡献率分工情况,待修改
+            List<PersonScore> personScore = personScoreRepository.findByUserId(userId);
+            dataMap.put("content",personScore);
             result.put("status",1);
             result.put("data",dataMap);
         } catch(Exception e){

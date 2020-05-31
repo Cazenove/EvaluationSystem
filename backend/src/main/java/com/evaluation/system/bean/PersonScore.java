@@ -30,14 +30,14 @@ public class PersonScore {
 
     private int content;
 
-    @Transient
-    private String className;
-    @Transient
-    private String groupName;
-    @Transient
-    private String userName;
-    @Transient
-    private int classId;
+//    @Transient
+//    private String className;
+//    @Transient
+//    private String groupName;
+//    @Transient
+//    private String userName;
+//    @Transient
+//    private int classId;
 
     public PersonScore(){
 
@@ -83,37 +83,37 @@ public class PersonScore {
         this.content = content;
     }
 
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getClassId() {
-        return classId;
-    }
-
-    public void setClassId(int classId) {
-        this.classId = classId;
-    }
+//    public String getClassName() {
+//        return className;
+//    }
+//
+//    public void setClassName(String className) {
+//        this.className = className;
+//    }
+//
+//    public String getGroupName() {
+//        return groupName;
+//    }
+//
+//    public void setGroupName(String groupName) {
+//        this.groupName = groupName;
+//    }
+//
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
+//
+//    public int getClassId() {
+//        return classId;
+//    }
+//
+//    public void setClassId(int classId) {
+//        this.classId = classId;
+//    }
 
     public String getDecision() {
         return decision;

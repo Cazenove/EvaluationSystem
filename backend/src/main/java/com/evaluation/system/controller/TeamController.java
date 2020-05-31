@@ -6,6 +6,7 @@ import com.evaluation.system.bean.Team;
 import com.evaluation.system.dao.GroupScoreRepository;
 import com.evaluation.system.dao.TeamRepository;
 import com.evaluation.system.dao.UserRepository;
+import com.evaluation.system.service.PersonScoreService;
 import com.evaluation.system.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ import java.util.Map;
 public class TeamController {
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private PersonScoreService personScoreService;
 
     /**
      * @author 221701230张增燊
@@ -57,7 +61,8 @@ public class TeamController {
      */
     @GetMapping(value = "/user/group/userdetails")
     public Map<String, Object> groupMemberInfo(@RequestParam("userId") String userId) {
-        return teamService.getGroupMemberInfo(userId);
+        //return teamService.getGroupMemberInfo(userId);
+        return personScoreService.getPersonScore(userId);
     }
 
 }
