@@ -26,9 +26,6 @@ import java.util.*;
 public class TaskJob implements Job {
 
     @Autowired
-    PublishTimedTask timedTask;
-
-    @Autowired
     EvaluationOuterRepository evaluationOuterRepository;
 
     @Autowired
@@ -52,6 +49,7 @@ public class TaskJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) {
         JobDataMap jobDataMap = jobExecutionContext.getMergedJobDataMap();
         String[] key = jobDataMap.getKeys();
+        //获取要进行统分的评分表id
         int kid = Integer.parseInt(jobDataMap.getString(key[0]));
         System.out.println("正在统分....");
         statEvaluationOuter(kid);
@@ -61,7 +59,7 @@ public class TaskJob implements Job {
 
     /**
      * 统计组内评分表，获取个人评分
-     * @param jobExecutionContext
+     * @param kid
      */
     @Transactional
     @SuppressWarnings("all")
@@ -103,7 +101,7 @@ public class TaskJob implements Job {
 
     /**
      * 统计组间小组评分
-     * @param jobExecutionContext 获取评分表ID
+     * @param kid 获取评分表ID
      */
     @Transactional
     @SuppressWarnings("all")
@@ -113,9 +111,13 @@ public class TaskJob implements Job {
             EvaluationOuter e = evaluationOuterRepository.findOneByEvaluationOuterId(kid);
             List<SubmitOuter> subList = submitOuterRepository.findByEvaluationOuterId(e.getEvaluationOuterId());
             int groupNum = e.getClassInfo().getGroupNum();
+
+            //用于保存提交了评分表的小组的id
             List<Integer> subGroup = new ArrayList<>();
+
             // 用于判断有没有缺交
             int flag = 0;
+
             if (subList.size() <= 1) {
                 System.out.println("当前提交的互评表无法进行统计");
                 return;
@@ -131,6 +133,7 @@ public class TaskJob implements Job {
                 }
             }
 
+            //如果交的数量等于小组数量，就说明没有缺交情况，flag置为1
             else if (subList.size() == groupNum)
             {
                 flag = 1;
