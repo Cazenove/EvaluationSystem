@@ -13,8 +13,10 @@
 			<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
 			 :expand-config="{accordion: true}">
 				<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
-				<vxe-table-column field="groupId" title="提交小组"></vxe-table-column>
-				<vxe-table-column field="evaluationOuterId" title="组间评分表ID"></vxe-table-column>
+				<vxe-table-column field="groupId" title="班级" :formatter="toClassName"></vxe-table-column>
+				<vxe-table-column field="groupId" title="小组序号"></vxe-table-column>
+				<vxe-table-column field="groupId" title="小组名" :formatter="toGroupName"></vxe-table-column>
+				<vxe-table-column field="evaluationOuterId" title="评分表" :formatter="toFormName"></vxe-table-column>
 				<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
 				<vxe-table-column title="操作">
 					<template v-slot="{ row }">
@@ -54,17 +56,23 @@
 				tableColumn: [],
 				tableData: [],
 				detailData: [],
-				request: {},
-				response: {
-					status: 1,
-					data: []
-				}
+				teamList: {},
+				formList: {}
 			}
 		},
 		created() {
 			this.init();
 		},
 		methods: {
+			toClassName({ cellValue }) {
+				return this.teamList[cellValue].className;
+			},
+			toGroupName({ cellValue }) {
+				return this.teamList[cellValue].groupName;
+			},
+			toFormName({ cellValue }) {
+				return this.formList[cellValue];
+			},
 			cellClickEvent ({ row }) {
 				var i;
 				for(i=3;i<row.content.tableColumn.length-2;i++) {
@@ -121,14 +129,41 @@
 				}
 				this.showDetails = true
 			},
-			getRequest() {},
+			getFormList() {
+				var self = this;
+				axios.get(api.adminEvaluationDetails,null)
+				.then(function(res) {
+					for(var i=0; i<res.data.data.length; i++) {
+						self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
+					}
+					self.getTeamList();
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getTeamList() {
+				var self = this;
+				axios.get(api.adminTeamList, null)
+				.then(function(res) {
+					if (res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.teamList[res.data.data[i].groupId] = res.data.data[i];
+						}
+					} else {
+						console.log(res.data.msg);
+					}
+					self.getResponse();
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
 			getResponse() {
 				var self = this;
 				axios.get(api.adminEvaluationOuterSubmit, null)
 				.then(function(res) {
+					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
-						self.response = res.data;
-						self.tableData = self.response.data;
+						self.tableData = res.data.data;
 						for(var i=0; i<self.tableData.length; i++) {
 							self.tableData[i].submitTime = self.getDate(self.tableData[i].submitTime);
 						}
@@ -140,8 +175,7 @@
 				})
 			},
 			init() {
-				this.getRequest();
-				this.getResponse();
+				this.getFormList();
 			},
 			getDate(source) {
 				var timeStamp = new Date(parseInt(source*1000));

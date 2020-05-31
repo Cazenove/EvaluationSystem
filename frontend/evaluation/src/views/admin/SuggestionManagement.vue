@@ -24,7 +24,7 @@
 				<vxe-table-column field="suggestion" title="建议内容"></vxe-table-column>
 				<vxe-table-column title="操作" show-overflow>
 					<template v-slot="{ row }">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" @click="showEditModal(row)">
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal" @click="showEditModal(row)">
 							修改
 						</button>
 						&nbsp;

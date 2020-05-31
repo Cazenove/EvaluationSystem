@@ -44,7 +44,7 @@
 									position: 'top'
 								}
 							},
-							data: [224,224,200]
+							data: [224,224,200,200]
 						},
 						{
 							name: '已经花费的时间',
@@ -52,10 +52,10 @@
 							label: {
 								normal: {
 									show: true,
-									position: 'bottom'
+									position: 'top'
 								}
 							},
-							data: [40,62,90]
+							data: [40,62,90,114]
 						},
 						{
 							name: '剩余时间',
@@ -66,7 +66,7 @@
 									position: 'bottom'
 								}
 							},
-							data: [184,162,110]
+							data: [184,162,110,86]
 						},
 						{
 							name: '预期进度',
