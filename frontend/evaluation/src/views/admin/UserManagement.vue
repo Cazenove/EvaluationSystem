@@ -108,53 +108,7 @@
 		</div>
 
 
-		<!-- 模态框 -->
-		<div class="modal fade" id="AddModal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<!-- 模态框头部 -->
-					<div class="modal-header">
-						<h4 class="modal-title">添加用户</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-
-					<!-- 模态框主体 -->
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="add-userId">学号</label>
-							<input type="text" class="form-control" id="add-userId" />
-						</div>
-						<div class="form-group">
-							<label for="add-name">姓名</label>
-							<input type="text" class="form-control" id="add-name" />
-						</div>
-						<div class="form-group">
-							<label for="add-classId">班级</label>
-							<input type="text" class="form-control" id="add-classId" />
-						</div>
-						<div class="form-group">
-							<label for="add-groupId">小组</label>
-							<input type="text" class="form-control" id="add-groupId" />
-						</div>
-						<div class="form-group">
-							<label for="add-status">职务</label>
-							<input type="text" class="form-control" id="add-status" />
-						</div>
-						<div class="form-group">
-							<label for="add-password">密码</label>
-							<input type="password" class="form-control" id="add-password" />
-						</div>
-					</div>
-
-					<!-- 模态框底部 -->
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary">确认添加</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 
 		<div class="modal fade" id="UpdateModal">
 			<div class="modal-dialog">
@@ -168,44 +122,55 @@
 
 					<!-- 模态框主体 -->
 					<div class="modal-body">
-						<div class="form-group">
-							<label for="update-userId">学号</label>
-							<input type="text" class="form-control" id="update-userId" v-model="updateInfo.userId" />
-							<span class="error" v-if="errors['updateInfo.userId']">{{errors['updateInfo.userId']}}</span>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="update-userId">学号</label>
+										<input type="text" class="form-control" id="update-userId" v-model="updateInfo.userId" />
+										<span class="error" v-if="errors['updateInfo.userId']">{{errors['updateInfo.userId']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="update-name">姓名</label>
+										<input type="text" class="form-control" id="update-name" v-model="updateInfo.name" />
+										<span class="error" v-if="errors['updateInfo.userName']">{{errors['updateInfo.userName']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="telephone" class="col-form-label">电话号码</label>
+										<input type="text" class="form-control" v-model="updateInfo.telephone" />
+										<span class="error" v-if="errors['updateInfo.telephone']">{{errors['updateInfo.telephone']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="update-password">密码</label>
+										<input type="password" class="form-control" id="update-password" v-model="updateInfo.password" />
+										<span class="error" v-if="errors['updateInfo.password']">{{errors['updateInfo.password']}}</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="update-classId">班级</label>
+										<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
+											<option :value="item.classId" v-for="item in classOption"> {{ item.className }} </option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="update-groupId">小组</label>
+										<select class="form-control" v-model="updateInfo.groupId">
+											<option v-for="n of updateInfo.groupNum" :value="n" :key="n">第{{n}}小组</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="update-status">职务</label>
+										<select name="status" class="form-control" v-model="updateInfo.status">
+											<option v-for="item in statusOption" :value="item.value">{{item.label}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="update-name">姓名</label>
-							<input type="text" class="form-control" id="update-name" v-model="updateInfo.name" />
-							<span class="error" v-if="errors['updateInfo.userName']">{{errors['updateInfo.userName']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="telephone" class="col-form-label">电话号码</label>
-							<input type="text" class="form-control" v-model="updateInfo.telephone" />
-							<span class="error" v-if="errors['updateInfo.telephone']">{{errors['updateInfo.telephone']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="update-classId">班级</label>
-							<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
-								<option :value="item.classId" v-for="item in classOption"> {{ item.className }} </option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="update-groupId">小组</label>
-							<select class="form-control" v-model="updateInfo.groupId">
-								<option v-for="n of updateInfo.groupNum" :value="n" :key="n">第{{n}}小组</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="update-status">职务</label>
-							<select name="status" class="form-control" v-model="updateInfo.status">
-								<option v-for="item in statusOption" :value="item.value">{{item.label}}</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="update-password">密码</label>
-							<input type="password" class="form-control" id="update-password" v-model="updateInfo.password" />
-							<span class="error" v-if="errors['updateInfo.password']">{{errors['updateInfo.password']}}</span>
-						</div>
+						
+						
+						
 					</div>
 
 					<!-- 模态框底部 -->

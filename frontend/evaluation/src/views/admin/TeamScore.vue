@@ -22,7 +22,7 @@
 		 highlight-hover-row
 		 ref="xTable"
 		 :align="allAlign"
-		 :data="tableData">
+		 :data="list">
 			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 			<vxe-table-column field="classId" title="班级ID" :formatter="formatterClass"></vxe-table-column>
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
@@ -38,6 +38,7 @@
 	import axios from 'axios'
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
+	import XEUtils from 'xe-utils'
 	export default {
 		inject: ['reload'],
 		components: {
@@ -45,6 +46,7 @@
 		},
 		data () {
 			return {
+				filterName: '',
 				allAlign: null,
                 title: "小组历次得分",
 				tableData: [],
@@ -109,8 +111,26 @@
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
 			}
+        },
+        computed:{
+        	list() {
+        		const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+        		if (filterName) {
+        			const filterRE = new RegExp(filterName, 'gi')
+        			const searchProps = ['groupName', 'evaluationOuterId', 'content']
+        			const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(
+        				filterName) > -1))
+        			return rest.map(row => {
+        				const item = Object.assign({}, row)
+        				// searchProps.forEach(key => {
+        				//   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+        				// })
+        				return item
+        			})
+        		}
+        		return this.tableData
+        	}
         }
-        
 	}
 </script>
 

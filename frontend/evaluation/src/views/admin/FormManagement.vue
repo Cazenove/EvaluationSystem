@@ -22,7 +22,7 @@
 				</template>
 			</vxe-toolbar>
 			<vxe-table
-			 :data="tableData"
+			 :data="list"
 			 ref="xTable"
 			 border
 			 show-header-overflow
@@ -64,6 +64,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	import CreateForm from '../../components/CreateForm.vue'
+	import XEUtils from 'xe-utils'
 	export default {
 		inject: ['reload'],
 		name: "FormManagement",
@@ -73,6 +74,7 @@
 		},
 		data() {
 			return {
+				filterName: '',
 				showDetails: false,
 				showCreate: false,
 				allAlign: null,
@@ -199,6 +201,25 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
+			}
+		},
+		computed:{
+			list() {
+				const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+				if (filterName) {
+					const filterRE = new RegExp(filterName, 'gi')
+					const searchProps = ['evaluationOuterId', 'name']
+					const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(
+						filterName) > -1))
+					return rest.map(row => {
+						const item = Object.assign({}, row)
+						// searchProps.forEach(key => {
+						//   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+						// })
+						return item
+					})
+				}
+				return this.tableData
 			}
 		}
 	}

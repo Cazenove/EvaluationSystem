@@ -14,52 +14,62 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<div class="form-group">
-							<label for="userId" class="col-form-label">学号</label>
-							<input type="text" class="form-control" id="userId" v-model="registerInfo.userId" />
-							<span class="error" v-if="errors['registerInfo.userId']">{{errors['registerInfo.userId']}}</span>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="userId" class="col-form-label">学号</label>
+										<input type="text" class="form-control" id="userId" v-model="registerInfo.userId" />
+										<span class="error" v-if="errors['registerInfo.userId']">{{errors['registerInfo.userId']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="password" class="col-form-label">密码</label>
+										<input type="password" class="form-control" id="password" v-model="registerInfo.password" />
+										<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="name" class="col-form-label">姓名</label>
+										<input type="text" class="form-control" id="name" v-model="registerInfo.name" />
+										<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
+									</div>
+									<div class="form-group">
+										<label for="telephone" class="col-form-label">电话号码</label>
+										<input type="text" class="form-control" id="telephone" v-model="registerInfo.telephone" />
+										<span class="error" v-if="errors['registerInfo.telephone']">{{errors['registerInfo.telephone']}}</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+											<label for="classId" class="col-form-label">班级</label>
+											<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
+												<option disabled="disabled" :value="null">请选择</option>
+												<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
+											</select>
+											<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
+										</div>
+										<div class="form-group">
+											<label for="groupNum" class="col-form-label">小组</label>
+											<select class="form-control" v-model="registerInfo.groupNum">
+												<option disabled="disabled" :value="null">请选择</option>
+												<option v-for="n in getGroupNum" :value="n" :key="n">第{{n}}小组</option>
+											</select>
+											<span class="error" v-if="errors['registerInfo.groupId']">{{errors['registerInfo.groupId']}}</span>
+										</div>
+										<div class="form-group">
+											<label for="status" class="col-form-label">身份</label>
+											<select class="form-control" v-model="registerInfo.status">
+												<option disabled="disabled" :value="null">请选择</option>
+												<option :value="1">组员</option>
+												<option :value="2">组长</option>
+											</select>
+											<span class="error" v-if="errors['registerInfo.status']">{{errors['registerInfo.status']}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="form-group">
-							<label for="password" class="col-form-label">密码</label>
-							<input type="password" class="form-control" id="password" v-model="registerInfo.password" />
-							<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="name" class="col-form-label">姓名</label>
-							<input type="text" class="form-control" id="name" v-model="registerInfo.name" />
-							<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="telephone" class="col-form-label">电话号码</label>
-							<input type="text" class="form-control" id="telephone" v-model="registerInfo.telephone" />
-							<span class="error" v-if="errors['registerInfo.telephone']">{{errors['registerInfo.telephone']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="classId" class="col-form-label">班级</label>
-							<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
-								<option disabled="disabled" :value="null">请选择</option>
-								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
-							</select>
-							<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="groupNum" class="col-form-label">小组</label>
-							<select class="form-control" v-model="registerInfo.groupNum">
-								<option disabled="disabled" :value="null">请选择</option>
-								<option v-for="n in getGroupNum" :value="n" :key="n">第{{n}}小组</option>
-							</select>
-							<span class="error" v-if="errors['registerInfo.groupId']">{{errors['registerInfo.groupId']}}</span>
-						</div>
-						<div class="form-group">
-							<label for="status" class="col-form-label">身份</label>
-							<select class="form-control" v-model="registerInfo.status">
-								<option disabled="disabled" :value="null">请选择</option>
-								<option :value="1">组员</option>
-								<option :value="2">组长</option>
-							</select>
-							<span class="error" v-if="errors['registerInfo.status']">{{errors['registerInfo.status']}}</span>
-						</div>
-					</div>
+						
+						
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">取消</button>
 						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">添加</button>
