@@ -13,18 +13,13 @@
 			<vxe-toolbar>
 				<template v-slot:buttons>
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
 				<template v-slot:tools>
 					<!-- <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
 						条件搜索
 					</a> -->
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >条件搜索</vxe-button>
-				</template>
-			</vxe-toolbar>
-			<vxe-toolbar>
-				<template v-slot:buttons>
-					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
-					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
 			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
