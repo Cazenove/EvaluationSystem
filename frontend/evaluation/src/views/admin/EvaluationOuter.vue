@@ -10,8 +10,23 @@
 		
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>{{this.title}}</h1>
-			<vxe-table v-if="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData"
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
+			<vxe-table
+			 v-if="tableData" 
+			 border
+			 show-header-overflow
+			 show-overflow
+			 highlight-hover-row
+			 ref="xTable"
+			 :align="allAlign"
+			 :data="tableData"
 			 :expand-config="{accordion: true}">
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="submitOuterId" title="提交记录ID"></vxe-table-column>
 				<vxe-table-column field="groupId" title="班级" :formatter="toClassName"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组序号"></vxe-table-column>
@@ -187,6 +202,11 @@
 				var s = timeStamp.getSeconds();
 				var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
 				return time;
+			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
 			}
 		}
 

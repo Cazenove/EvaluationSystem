@@ -15,7 +15,21 @@
 					<button class="btn btn-primary" @click="createForm">新增评分表</button>
 				</template>
 			</vxe-toolbar>
-			<vxe-table :data="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
+			<vxe-table
+			 :data="tableData"
+			 ref="xTable"
+			 border
+			 show-header-overflow
+			 show-overflow
+			 highlight-hover-row
+			 :align="allAlign">
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="evaluationOuterId" title="评分表ID"></vxe-table-column>
 				<vxe-table-column field="name" title="评分表名称"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="toClassName"></vxe-table-column>
@@ -179,6 +193,11 @@
 							console.log(error);
 						})
 					}
+				})
+			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
 				})
 			}
 		}

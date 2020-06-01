@@ -10,7 +10,22 @@
         
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>{{this.title}}</h1>
-			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData" @cell-click="cellClickEvent">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
+			<vxe-table
+			 border
+			 show-header-overflow
+			 show-overflow
+			 highlight-hover-row
+			 :align="allAlign"
+			 :data="tableData"
+			 ref="xTable"
+			 @cell-click="cellClickEvent">
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="submitInnerId" title="提交记录ID"></vxe-table-column>
 				<vxe-table-column field="groupId" title="班级" :formatter="toClassName"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组序号"></vxe-table-column>
@@ -24,6 +39,12 @@
 		</div>
 		
 		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize destroy-on-close>
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
 			<vxe-table
 			 highlight-hover-row
 			 highlight-current-row
@@ -140,6 +161,11 @@
 				var s = timeStamp.getSeconds();
 				var time = year+"-"+month+"-"+date+" "+h+":"+m+":"+s;
 				return time;
+			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
 			}
         }
         

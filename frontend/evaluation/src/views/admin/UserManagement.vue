@@ -26,7 +26,6 @@
 
 			</div>
 			<vxe-toolbar>
-
 				<template v-slot:buttons>
 					<!-- <vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input> -->
 					<!-- <el-row :gutter="12">
@@ -35,6 +34,7 @@
 						</el-col>
 					</el-row> -->
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 					<!-- <vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
 					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button> -->
 				</template>
@@ -49,7 +49,6 @@
 				<div class="card card-body">
 					<vxe-toolbar>
 						<template v-slot:buttons>
-
 							<el-row :gutter="20">
 								<el-col :span="4">
 									<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
@@ -75,21 +74,28 @@
 								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
 								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 							</el-row>
-
 						</template>
-
 					</vxe-toolbar>
 				</div>
 			</div>
 
-			<vxe-table v-if="classList" border resizable row-key highlight-hover-row keep-source ref="xTable" :data="list"
+			<vxe-table
+			 v-if="classList"
+			 border
+			 resizable
+			 row-key
+			 highlight-hover-row
+			 keep-source
+			 ref="xTable"
+			 :data="list"
 			 max-height="500">
-				<vxe-table-column field="userId" title="学号"></vxe-table-column>
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
+				<vxe-table-column field="userId" title="学号" cell-type="string"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组" :formatter="toGroupName"></vxe-table-column>
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
-				<vxe-table-column field="telephone" title="电话号码"></vxe-table-column>
+				<vxe-table-column field="telephone" title="电话号码" cell-type="string"></vxe-table-column>
 				<vxe-table-column field="status" title="职务" :formatter="formatterStatus"></vxe-table-column>
 				<vxe-table-column title="操作">
 					<template v-slot="{ row }">
@@ -474,6 +480,11 @@
 				})
 				this.init();
 			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
+			}
 		},
 		vuerify: {
 			'updateInfo.userId': {

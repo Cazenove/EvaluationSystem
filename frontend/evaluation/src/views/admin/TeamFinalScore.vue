@@ -10,6 +10,7 @@
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
         <h1>{{this.title}}</h1>
 		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
 			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>

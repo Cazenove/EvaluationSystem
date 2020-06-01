@@ -9,7 +9,21 @@
 		</nav>
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
         <h1>{{this.title}}</h1>
-		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+		<vxe-toolbar>
+			<template v-slot:buttons>
+				<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+				<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+			</template>
+		</vxe-toolbar>
+		<vxe-table
+		 border
+		 show-header-overflow
+		 show-overflow
+		 highlight-hover-row
+		 ref="xTable"
+		 :align="allAlign"
+		 :data="tableData">
+			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 			<vxe-table-column field="userId" title="用户ID"></vxe-table-column>
 			<vxe-table-column field="userId" title="用户名" :formatter="toUserName"></vxe-table-column>
 			<vxe-table-column field="userId" title="班级名" :formatter="toClassName"></vxe-table-column>
@@ -140,7 +154,12 @@
             },
             init() {
 				this.getFormList();
-            }
+            },
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
+			}
         }
         
 	}

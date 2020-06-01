@@ -21,6 +21,12 @@
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >条件搜索</vxe-button>
 				</template>
 			</vxe-toolbar>
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
 			  <div class="card card-body">
 			<vxe-toolbar>
@@ -57,13 +63,17 @@
 			</vxe-toolbar>
 			</div>
 			</div>
-		<vxe-table :align="allAlign" :data="list"
-			border
-			resizable
-			row-key
-			highlight-hover-row
-			keep-source
+		<vxe-table
+		 :align="allAlign"
+		 :data="list"
+		 ref="xTable"
+		 border
+		 resizable
+		 row-key
+		 highlight-hover-row
+		 keep-source
 		 :expand-config="{accordion: true}">
+			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
 			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
 			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
@@ -195,25 +205,30 @@
 			},
 			init() {
 				this.getResponse();
+			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
 			}
 		},
 		computed:{
 			list () {
-			              const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
-			              if (filterName) {
-			                const filterRE = new RegExp(filterName, 'gi')
-			                const searchProps = ['groupId', 'groupName', 'classId', 'className', 'groupNum', 'userId']
-			                const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
-			                return rest.map(row => {
-			                  const item = Object.assign({}, row)
-			                  // searchProps.forEach(key => {
-			                  //   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
-			                  // })
-			                  return item
-			                })
-			              }
-			              return this.tableData
-			            }
+				const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
+				if (filterName) {
+					const filterRE = new RegExp(filterName, 'gi')
+					const searchProps = ['groupId', 'groupName', 'classId', 'className', 'groupNum', 'userId']
+					const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
+					return rest.map(row => {
+					const item = Object.assign({}, row)
+					// searchProps.forEach(key => {
+					//   item[key] = XEUtils.toString(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
+					// })
+						return item
+					})
+				}
+				return this.tableData
+			}
 		}
 	}
 </script>

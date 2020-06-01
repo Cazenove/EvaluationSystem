@@ -20,9 +20,19 @@
 			<vxe-toolbar>
 				<template v-slot:buttons>
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
 			</vxe-toolbar>
-			<vxe-table :align="allAlign" :data="list" border resizable row-key highlight-hover-row keep-source>
+			<vxe-table
+			 :align="allAlign" 
+			 :data="list" 
+			 ref="xTable"
+			 border 
+			 resizable 
+			 row-key 
+			 highlight-hover-row 
+			 keep-source>
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="assistantId" title="助教ID"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="telephone" title="电话"></vxe-table-column>
@@ -196,7 +206,11 @@
 				let item = this.classList.find(item => item.classId === cellValue)
 				return item ? item.className : ''
 			},
-
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
+				})
+			}
 		},
 		computed: {
 			list() {

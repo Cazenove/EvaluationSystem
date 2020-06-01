@@ -17,7 +17,21 @@
 					</button>
 				</template>
 			</vxe-toolbar>
-			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
+					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+				</template>
+			</vxe-toolbar>
+			<vxe-table
+			 border
+			 show-header-overflow
+			 show-overflow
+			 highlight-hover-row
+			 ref="xTable"
+			 :align="allAlign"
+			 :data="tableData">
+				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="groupSuggestionId" title="建议ID"></vxe-table-column>
 				<vxe-table-column field="groupId" title="班级" :formatter="toClassName"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组" :formatter="toGroupName"></vxe-table-column>
@@ -245,6 +259,11 @@
 					self.reload();
 				}).catch(function(error) {
 					console.log(error);
+				})
+			},
+			exportSelectEvent () {
+				this.$refs.xTable.exportData({
+					data: this.$refs.xTable.getCheckboxRecords()
 				})
 			}
         }
