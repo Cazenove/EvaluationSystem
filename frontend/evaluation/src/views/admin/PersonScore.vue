@@ -11,11 +11,10 @@
         <h1>{{this.title}}</h1>
 		<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
 			<vxe-table-column field="userId" title="用户ID"></vxe-table-column>
-			<vxe-table-column field="userName" title="用户名"></vxe-table-column>
-			<!-- <vxe-table-column field="classId" title="班级ID"></vxe-table-column> -->
-			<vxe-table-column field="className" title="班级名"></vxe-table-column>
+			<vxe-table-column field="userId" title="用户名" :formatter="toUserName"></vxe-table-column>
+			<vxe-table-column field="userId" title="班级名" :formatter="toClassName"></vxe-table-column>
 			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
-			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+			<vxe-table-column field="groupId" title="小组名" :formatter="toGroupName"></vxe-table-column>
 			<vxe-table-column field="evaluationInnerId" title="评分表" :formatter="formatterForm"></vxe-table-column>
 			<vxe-table-column field="content" title="贡献率"></vxe-table-column>
 			<vxe-table-column field="decision" title="分工"></vxe-table-column>
@@ -38,15 +37,77 @@
 				allAlign: null,
                 title: "个人历次得分",
 				tableData: [],
-				formList: {}
+				formList: {},
+				userList: {},
+				classList: {},
+				groupList: {}
 			}
 		},
         created() {
-            this.init();
+			this.getUserList();
+			this.getClassList();
+			this.getGroupList();
+			setTimeout(() => {
+				this.init()
+			}, 500);
         },
         methods: {
-			formatterForm({ cellValue }) {
+			formatterForm({cellValue}) {
 				return this.formList[cellValue];
+			},
+			toUserName({cellValue}) {
+				return this.userList[cellValue].name;
+			},
+			toClassName({cellValue}) {
+				return this.classList[this.userList[cellValue].classId].className;
+			},
+			toGroupName({cellValue}) {
+				return this.groupList[cellValue];
+			},
+			getClassList() {
+				var self = this;
+				axios.get(api.adminClassList,null)
+				.then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.classList[res.data.data[i].classId] = res.data.data[i];
+						}
+					} else {
+						console.log(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getUserList() {
+				var self = this;
+				axios.get(api.adminUserList,null)
+				.then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.userList[res.data.data[i].userId] = res.data.data[i];
+						}
+					} else {
+						console.log(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getGroupList() {
+				var self = this;
+				axios.get(api.adminTeamList,null)
+				.then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.groupList[res.data.data[i].groupId] = res.data.data[i].groupName;
+						}
+					} else {
+						console.log(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			getFormList() {
 				var self = this;
@@ -57,8 +118,7 @@
 							self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
 						}
 						self.getResponse();
-					}
-					else {
+					} else {
 						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
@@ -71,8 +131,7 @@
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
-					}
-					else {
+					} else {
 						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
