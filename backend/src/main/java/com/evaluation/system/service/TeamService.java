@@ -170,7 +170,6 @@ public class TeamService {
                 result.put("status", 0);
                 result.put("msg", "小组不存在");
             }
-            return result;
         } finally {
             //小组存在但是信息不齐全
             return result;
@@ -216,9 +215,9 @@ public class TeamService {
             dataMap.put("content",null);
             result.put("status",1);
             result.put("data",dataMap);
+        } finally {
             return result;
         }
-        return result;
     }
 
 }

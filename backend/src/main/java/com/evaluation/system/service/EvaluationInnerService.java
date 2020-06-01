@@ -42,9 +42,9 @@ public class EvaluationInnerService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             result.put("status",0);
             result.put("msg","查询发生错误");
+        } finally {
             return result;
         }
-         return result;
     }
 
     /**
@@ -76,8 +76,8 @@ public class EvaluationInnerService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             result.put("status",0);
             result.put("msg","查询发生错误");
+        } finally {
             return result;
         }
-        return result;
     }
 }
