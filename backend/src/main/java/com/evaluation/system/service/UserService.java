@@ -12,6 +12,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.DigestUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author acer
@@ -69,8 +70,14 @@ public class UserService {
             User user1 = userRepository.findByUserId(user.getUserId());
             User user2 = userRepository.findByTelephone(user.getTelephone());
             Team team = groupRepository.findByClassIdAndAndGroupNum(user.getClassId(), user.getGroupNum());
+            List<User> user4 = userRepository.findByGroupIdAndStatus(user.getGroupId(),"2");
+            if(user.getStatus().equals("2") && user4 != null)
+            {
+                result.put("status",flag);
+                result.put("msg","组长已经存在");
+            }
 
-            if (user1 == null && user2 == null) {
+            else if (user1 == null && user2 == null) {
                 User user3 = new User();
                 user3.setUserId(user.getUserId());
 
@@ -116,6 +123,20 @@ public class UserService {
         /*if (!user2.getPassword().isEmpty()) {
             user1.setPassword(user2.getPassword());
         }*/
+        List<User> user4 = userRepository.findByGroupIdAndStatus(user2.getGroupId(),"2");
+        if(user2.getStatus().equals("2"))
+        {
+            if(user4!=null)
+            {
+                if(!user.getUserId().equals(user4.get(0).getUserId()))
+                {
+                    result.put("status",flag);
+                    result.put("msg","组长已经存在，修改失败");
+                    return result;
+                }
+            }
+        }
+
         if (!user2.getName().equals("")) {
             user1.setName(user2.getName());
         }

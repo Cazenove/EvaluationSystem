@@ -35,7 +35,14 @@ public class AdminService {
         HashMap<String,Object> result = new HashMap<>();
         User user = userRepository.findByUserId(userInfo.getUserId());
         User user2 = userRepository.findByTelephone(userInfo.getTelephone());
-        if (user==null){
+        List<User> user4 = userRepository.findByGroupIdAndStatus(userInfo.getGroupId(),"2");
+        if(userInfo.getStatus().equals("2") && user4 != null)
+        {
+            result.put("status",flag);
+            result.put("msg","组长已经存在");
+            return result;
+        }
+        else if (user==null){
             if(user2==null){
                 User user1 = new User();
                 if (classRepository.findByClassId(userInfo.getClassId()) == null) {
@@ -96,6 +103,19 @@ public class AdminService {
         int flag = 0;
         String msg = "修改成功";
         User user = userRepository.findByUserId(userInfo.getUserId());
+        List<User> user4 = userRepository.findByGroupIdAndStatus(userInfo.getGroupId(),"2");
+        if(userInfo.getStatus().equals("2"))
+        {
+            if(user4!=null)
+            {
+                if(!userInfo.getUserId().equals(user4.get(0).getUserId()))
+                {
+                    result.put("status",flag);
+                    result.put("msg","组长已经存在，修改失败");
+                    return result;
+                }
+            }
+        }
         if(user!=null) {
             User user1 = user;
             User user2 = userRepository.findByTelephone(userInfo.getTelephone());
