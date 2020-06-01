@@ -35,7 +35,7 @@ public class PersonScoreService {
         Map<String,Object> map = new HashMap<String,Object>();
         try{
             /**获取所有人的分数**/
-            //List<PersonScore> personScores=personScoreReposity.findAll();
+            List<PersonScore> personScores=personScoreReposity.findAll();
 
             //for(int i=0;i<personScores.size();i++)
             //{
@@ -49,28 +49,35 @@ public class PersonScoreService {
             //}
             //map.put("data",personScores);
 
-            List<User> users=userRepository.findAll();
-            List<PersonScoreHelper> personScoreHelpers=new ArrayList<>();
+//            List<User> users=userRepository.findAll();
+//            List<PersonScoreHelper> personScoreHelpers=new ArrayList<>();
+//
+//            for(int i=0;i<users.size();i++){
+//                PersonScoreHelper personScoreHelper=new PersonScoreHelper();
+//
+//
+//                User user=users.get(i);
+//
+//                List<PersonScore> personScores=personScoreReposity.findByUserId(user.getUserId());
+//                if(personScores!=null)
+//                {
+//                    Class c = classRepository.findByClassId(user.getClassId());
+//                    Team team=teamRepository.findByGroupId(user.getGroupId());
+//
+//                    personScoreHelper.setClassId(user.getClassId());
+//                    personScoreHelper.setClassName(c.getClassName());
+//                    personScoreHelper.setGroupName(team.getGroupName());
+//                    personScoreHelper.setUserName(user.getName());
+//                    personScoreHelper.setPersonScores(personScores);
+//                    personScoreHelper.setTelephone(user.getTelephone());
+//                    personScoreHelper.setUserId(user.getUserId());
+//
+//                    personScoreHelpers.add(personScoreHelper);
+//                }
+//
+//            }
 
-            for(int i=0;i<users.size();i++){
-                PersonScoreHelper personScoreHelper=new PersonScoreHelper();
-
-                List<PersonScore> personScores=personScoreReposity.findByUserId(users.get(i).getUserId());
-                Class c = classRepository.findByClassId(users.get(i).getClassId());
-                Team team=teamRepository.findByGroupId(personScores.get(0).getGroupId());
-
-                personScoreHelper.setClassId(users.get(i).getClassId());
-                personScoreHelper.setClassName(c.getClassName());
-                personScoreHelper.setGroupName(team.getGroupName());
-                personScoreHelper.setUserName(users.get(i).getName());
-                personScoreHelper.setPersonScores(personScores);
-                personScoreHelper.setTelephone(users.get(i).getTelephone());
-                personScoreHelper.setUserId(users.get(i).getUserId());
-
-                personScoreHelpers.add(personScoreHelper);
-            }
-
-            map.put("data",personScoreHelpers);
+            map.put("data",personScores);
             map.put("status","1");
 
         }catch(Exception e){
