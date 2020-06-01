@@ -68,7 +68,7 @@
             getResponse() {
 				var self = this;
 				axios.get(api.adminUserScoreList,null)
-				.then(function(res) {console.log(res);
+				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
 					}

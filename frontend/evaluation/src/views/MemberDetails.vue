@@ -11,11 +11,12 @@
 					<h5 class="card-header">组员详情</h5>
 					<p>姓名：{{memberInfo.userName}}</p>
 					<p>学号：{{memberInfo.userId}}</p>
+					<p>电话号码：{{memberInfo.telephone}}</p>
 				</div>
 				<div class="col-md-1"></div>
 				<div class="card col-md-8">
 					<h5 class="card-header">历次贡献率</h5>
-					<div class="card" v-for="item in scoreList" :key="item.evaluationInnerId">
+					<div class="card" v-for="item in memberInfo.personScores" :key="item.evaluationInnerId">
 						<div class="card-body">
 							<h5 class="card-title">{{formList[item.evaluationInnerId]}}</h5>
 							<ul class="list-group list-group-horizontal">
@@ -54,40 +55,27 @@
 		methods: {
 			getResponse() {
 				var self = this;
-				axios.get(api.userGroupUserdetails,{
+				
+				axios.get(api.userEvaluationInnerList, {
 					params: {
-						userId:this.$route.query.userId
+						classId: self.$store.state.userInfo.classId
 					}
 				}).then(function(res) {
-					self.memberInfo = res.data.data;
-					axios.get(api.userEvaluationInnerList, {
+					for(var i=0; i<res.data.data.length; i++) {
+						self.formList[res.data.data[i].evaluationInnerId] = res.data.data[i].name;
+					}
+					axios.get(api.personScoreList,{
 						params: {
-							classId: self.$store.state.userInfo.classId
+							userId:self.$route.query.userId
 						}
 					}).then(function(res) {
 						console.log(res);
-						for(var i=0; i<res.data.data.length; i++) {
-							self.formList[res.data.data[i].evaluationInnerId] = res.data.data[i].name;
-						}
-					})
-					axios.get(api.adminUserScoreList, null)
-					.then(function(res) {
-						for(var i=0; i<res.data.data.length; i++) {
-							if(res.data.data[i].userId == self.memberInfo.userId) {
-								self.scoreList.push(res.data.data[i]);
-							}
-						}
+						self.memberInfo = res.data.data;
 					}).catch(function(error) {
 						console.log(error);
 					})
 				}).catch(function(error) {
 					console.log(error);
-				})
-				axios.get(api.adminUserScoreList,null)
-				.then(function(res) {
-					self.response = res.data;
-				}).catch(function(error) {
-					consle.log(error);
 				})
 			},
 			init() {

@@ -19,8 +19,9 @@
 			</vxe-toolbar>
 			<vxe-table border show-header-overflow show-overflow highlight-hover-row :align="allAlign" :data="tableData">
 				<vxe-table-column field="groupSuggestionId" title="建议ID"></vxe-table-column>
-				<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
-				<vxe-table-column field="evaluationOuterId" title="评分表ID"></vxe-table-column>
+				<vxe-table-column field="groupId" title="班级" :formatter="toClassName"></vxe-table-column>
+				<vxe-table-column field="groupId" title="小组" :formatter="toGroupName"></vxe-table-column>
+				<vxe-table-column field="evaluationOuterId" title="评分表" :formatter="toFormName"></vxe-table-column>
 				<vxe-table-column field="suggestion" title="建议内容"></vxe-table-column>
 				<vxe-table-column title="操作" show-overflow>
 					<template v-slot="{ row }">
@@ -120,23 +121,63 @@
 					targetGroupId:'',
 					suggestion:''
 				},
-                response: {
-					status:'',
-					data:[]
-				}
+				groupList: {},
+				formList: {}
 			}
 		},
         created() {
-            this.init();
+			this.getGroupList();
+			this.getFormList();
+            setTimeout(() => {
+            	this.init()
+            }, 500);
         },
         methods: {
+			toClassName({cellValue}) {
+				return this.groupList[cellValue].className;
+			},
+			toGroupName({cellValue}) {
+				return this.groupList[cellValue].groupName;
+			},
+			toFormName({cellValue}) {
+				return this.formList[cellValue];
+			},
+			getGroupList() {
+				var self = this;
+				axios.get(api.adminTeamList,null)
+				.then(function(res) {
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.groupList[res.data.data[i].groupId] = res.data.data[i];
+						}
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
+			getFormList() {
+				var self = this;
+				axios.get(api.adminEvaluationDetails,null)
+				.then(function(res) {console.log(res);
+					if(res.status == 200 && res.data.status == 1) {
+						for(var i=0; i<res.data.data.length; i++) {
+							self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
+						}
+						self.getResponse();
+					}
+					else {
+						console.log(res.data.msg);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
             getResponse() {
 				var self = this;
 				axios.get(api.adminSuggestionList,null)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
-						self.response = res.data;
-						self.tableData = self.response.data;
+						self.tableData = res.data.data;
 					}
 					else {
 						alert(res.data.msg);

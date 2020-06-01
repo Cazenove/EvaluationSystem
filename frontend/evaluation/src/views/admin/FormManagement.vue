@@ -18,7 +18,7 @@
 			<vxe-table :data="tableData" border show-header-overflow show-overflow highlight-hover-row :align="allAlign">
 				<vxe-table-column field="evaluationOuterId" title="评分表ID"></vxe-table-column>
 				<vxe-table-column field="name" title="评分表名称"></vxe-table-column>
-				<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
+				<vxe-table-column field="classId" title="班级" :formatter="toClassName"></vxe-table-column>
 				<vxe-table-column field="releaseTime" title="发布时间"></vxe-table-column>
 				<vxe-table-column field="endTime" title="截止时间"></vxe-table-column>
 				<vxe-table-column title="操作" width="150" show-overflow>
@@ -68,18 +68,36 @@
 				},
 				tableData: [],
 				detailData: [],
-				tableColumn: []
+				tableColumn: [],
+				classList: {}
 			}
 		},
 		created() {
-			this.init();
+			this.getClassList();
+			setTimeout(() => {
+				this.init()
+			}, 500);
 		},
 		methods: {
+			toClassName({cellValue}) {
+				return this.classList[cellValue];
+			},
 			createForm() {
 				this.showCreate = true;
 			},
 			init() {
 				this.getResponse();
+			},
+			getClassList() {
+				var self = this;
+				axios.get(api.adminClassList, null)
+				.then(function(res) {
+					for(var i=0; i<res.data.data.length; i++) {
+						self.classList[res.data.data[i].classId] = res.data.data[i].className;
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
 			},
 			getResponse() {
 				var self = this;

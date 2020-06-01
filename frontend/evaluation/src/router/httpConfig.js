@@ -1,4 +1,4 @@
-const http = "http://106.12.47.24:8085"
+const http = "http://119.3.251.127:8085"
 // 接口URL
 
 const apiList = {
