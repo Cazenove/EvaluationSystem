@@ -14,7 +14,32 @@
 				<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 				<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 			</template>
+			<template v-slot:tools>
+				<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
+			</template>
 		</vxe-toolbar>
+		<div class="collapse" id="collapseExample">
+			<div class="card card-body">
+				<vxe-toolbar>
+					<template v-slot:buttons>
+						<el-row :gutter="20">
+							<el-col :span="4">
+								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
+									<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
+								</el-select>
+							</el-col>
+							<el-col :span="4">
+								<el-select offser="3" placeholder="评分表" v-model="searchInfo.evaluationOuterId">
+									<el-option :value="item.evaluationOuterId" v-for="item in formOption" :key="item.evaluationOuterId" :label="item.name"></el-option>
+								</el-select>
+							</el-col>
+							<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+							<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+						</el-row>
+					</template>
+				</vxe-toolbar>
+			</div>
+		</div>
 		<vxe-table
 		 border
 		 show-header-overflow
@@ -51,12 +76,15 @@
 				allAlign: null,
                 title: "小组历次得分",
 				tableData: [],
+				data: [],
                 request: {},
 				classList: {},
+				classOption: [],
 				formList: {},
+				formOption: [],
 				searchInfo: {
 					classId: null,
-					groupNum: null,
+					groupId: null,
 					evaluationOuterId: null
 				}
 			}
@@ -77,6 +105,7 @@
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
+						self.data = res.data.data;
 					}
 					else {
 						console.log(res.data.msg);
@@ -91,6 +120,11 @@
 				.then(function(res) {
 					for(var i=0; i<res.data.data.length; i++) {
 						self.classList[res.data.data[i].classId] = res.data.data[i].className;
+						var option = {
+							classId: res.data.data[i].classId,
+							className: res.data.data[i].className
+						}
+						self.classOption.push(option);
 					}
 					self.getEvaluationOuterList();
 				}).catch(function(error) {
@@ -103,6 +137,11 @@
 				.then(function(res) {
 					for(var i=0; i<res.data.data.length; i++) {
 						self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
+						var option = {
+							evaluationOuterId: res.data.data[i].evaluationOuterId,
+							name: res.data.data[i].name
+						}
+						self.formOption.push(option);
 					}
 					self.getResponse();
 				}).catch(function(error) {
@@ -116,7 +155,35 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
-			}
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (value.groupId != this.searchInfo.groupId && this.searchInfo.groupId != null && this.searchInfo.groupId != "") {
+						flag = 0;
+					}
+					if (value.evaluationOuterId != this.searchInfo.evaluationOuterId && this.searchInfo.evaluationOuterId != null && this.searchInfo.evaluationOuterId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+			
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					classId: null,
+					groupId: null,
+					evaluationOuterId: null
+				}
+			},
         },
         computed:{
         	list() {

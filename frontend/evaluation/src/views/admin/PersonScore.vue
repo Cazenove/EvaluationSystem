@@ -24,24 +24,13 @@
 					<template v-slot:buttons>
 						<el-row :gutter="20">
 							<el-col :span="4">
-								<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
-							</el-col>
-							<el-col :span="4">
-								<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
-							</el-col>
-							<el-col :span="4">
-								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
 									<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
 								</el-select>
 							</el-col>
-							<el-col :span="3">
-								<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-									<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
-								</el-select>
-							</el-col>
-							<el-col :span="3">
-								<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-									<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
+							<el-col :span="4">
+								<el-select offser="3" placeholder="评分表" v-model="searchInfo.evaluationInnerId">
+									<el-option :value="item.evaluationInnerId" v-for="item in formOption" :key="item.evaluationInnerId" :label="item.name"></el-option>
 								</el-select>
 							</el-col>
 							<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
@@ -87,11 +76,18 @@
 				allAlign: null,
                 title: "个人历次得分",
 				tableData: [],
+				data: [],
 				formList: {},
+				formOption: [],
 				userList: {},
 				classList: {},
+				classOption: [],
 				groupList: {},
-				searchInfo: {}
+				searchInfo: {
+					classId: null,
+					groupId: null,
+					evaluationOuterId: null
+				}
 			}
 		},
         created() {
@@ -122,6 +118,11 @@
 					if(res.status == 200 && res.data.status == 1) {
 						for(var i=0; i<res.data.data.length; i++) {
 							self.classList[res.data.data[i].classId] = res.data.data[i];
+							var option = {
+								classId: res.data.data[i].classId,
+								className: res.data.data[i].className
+							}
+							self.classOption.push(option);
 						}
 					} else {
 						console.log(res.data.msg);
@@ -167,6 +168,11 @@
 					if(res.status == 200 && res.data.status == 1) {
 						for(var i=0; i<res.data.data.length; i++) {
 							self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
+							var option = {
+								evaluationInnerId: res.data.data[i].evaluationOuterId,
+								name: res.data.data[i].name
+							}
+							self.formOption.push(option);
 						}
 						self.getResponse();
 					} else {
@@ -182,6 +188,7 @@
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
+						self.data = res.data.data;
 					} else {
 						console.log(res.data.msg);
 					}
@@ -196,7 +203,35 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
-			}
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					if (this.userList[value.userId].classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (value.groupId != this.searchInfo.groupId && this.searchInfo.groupId != null && this.searchInfo.groupId != "") {
+						flag = 0;
+					}
+					if (value.evaluationInnerId != this.searchInfo.evaluationInnerId && this.searchInfo.evaluationInnerId != null && this.searchInfo.evaluationInnerId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+			
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					classId: null,
+					groupId: null,
+					evaluationOuterId: null
+				}
+			},
         }
         
 	}
