@@ -41,6 +41,11 @@
 </script>
 
 <style>
+	body {
+		background-image: url(assets/u=2062775821,393800254&fm=26&gp=0.jpg);
+		background-size: cover;
+		background-position: center;
+	}
 	#app {
 		font-family: Avenir, Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;

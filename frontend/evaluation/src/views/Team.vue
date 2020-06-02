@@ -10,7 +10,8 @@
 					<p>班级：{{response.data.className}}</p>
 					<p>组号：{{response.data.groupNum}}</p>
 					<p>组名：{{response.data.groupName}}
-						<button v-if="this.$store.state.userInfo.status === 2" class="btn btn-outline-light" @click="changeGroupName">修改名称</button>
+						<button v-if="this.$store.state.userInfo.status == 2" class="btn btn-outline-light" data-toggle="modal"
+						 data-target="#exampleModal">修改名称</button>
 					</p>
 					<p v-if="this.$store.state.userInfo.status == 2">组长：
 						<router-link class="btn btn-outline-success" :to="{path:'/member',query:{userId:response.data.leader.userId}}">
@@ -49,6 +50,29 @@
 				</div>
 			</div>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="groupName" class="col-form-label">小组名称</label>
+							<input type="text" class="form-control" id="groupName" v-model="groupName.groupName" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="changeGroupName">保存</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -82,7 +106,11 @@
 						data: []
 					}
 				},
-				teamScore: {}
+				teamScore: {},
+				groupName: {
+					groupId: "",
+					groupName: ""
+				}
 			}
 		},
 		created() {
@@ -104,8 +132,9 @@
 					}
 				}).then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
-						console.log(res);
 						self.response = res.data;
+						self.groupName.groupId = res.data.data.groupId.toString();
+						self.groupName.groupName = res.data.data.groupName;
 					} else {
 						alert(res.data.msg);
 					}
@@ -127,30 +156,30 @@
 							}
 						}
 						axios.get(api.adminGroupScoreList, null)
-						.then(function(res) {
-							if (res.status == 200 && res.data.status == 1) {
-								for (var i = 0; i < res.data.data.length; i++) {
-									if (res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
-										self.teamScore[res.data.data[i].evaluationOuterId].score = res.data.data[i].content;
-									}
-								}
-								axios.get(api.adminSuggestionList, null)
-								.then(function(res) {
-									if (res.status == 200 && res.data.status == 1) {
-										for (var i = 0; i < res.data.data.length; i++) {
-											if (res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
-												self.teamScore[res.data.data[i].evaluationOuterId].suggestion.push(res.data.data[i].suggestion);
-											}
+							.then(function(res) {
+								if (res.status == 200 && res.data.status == 1) {
+									for (var i = 0; i < res.data.data.length; i++) {
+										if (res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
+											self.teamScore[res.data.data[i].evaluationOuterId].score = res.data.data[i].content;
 										}
-										self.isReady = true;
 									}
-								}).catch(function(error) {
-									console.log(error);
-								})
-							}
-						}).catch(function(error) {
-							console.log(error);
-						})
+									axios.get(api.adminSuggestionList, null)
+										.then(function(res) {
+											if (res.status == 200 && res.data.status == 1) {
+												for (var i = 0; i < res.data.data.length; i++) {
+													if (res.data.data[i].groupId == self.$store.state.userInfo.groupId) {
+														self.teamScore[res.data.data[i].evaluationOuterId].suggestion.push(res.data.data[i].suggestion);
+													}
+												}
+												self.isReady = true;
+											}
+										}).catch(function(error) {
+											console.log(error);
+										})
+								}
+							}).catch(function(error) {
+								console.log(error);
+							})
 					}
 				}).catch(function(error) {
 					console.log(error);
@@ -162,7 +191,14 @@
 				this.getTeamScoreInfo();
 			},
 			changeGroupName() {
-
+				var self = this;
+				axios.post(api.userTeamUpdate,this.groupName)
+				.then(function(res) {
+					alert(res.data.msg);
+					self.reload();
+				}).catch(function(error) {
+					console.log(error);
+				})
 			}
 		}
 	}

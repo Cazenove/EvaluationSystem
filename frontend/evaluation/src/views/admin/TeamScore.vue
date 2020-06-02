@@ -24,7 +24,7 @@
 		 :align="allAlign"
 		 :data="list">
 			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
-			<vxe-table-column field="classId" title="班级ID" :formatter="formatterClass"></vxe-table-column>
+			<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
 			<vxe-table-column field="evaluationOuterId" title="评分表" :formatter="formatterForm"></vxe-table-column>
 			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
@@ -39,6 +39,7 @@
 	import api from '../../router/httpConfig.js'
 	import ManageNav from '../../components/ManageNav.vue'
 	import XEUtils from 'xe-utils'
+	import es6 from 'es6'
 	export default {
 		inject: ['reload'],
 		components: {
@@ -52,7 +53,12 @@
 				tableData: [],
                 request: {},
 				classList: {},
-				formList: {}
+				formList: {},
+				searchInfo: {
+					classId: null,
+					groupNum: null,
+					evaluationOuterId: null
+				}
 			}
 		},
         created() {

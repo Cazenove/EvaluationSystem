@@ -14,7 +14,43 @@
 				<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 				<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 			</template>
+			<template v-slot:tools>
+				<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
+			</template>
 		</vxe-toolbar>
+		<div class="collapse" id="collapseExample">
+			<div class="card card-body">
+				<vxe-toolbar>
+					<template v-slot:buttons>
+						<el-row :gutter="20">
+							<el-col :span="4">
+								<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
+							</el-col>
+							<el-col :span="4">
+								<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
+							</el-col>
+							<el-col :span="4">
+								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+									<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
+								</el-select>
+							</el-col>
+							<el-col :span="3">
+								<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+									<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
+								</el-select>
+							</el-col>
+							<el-col :span="3">
+								<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
+									<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
+								</el-select>
+							</el-col>
+							<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+							<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+						</el-row>
+					</template>
+				</vxe-toolbar>
+			</div>
+		</div>
 		<vxe-table
 		 border
 		 show-header-overflow
@@ -54,7 +90,8 @@
 				formList: {},
 				userList: {},
 				classList: {},
-				groupList: {}
+				groupList: {},
+				searchInfo: {}
 			}
 		},
         created() {

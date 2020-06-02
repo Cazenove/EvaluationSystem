@@ -2,10 +2,6 @@ const http = "http://119.3.251.127:8085"
 // 接口URL
 
 const apiList = {
-	
-	testGet: 'http://www.dzyong.top:3005/yiqing/area',
-	testPost: 'http://49.235.26.253:8082/publishQuestion',
-	
 	login: http + '/login',
 	register: http + '/register',
 	

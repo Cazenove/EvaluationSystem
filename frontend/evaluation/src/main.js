@@ -20,6 +20,7 @@ import Vuerify from 'vuerify'
 import echarts from 'echarts'
 import md5 from 'js-md5'
 import XEUtils from 'xe-utils'
+import es6 from 'es6'
 Vue.prototype.$utils = XEUtils
 Vue.prototype.$cookie = XEUtils.cookie
 // app.config.globalProperties.$utils = XEUtils

@@ -12,26 +12,15 @@
 			<h1>用户管理</h1>
 			<div>
 				<div class="row container" style="margin-bottom: 20px;">
-
-					<!-- <button type="button" class="offset-md-1 btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button> -->
 					<AdminUserCreateModal></AdminUserCreateModal>
 					&nbsp;
 					<button type="button" class="btn btn-light">一键导入</button>
 				</div>
-
 			</div>
 			<vxe-toolbar>
 				<template v-slot:buttons>
-					<!-- <vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input> -->
-					<!-- <el-row :gutter="12">
-						<el-col :span="4">
-							<el-input v-model="filterName" type="search" placeholder="快速搜索"></el-input>
-						</el-col>
-					</el-row> -->
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
-					<!-- <vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
-					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button> -->
 				</template>
 				<template v-slot:tools>
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
@@ -98,14 +87,11 @@
 				</vxe-table-column>
 			</vxe-table>
 		</div>
-
-
 		
-
 		<div class="modal fade" id="UpdateModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
-
+					
 					<!-- 模态框头部 -->
 					<div class="modal-header">
 						<h4 class="modal-title">修改用户信息</h4>
@@ -161,10 +147,8 @@
 							</div>
 						</div>
 						
-						
-						
 					</div>
-
+					
 					<!-- 模态框底部 -->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -173,7 +157,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
 
