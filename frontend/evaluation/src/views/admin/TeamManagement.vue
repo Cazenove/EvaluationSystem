@@ -16,14 +16,11 @@
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
 				<template v-slot:tools>
-					<!-- <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						条件搜索
-					</a> -->
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >条件搜索</vxe-button>
 				</template>
 			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
-			  <div class="card card-body">
+			<div class="card card-body">
 			<vxe-toolbar>
 				<template v-slot:buttons>
 					
@@ -44,17 +41,10 @@
 								<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
 							</el-select>
 						</el-col>
-						<!-- <el-col :span="3">
-							<el-select offser="3" placeholder="职务" v-model="searchInfo.status">
-								<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
-							</el-select>
-						</el-col> -->
 						<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
 						<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
 					</el-row>
-					
 				</template>
-				
 			</vxe-toolbar>
 			</div>
 			</div>
@@ -212,7 +202,7 @@
 				const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
 				if (filterName) {
 					const filterRE = new RegExp(filterName, 'gi')
-					const searchProps = ['groupId', 'groupName', 'classId', 'className', 'groupNum', 'userId']
+					const searchProps = ['groupId', 'groupName']
 					const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(filterName) > -1))
 					return rest.map(row => {
 					const item = Object.assign({}, row)

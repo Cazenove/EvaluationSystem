@@ -22,7 +22,34 @@
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
+				<template v-slot:tools>
+					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
+				</template>
 			</vxe-toolbar>
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body">
+					<vxe-toolbar>
+						<template v-slot:buttons>
+							<el-row :gutter="20">
+								<el-col :span="4">
+									<el-input offser="3" placeholder="助教ID" v-model="searchInfo.assistantId"></el-input>
+								</el-col>
+								<el-col :span="4">
+									<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
+								</el-col>
+								<el-col :span="4">
+									<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
+										<el-option :value="item.classId" v-for="item in classList" :key="item.classId" :label="item.className"></el-option>
+									</el-select>
+								</el-col>
+								
+								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+							</el-row>
+						</template>
+					</vxe-toolbar>
+				</div>
+			</div>
 			<vxe-table
 			 :align="allAlign" 
 			 :data="list" 
@@ -118,6 +145,7 @@
 		},
 		data() {
 			return {
+				data: [],
 				filterName: '',
 				updateInfo: {
 					assistantId: null,
@@ -125,6 +153,11 @@
 					telephone: null,
 					name: null,
 					classId: null, //助教管理的班级
+				},
+				searchInfo: {
+					assistantId: null,
+					name: null,
+					classId: null,
 				},
 				allAlign: null,
 				title: "助教管理",
@@ -137,7 +170,8 @@
 				createModalTitle: "添加助教",
 				updateModalTitle: "修改",
 				timer: "",
-				className: {}
+				className: {},
+				classList: {}
 			}
 		},
 		created() {
@@ -157,12 +191,45 @@
 					if (res.status == 200 && res.data.status == 1) {
 						self.response = res.data;
 						self.tableData = self.response.data;
+						self.data = self.response.data;
 					} else {
 						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
 				})
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					
+					var assistantId = new RegExp(this.searchInfo.assistantId);
+					var name = new RegExp(this.searchInfo.name);
+					
+					if (value.assistantId.match(assistantId) == null && this.searchInfo.assistantId != null && this.searchInfo.assistantId != "") {
+						flag = 0;
+					}
+					if (value.name.match(name) == null && this.searchInfo.name != null && this.searchInfo.name != "") {
+						flag = 0;
+					}
+					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+			
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					assistantId: null,
+					name: null,
+					classId: null,
+				}
 			},
 			init() {
 				this.getResponse();
@@ -217,7 +284,7 @@
 				const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
 				if (filterName) {
 					const filterRE = new RegExp(filterName, 'gi')
-					const searchProps = ['assistantId', 'name', 'classId', 'telephone']
+					const searchProps = ['assistantId', 'name']
 					const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(
 						filterName) > -1))
 					return rest.map(row => {

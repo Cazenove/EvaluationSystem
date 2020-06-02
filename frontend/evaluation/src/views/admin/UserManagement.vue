@@ -10,11 +10,6 @@
 
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<h1>用户管理</h1>
-			<!-- <div class="collapse" id="collapseExample">
-			  <div class="card card-body">
-			    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-			  </div>
-			</div> -->
 			<div>
 				<div class="row container" style="margin-bottom: 20px;">
 
@@ -39,9 +34,6 @@
 					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button> -->
 				</template>
 				<template v-slot:tools>
-					<!-- <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						条件搜索
-					</a> -->
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
 				</template>
 			</vxe-toolbar>
@@ -80,15 +72,15 @@
 			</div>
 
 			<vxe-table
-			 v-if="classList"
-			 border
-			 resizable
-			 row-key
-			 highlight-hover-row
-			 keep-source
-			 ref="xTable"
-			 :data="list"
-			 max-height="500">
+			v-if="classList"
+			border
+			resizable
+			row-key
+			highlight-hover-row
+			keep-source
+			ref="xTable"
+			:data="list"
+			max-height="500">
 				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 				<vxe-table-column field="userId" title="学号" cell-type="string"></vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
@@ -150,7 +142,7 @@
 									<div class="form-group">
 										<label for="update-classId">班级</label>
 										<select name="classId" class="form-control" v-model="updateInfo.classId" @change="classOptionChange(updateInfo)">
-											<option :value="item.classId" v-for="item in classOption"> {{ item.className }} </option>
+											<option :value="item.classId" :key="item.classId" v-for="item in classOption"> {{ item.className }} </option>
 										</select>
 									</div>
 									<div class="form-group">
@@ -162,7 +154,7 @@
 									<div class="form-group">
 										<label for="update-status">职务</label>
 										<select name="status" class="form-control" v-model="updateInfo.status">
-											<option v-for="item in statusOption" :value="item.value">{{item.label}}</option>
+											<option v-for="item in statusOption" :value="item.value" :key="item.value">{{item.label}}</option>
 										</select>
 									</div>
 								</div>
@@ -326,11 +318,14 @@
 				this.tableData = [];
 				for (let value of data) {
 					let flag = 1;
-
-					if (value.userId != this.searchInfo.userId && this.searchInfo.userId != null && this.searchInfo.userId != "") {
+					
+					var userId = new RegExp(this.searchInfo.userId);
+					var name = new RegExp(this.searchInfo.name);
+					
+					if (value.userId.match(userId) == null && this.searchInfo.userId != null && this.searchInfo.userId != "") {
 						flag = 0;
 					}
-					if (value.name != this.searchInfo.name && this.searchInfo.name != null && this.searchInfo.name != "") {
+					if (value.name.match(name) == null && this.searchInfo.name != null && this.searchInfo.name != "") {
 						flag = 0;
 					}
 					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
@@ -513,7 +508,7 @@
 				const filterName = XEUtils.toString(this.filterName).trim().toLowerCase()
 				if (filterName) {
 					const filterRE = new RegExp(filterName, 'gi')
-					const searchProps = ['userId', 'name', 'classId', 'groupId', 'status']
+					const searchProps = ['userId', 'name']
 					const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toString(item[key]).toLowerCase().indexOf(
 						filterName) > -1))
 					return rest.map(row => {

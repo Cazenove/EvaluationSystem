@@ -20,7 +20,35 @@
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
+				<template v-slot:tools>
+					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >条件搜索</vxe-button>
+				</template>
 			</vxe-toolbar>
+			
+			<div class="collapse" id="collapseExample">
+			<div class="card card-body">
+			<vxe-toolbar>
+				<template v-slot:buttons>
+					
+					<el-row :gutter="20">
+						<el-col :span="4">
+							<el-input offser="3" placeholder="小组ID" v-model="searchInfo.groupId"></el-input>
+						</el-col>
+						<el-col :span="4">
+							<el-input offser="3" placeholder="小组名" v-model="searchInfo.name"></el-input>
+						</el-col>
+						<el-col :span="4">
+							<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
+								<el-option :value="item" v-for="item in classList" :key="item" :label="item"></el-option>
+							</el-select>
+						</el-col>
+						<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+						<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+					</el-row>
+				</template>
+			</vxe-toolbar>
+			</div>
+			</div>
 			<vxe-table
 			 :data="list"
 			 ref="xTable"
@@ -74,6 +102,11 @@
 		},
 		data() {
 			return {
+				searchInfo: {
+					evaluationOuterId: null,
+					name: null,
+					classId: null,
+				},
 				filterName: '',
 				showDetails: false,
 				showCreate: false,
