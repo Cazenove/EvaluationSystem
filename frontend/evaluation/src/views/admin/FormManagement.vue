@@ -32,14 +32,14 @@
 					
 					<el-row :gutter="20">
 						<el-col :span="4">
-							<el-input offser="3" placeholder="小组ID" v-model="searchInfo.groupId"></el-input>
+							<el-input offser="3" placeholder="评分表ID" v-model="searchInfo.evaluationOuterId"></el-input>
 						</el-col>
 						<el-col :span="4">
-							<el-input offser="3" placeholder="小组名" v-model="searchInfo.name"></el-input>
+							<el-input offser="3" placeholder="评分表名" v-model="searchInfo.name"></el-input>
 						</el-col>
 						<el-col :span="4">
 							<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
-								<el-option :value="item" v-for="item in classList" :key="item" :label="item"></el-option>
+								<el-option :value="item.classId" v-for="item in classList" :key="item.classId" :label="item.className"></el-option>
 							</el-select>
 						</el-col>
 						<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
@@ -74,11 +74,11 @@
 		</div>
 		<vxe-modal v-model="showDetails" title="查看详情" width="600" height="400" :mask="false" :lock-view="false" resize destroy-on-close>
 			<vxe-grid
-			 border
-			 resizable
-			 keep-source
-			 :columns="tableColumn"
-			 :data="detailData">
+			border
+			resizable
+			keep-source
+			:columns="tableColumn"
+			:data="detailData">
 			</vxe-grid>
 		</vxe-modal>
 		<vxe-modal v-model="showCreate" title="创建评分表" width="850" height="600" :mask="false" :lock-view="false" resize destroy-on-close>
@@ -102,6 +102,7 @@
 		},
 		data() {
 			return {
+				data: [],
 				searchInfo: {
 					evaluationOuterId: null,
 					name: null,
@@ -129,7 +130,9 @@
 		},
 		methods: {
 			toClassName({cellValue}) {
-				return this.classList[cellValue];
+				// return this.classList[cellValue];
+				let item = this.classList.find(item => item.classId == cellValue)
+				return item ? item.className : ''
 			},
 			createForm() {
 				this.showCreate = true;
@@ -142,11 +145,42 @@
 				axios.get(api.adminClassList, null)
 				.then(function(res) {
 					for(var i=0; i<res.data.data.length; i++) {
-						self.classList[res.data.data[i].classId] = res.data.data[i].className;
+						self.classList = res.data.data;
 					}
 				}).catch(function(error) {
 					console.log(error);
 				})
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					
+					var name = new RegExp(this.searchInfo.name);
+					
+					if (value.evaluationOuterId != null && this.searchInfo.evaluationOuterId != null && this.searchInfo.evaluationOuterId != "") {
+						flag = 0;
+					}
+					if (value.name.match(name) == null && this.searchInfo.name != null && this.searchInfo.name != "") {
+						flag = 0;
+					}
+					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					evaluationOuterId: null,
+					name: null,
+					classId: null,
+				}
 			},
 			getResponse() {
 				var self = this;
@@ -183,6 +217,7 @@
 						}
 						self.response = res.data;
 						self.tableData = self.response.data;
+						self.data = self.response.data;
 						for(var i = 0; i < self.tableData.length; i++) {
 							self.tableData[i].classId = self.tableData[i].classInfo.classId;
 						}
