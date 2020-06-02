@@ -24,6 +24,15 @@
 					<template v-slot:buttons>
 						<el-row :gutter="20">
 							<el-col :span="4">
+								<el-input offser="3" placeholder="用户ID" v-model="searchInfo.userId"></el-input>
+							</el-col>
+							<el-col :span="4">
+								<el-input offser="3" placeholder="用户名" v-model="searchInfo.userName"></el-input>
+							</el-col>
+							<el-col :span="4">
+								<el-input offser="3" placeholder="小组名" v-model="searchInfo.groupName"></el-input>
+							</el-col>
+							<el-col :span="4">
 								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
 									<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
 								</el-select>
@@ -86,7 +95,10 @@
 				searchInfo: {
 					classId: null,
 					groupId: null,
-					evaluationOuterId: null
+					evaluationOuterId: null,
+					userId: null,
+					userName: null,
+					groupName: null
 				}
 			}
 		},
@@ -209,6 +221,20 @@
 				this.tableData = [];
 				for (let value of data) {
 					let flag = 1;
+					
+					var userId = new RegExp(this.searchInfo.userId);
+					var userName = new RegExp(this.searchInfo.userName);
+					var groupName = new RegExp(this.searchInfo.groupName);
+					
+					if (value.userId.match(userId) == null && this.searchInfo.userId != null && this.searchInfo.userId != "") {
+						flag = 0;
+					}
+					if (this.userList[value.userId].name.match(userName) == null && this.searchInfo.userName != null && this.searchInfo.userName != "") {
+						flag = 0;
+					}
+					if (this.groupList[value.groupId].match(groupName) == null && this.searchInfo.groupName != null && this.searchInfo.groupName != "") {
+						flag = 0;
+					}
 					if (this.userList[value.userId].classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
 						flag = 0;
 					}
@@ -229,7 +255,10 @@
 				this.searchInfo = {
 					classId: null,
 					groupId: null,
-					evaluationOuterId: null
+					evaluationOuterId: null,
+					userId: null,
+					userName: null,
+					groupName: null
 				}
 			},
         }

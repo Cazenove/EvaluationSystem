@@ -279,21 +279,15 @@
 					console.log(error);
 				})
 			},
-			formatterClass({
-				cellValue
-			}) {
+			formatterClass({cellValue}) {
 				let item = this.classOption.find(item => item.classId == cellValue)
 				return item ? item.className : ''
 			},
-			formatterStatus({
-				cellValue
-			}) {
+			formatterStatus({cellValue}) {
 				let item = this.statusOption.find(item => item.value == cellValue)
 				return item ? item.label : ''
 			},
-			toGroupName({
-				cellValue
-			}) {
+			toGroupName({cellValue}) {
 				return this.groupList[cellValue];
 			},
 			search() {

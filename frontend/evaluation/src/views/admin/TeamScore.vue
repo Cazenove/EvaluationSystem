@@ -29,6 +29,9 @@
 								</el-select>
 							</el-col>
 							<el-col :span="4">
+								<el-input offser="3" placeholder="小组名" v-model="searchInfo.groupName"></el-input>
+							</el-col>
+							<el-col :span="4">
 								<el-select offser="3" placeholder="评分表" v-model="searchInfo.evaluationOuterId">
 									<el-option :value="item.evaluationOuterId" v-for="item in formOption" :key="item.evaluationOuterId" :label="item.name"></el-option>
 								</el-select>
@@ -85,6 +88,7 @@
 				searchInfo: {
 					classId: null,
 					groupId: null,
+					groupName: null,
 					evaluationOuterId: null
 				}
 			}
@@ -161,6 +165,12 @@
 				this.tableData = [];
 				for (let value of data) {
 					let flag = 1;
+					
+					var groupName = new RegExp(this.searchInfo.groupName);
+					
+					if (value.groupName.match(groupName) == null && this.searchInfo.groupName != null && this.searchInfo.groupName != "") {
+						flag = 0;
+					}
 					if (value.classId != this.searchInfo.classId && this.searchInfo.classId != null && this.searchInfo.classId != "") {
 						flag = 0;
 					}
@@ -181,6 +191,7 @@
 				this.searchInfo = {
 					classId: null,
 					groupId: null,
+					className: null,
 					evaluationOuterId: null
 				}
 			},
