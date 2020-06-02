@@ -91,7 +91,6 @@ public class TeamService {
      */
     public Map<String, Object> getGroupInfo(Integer groupId) {
         Map<String, Object> result = new HashMap<>();
-
         Map<String, Object> dataMap = new HashMap<>();
         result.put("status", 1);
         dataMap.put("groupId",groupId);
@@ -103,7 +102,6 @@ public class TeamService {
         dataMap.put("member",null);
         dataMap.put("data",null);
         result.put("data",dataMap);
-
         //有小组为1，无小组为0
         int flag = 0;
 
@@ -117,7 +115,6 @@ public class TeamService {
             dataMap.put("groupName",groupName);
             dataMap.put("classId",classId);
             dataMap.put("groupNum",groupNum);
-
             flag = 1;
 
             //获取className by classId
@@ -170,18 +167,17 @@ public class TeamService {
                 result.put("status", 0);
                 result.put("msg", "小组不存在");
             }
-        } finally {
-            //小组存在但是信息不齐全
             return result;
         }
-
+        //小组存在但是信息不齐全
+        return result;
     }
 
     @Autowired
     private PersonScoreRepository personScoreRepository;
 
     /**
-     * 获取组员详情,需要修改一下
+     * 获取组员详情
      * @author 221701310_陈家祯
      */
     public Map<String, Object> getGroupMemberInfo(String userId) {
@@ -215,9 +211,9 @@ public class TeamService {
             dataMap.put("content",null);
             result.put("status",1);
             result.put("data",dataMap);
-        } finally {
             return result;
         }
+        return result;
     }
 
 }

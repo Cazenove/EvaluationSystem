@@ -45,7 +45,6 @@ public class SubmitInnerService {
      * @author 221701310_陈家祯
      */
     public Map<String, Object> submitEvaluationInner(SubmitInner submitInner) {
-        int flag = 0;
         String msg = "提交失败";
         HashMap<String,Object> result = new HashMap<>();
         try {
@@ -55,15 +54,14 @@ public class SubmitInnerService {
             saveEvaluation.setEvaluationInnerId(submitInner.getEvaluationInnerId());
             saveEvaluation.setSubmitTime(submitInner.getSubmitTime());
             submitInnerRepository.save(saveEvaluation);
-            flag = 1;
             msg = "提交成功";
-            result.put("status",flag);
+            result.put("status", 1);
             result.put("msg",msg);
         }
         catch (Exception e)
         {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            result.put("status",flag);
+            result.put("status", 0);
             result.put("msg",msg);
             return result;
         }
