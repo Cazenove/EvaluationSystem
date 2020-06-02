@@ -118,12 +118,13 @@ public class TaskJob implements Job {
             // 用于判断有没有缺交
             int flag = 0;
 
+            //只有在评分表总数大于1的时候才能进行统计，否则会出现有组没有分数的时候
             if (subList.size() <= 1) {
                 System.out.println("当前提交的互评表无法进行统计");
                 return;
             }
 
-
+            //总数大于1小于小组总数的时候，要记录提交了
             else if(subList.size() > 1 && subList.size() < groupNum)
             {
 
