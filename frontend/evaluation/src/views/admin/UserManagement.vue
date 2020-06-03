@@ -12,7 +12,7 @@
 			<h1>用户管理</h1>
 			<div>
 				<div class="row container" style="margin-bottom: 20px;">
-					<AdminUserCreateModal></AdminUserCreateModal>
+					<div style="margin-right: 20px;"><AdminUserCreateModal></AdminUserCreateModal></div>
 					&nbsp;
 					<UploadFile></UploadFile>
 				</div>
@@ -31,13 +31,13 @@
 					<vxe-toolbar>
 						<template v-slot:buttons>
 							<el-row :gutter="20">
-								<el-col :span="4">
+								<el-col :span="3">
 									<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
 								</el-col>
-								<el-col :span="4">
+								<el-col :span="3">
 									<el-input offser="3" placeholder="姓名" v-model="searchInfo.name"></el-input>
 								</el-col>
-								<el-col :span="4">
+								<el-col :span="3">
 									<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
 										<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
 									</el-select>
@@ -134,7 +134,8 @@
 									<div class="form-group">
 										<label for="update-groupId">小组</label>
 										<select class="form-control" v-model="updateInfo.groupId">
-											<option v-for="n of updateInfo.groupNum" :value="n" :key="n">第{{n}}小组</option>
+											<!-- <option v-for="n of updateInfo.groupNum" :value="n" :key="n" :label="n"></option> -->
+											<option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></option>
 										</select>
 									</div>
 									<div class="form-group">
@@ -151,8 +152,8 @@
 					
 					<!-- 模态框底部 -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary" @click="update()">确认修改</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="groupOfClass = []">取消</button>
+						<button type="button" class="btn btn-primary" @click="update();groupOfClass = []">确认修改</button>
 					</div>
 				</div>
 			</div>
@@ -324,6 +325,7 @@
 
 			},
 			resetSearch() {
+				this.groupOfClass = [];
 				this.tableData = this.data;
 				this.searchInfo = {
 					userId: null,
@@ -349,6 +351,7 @@
 						this.updateInfo.groupNum = value.groupNum;
 					}
 				}
+				this.classOptionChange(this.updateInfo);
 				// this.selectRow = row;
 				// this.showEdit = true;
 			},
@@ -395,7 +398,7 @@
 				this.searchInfo.groupId = null;
 				this.groupOfClass = [];
 				for(let value in this.groupList){
-					if(this.groupList[value].classId == this.searchInfo.classId){
+					if(this.groupList[value].classId == data.classId){
 						var item = {
 							groupId: this.groupList[value].groupId,
 							groupName: this.groupList[value].groupName,
