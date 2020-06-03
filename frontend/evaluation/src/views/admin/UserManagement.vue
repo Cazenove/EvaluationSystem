@@ -44,7 +44,7 @@
 								</el-col>
 								<el-col :span="3">
 									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
+										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
 									</el-select>
 								</el-col>
 								<el-col :span="3">
@@ -215,6 +215,7 @@
 				classOption: [],
 				groupList: {},
 				teamOption: [],
+				groupOfClass: [],
 				statusOption: [{
 						label: "组员",
 						value: 1,
@@ -272,7 +273,7 @@
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
 						for (var i = 0; i < res.data.data.length; i++) {
-							self.groupList[res.data.data[i].groupId] = res.data.data[i].groupName;
+							self.groupList[res.data.data[i].groupId] = res.data.data[i];
 						}
 					} else {
 						alert(res.data.msg);
@@ -290,7 +291,7 @@
 				return item ? item.label : ''
 			},
 			toGroupName({cellValue}) {
-				return this.groupList[cellValue];
+				return this.groupList[cellValue].groupName;
 			},
 			search() {
 				var data = this.data;
@@ -390,10 +391,16 @@
 					this.classOption.push(option);
 				}
 			},
-			classOptionChange(data) {
-				for (let value of this.classOption) {
-					if (data.classId == value.classId) {
-						data.groupNum = value.groupNum;
+			classOptionChange(data){
+				this.searchInfo.groupId = null;
+				this.groupOfClass = [];
+				for(let value in this.groupList){
+					if(this.groupList[value].classId == this.searchInfo.classId){
+						var item = {
+							groupId: this.groupList[value].groupId,
+							groupName: this.groupList[value].groupName,
+							};
+						this.groupOfClass.push(item);
 					}
 				}
 			},

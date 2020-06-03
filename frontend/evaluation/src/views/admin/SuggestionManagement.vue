@@ -41,7 +41,7 @@
 								</el-col>
 								<el-col :span="3">
 									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n" :label="teamList[n].groupName"></el-option>
+										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
 									</el-select>
 								</el-col>
 								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
@@ -174,6 +174,7 @@
 				groupList: {},
 				formList: {},
 				classList: {},
+				groupOfClass: [],
 			}
 		},
         created() {
@@ -185,6 +186,19 @@
             }, 500);
         },
         methods: {
+			classOptionChange(data){
+				this.searchInfo.groupId = null;
+				this.groupOfClass = [];
+				for(let value in this.groupList){
+					if(this.groupList[value].classId == this.searchInfo.classId){
+						var item = {
+							groupId: this.groupList[value].groupId,
+							groupName: this.groupList[value].groupName,
+							};
+						this.groupOfClass.push(item);
+					}
+				}
+			},
 			toClassName({cellValue}) {
 				return this.groupList[cellValue].className;
 			},
