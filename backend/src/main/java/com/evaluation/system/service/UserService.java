@@ -67,7 +67,7 @@ public class UserService {
             User user2 = userRepository.findByTelephone(user.getTelephone());
             Team team = groupRepository.findByClassIdAndAndGroupNum(user.getClassId(), user.getGroupNum());
             List<User> user4 = userRepository.findByGroupIdAndStatus(user.getGroupId(),"2");
-            if(user.getStatus().equals("2") && user4 != null)
+            if(user.getStatus().equals("2") && user4.size() != 0)
             {
                 result.put("status",flag);
                 result.put("msg","组长已经存在");
@@ -117,7 +117,7 @@ public class UserService {
         List<User> user4 = userRepository.findByGroupIdAndStatus(user2.getGroupId(),"2");
         if(user2.getStatus().equals("2"))
         {
-            if(user4!=null)
+            if(user4.size() != 0)
             {
                 if(!user.getUserId().equals(user4.get(0).getUserId()))
                 {

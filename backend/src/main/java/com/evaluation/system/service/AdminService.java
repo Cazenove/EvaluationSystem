@@ -36,7 +36,7 @@ public class AdminService {
         User user = userRepository.findByUserId(userInfo.getUserId());
         User user2 = userRepository.findByTelephone(userInfo.getTelephone());
         List<User> user4 = userRepository.findByGroupIdAndStatus(userInfo.getGroupId(),"2");
-        if(userInfo.getStatus().equals("2") && user4 != null)
+        if(userInfo.getStatus().equals("2") && user4.size() != 0)
         {
             result.put("status",flag);
             result.put("msg","组长已经存在");
@@ -103,7 +103,7 @@ public class AdminService {
         List<User> user4 = userRepository.findByGroupIdAndStatus(userInfo.getGroupId(),"2");
         if(userInfo.getStatus().equals("2"))
         {
-            if(user4!=null)
+            if(user4.size() != 0)
             {
                 if(!userInfo.getUserId().equals(user4.get(0).getUserId()))
                 {
