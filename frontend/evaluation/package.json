@@ -26,7 +26,8 @@
     "vuerify": "^0.4.0",
     "vuex": "^3.3.0",
     "vxe-table": "^2.9.4",
-    "xe-utils": "^2.4.5"
+    "xe-utils": "^2.4.5",
+    "xlsx": "^0.16.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",

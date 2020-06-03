@@ -14,7 +14,7 @@
 				<div class="row container" style="margin-bottom: 20px;">
 					<AdminUserCreateModal></AdminUserCreateModal>
 					&nbsp;
-					<button type="button" class="btn btn-light">一键导入</button>
+					<UploadFile></UploadFile>
 				</div>
 			</div>
 			<vxe-toolbar>
@@ -166,6 +166,7 @@
 	import ManageNav from '../../components/ManageNav.vue'
 	import AdminUserCreateModal from '../../components/AdminUserCreateModal.vue'
 	import RegisterModal from '../../components/RegisterModal.vue'
+	import UploadFile from '../../components/UploadFile.vue'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	import XEUtils from 'xe-utils'
@@ -176,6 +177,7 @@
 		components: {
 			ManageNav,
 			AdminUserCreateModal,
+			UploadFile
 		},
 		data() {
 			return {
