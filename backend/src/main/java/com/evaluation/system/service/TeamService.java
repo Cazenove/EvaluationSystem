@@ -91,6 +91,7 @@ public class TeamService {
      */
     public Map<String, Object> getGroupInfo(Integer groupId) {
         Map<String, Object> result = new HashMap<>();
+        //存放小组相应数据，按顺序读取各表并将相应数据填入，直到全部读完或者在读某一张表时出错。各项数据初始值为null
         Map<String, Object> dataMap = new HashMap<>();
         result.put("status", 1);
         dataMap.put("groupId",groupId);
@@ -106,7 +107,7 @@ public class TeamService {
         int flag = 0;
 
         try{
-            //获取groupName，classId，groupNum
+            //获取groupName，classId，groupNum。若此步骤出错则提示小组不存在，否则输出小组信息（对应项出错则相应数据为null）
             Team group = teamRepository.findOneByGroupId(groupId);
             String groupName = group.getGroupName();
             int classId = group.getClassId();
@@ -121,17 +122,17 @@ public class TeamService {
             String className = classRepository.findByClassId(classId).getClassName();
             dataMap.put("className",className);
 
-            //获取leader的userId，userName
+            //获取leader（组长）的userId，userName
             User leader = userRepository.findOneByGroupIdAndAndStatus(groupId,"2");
             String leaderUserId = leader.getUserId();
             String leaderName = leader.getName();
             dataMap.put("leader",leader);
 
-            //获取member的userId，userName
+            //获取member（组员）的userId，userName
             ArrayList<User> memberList = userRepository.findByGroupIdAndStatus(groupId,"1");
             dataMap.put("member",memberList);
 
-            //evaluationInfo组成的List
+            //评分表信息组成的数组列表
             ArrayList<Object> evaluationInfoList = new ArrayList<>();
 
             //获取evaluationOuterId，name，score，suggestion
@@ -141,19 +142,17 @@ public class TeamService {
                 //evaluationInfo内含evaluationOuterId，name，score，suggestion
                 Map<String, Object> evaluationInfo = new HashMap<>();
 
-                //evaluationOuterId
+                //evaluationOuterId组间评分表序号
                 int evaluationOuterId = groupSuggestion.getEvaluationOuterId();
                 evaluationInfo.put("evaluationOuterId",evaluationOuterId);
 
-                //name
+                //name组间评分表表名
                 String evaluationOuterName = evaluationOuterRepository.findOneByEvaluationOuterId(evaluationOuterId).getName();
                 evaluationInfo.put("name",evaluationOuterName);
 
-                //score
+                //score&suggestion该组间评分表对应的分数和建议
                 GroupScore groupScore = groupScoreRepository.findOneByEvaluationOuterId(evaluationOuterId);
                 evaluationInfo.put("score",groupScore.getContent());
-
-                //suggestion
                 evaluationInfo.put("suggestion",groupSuggestion.getSuggestion());
 
                 //将evaluationInfo加入evaluationInfoList
@@ -163,13 +162,13 @@ public class TeamService {
             dataMap.put("data",evaluationInfoList);
         } catch (Exception e) {
             if(flag == 0){
-                //小组不存在
+                //小组不存在，报错
                 result.put("status", 0);
                 result.put("msg", "小组不存在");
             }
             return result;
         }
-        //小组存在但是信息不齐全
+        //小组存在但是信息不齐全，返回已经存在的信息
         return result;
     }
 
