@@ -22,7 +22,35 @@
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
+				<template v-slot:tools>
+					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
+				</template>
 			</vxe-toolbar>
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body">
+					<vxe-toolbar>
+						<template v-slot:buttons>
+							<el-row :gutter="20">
+								<el-col :span="4">
+									<el-input offser="3" placeholder="建议ID" v-model="searchInfo.groupSuggestionId"></el-input>
+								</el-col>
+								<el-col :span="4">
+									<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+										<el-option :value="item.classId" v-for="item in classList" :key="item.classId" :label="item.className"></el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="3">
+									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n" :label="teamList[n].groupName"></el-option>
+									</el-select>
+								</el-col>
+								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+							</el-row>
+						</template>
+					</vxe-toolbar>
+				</div>
+			</div>
 			<vxe-table
 			 border
 			 show-header-overflow
@@ -120,10 +148,16 @@
 		},
 		data () {
 			return {
+				data: [],
 				filterName: '',
 				showEdit: false,
 				allAlign: null,
                 title: "建议管理",
+				searchInfo:{
+					groupSuggestionId: null,
+					groupId:null,
+					classId:null,
+				},
 				tableData: [
 				],
                 request: {
@@ -138,10 +172,12 @@
 					suggestion:''
 				},
 				groupList: {},
-				formList: {}
+				formList: {},
+				classList: {},
 			}
 		},
         created() {
+			this.getClassList();
 			this.getGroupList();
 			this.getFormList();
             setTimeout(() => {
@@ -188,12 +224,25 @@
 					console.log(error);
 				})
 			},
+			getClassList() {
+				var self = this;
+				axios.get(api.adminClassList, null)
+				.then(function(res) {
+					for(var i=0; i<res.data.data.length; i++) {
+						self.classList = res.data.data;
+						console.log(res.data.data);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
             getResponse() {
 				var self = this;
 				axios.get(api.adminSuggestionList,null)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
+						self.data = res.data.data;
 					}
 					else {
 						alert(res.data.msg);
@@ -267,7 +316,42 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
-			}
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					
+					var className = null;
+					for (let x of this.classList){
+						if(this.searchInfo.classId == x.classId){
+							className = x.className;
+						}
+					}
+					if (value.groupSuggestionId != null && this.searchInfo.groupSuggestionId != null && this.searchInfo.groupSuggestionId != "") {
+						flag = 0;
+					}
+					if (className !=  this.groupList[value.groupId].className && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (value.groupId != this.searchInfo.groupId && this.searchInfo.groupId != null && this.searchInfo.groupId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+			
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					groupSuggestionId:null,
+					classId:null,
+					groupId:null,
+				}
+			},
         },
 		computed:{
 			list() {

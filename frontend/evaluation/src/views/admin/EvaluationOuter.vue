@@ -15,7 +15,35 @@
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
 				</template>
+				<template v-slot:tools>
+					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
+				</template>
 			</vxe-toolbar>
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body">
+					<vxe-toolbar>
+						<template v-slot:buttons>
+							<el-row :gutter="20">
+								<el-col :span="4">
+									<el-input offser="3" placeholder="提交记录ID" v-model="searchInfo.submitOuterId"></el-input>
+								</el-col>
+								<el-col :span="4">
+									<el-select offser="3" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+										<el-option :value="item.classId" v-for="item in classList" :key="item.classId" :label="item.className"></el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="3">
+									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n" :label="teamList[n].groupName"></el-option>
+									</el-select>
+								</el-col>
+								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
+								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+							</el-row>
+						</template>
+					</vxe-toolbar>
+				</div>
+			</div>
 			<vxe-table
 			 v-if="tableData" 
 			 border
@@ -32,7 +60,7 @@
 				<vxe-table-column field="groupId" title="小组序号"></vxe-table-column>
 				<vxe-table-column field="groupId" title="小组名" :formatter="toGroupName"></vxe-table-column>
 				<vxe-table-column field="evaluationOuterId" title="评分表" :formatter="toFormName"></vxe-table-column>
-				<vxe-table-column field="submitTime" title="提交时间"></vxe-table-column>
+				<vxe-table-column field="submitTime" title="提交时间" :formatter="toTime"></vxe-table-column>
 				<vxe-table-column title="操作">
 					<template v-slot="{ row }">
 						<button type="button" class="btn btn-info" @click="showDetail(row)" data-toggle="modal" data-target="#UpdateModal">详情</button>
@@ -66,6 +94,7 @@
 		},
 		data() {
 			return {
+				data: [],
 				filterName: '',
 				showDetails: false,
 				allAlign: null,
@@ -74,13 +103,30 @@
 				tableData: [],
 				detailData: [],
 				teamList: {},
-				formList: {}
+				formList: {},
+				classList: {},
+				searchInfo:{
+					submitOuterId:null,
+					classId:null,
+					groupId:null,
+					groupNum:null,
+				}
 			}
 		},
 		created() {
 			this.init();
 		},
 		methods: {
+			classOptionChange(data){
+				for(let value of this.classList){
+					if(data.classId == value.classId){
+						data.groupNum = value.groupNum;
+					}
+				}
+			},
+			toTime({ cellValue }){
+				return this.getDate(cellValue);
+			},
 			toClassName({ cellValue }) {
 				return this.teamList[cellValue].className;
 			},
@@ -164,6 +210,7 @@
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
 						for(var i=0; i<res.data.data.length; i++) {
+							console.log(res.data.data);
 							self.teamList[res.data.data[i].groupId] = res.data.data[i];
 						}
 					} else {
@@ -174,16 +221,26 @@
 					console.log(error);
 				})
 			},
+			getClassList() {
+				var self = this;
+				axios.get(api.adminClassList, null)
+				.then(function(res) {
+					for(var i=0; i<res.data.data.length; i++) {
+						self.classList = res.data.data;
+						console.log(res.data.data);
+					}
+				}).catch(function(error) {
+					console.log(error);
+				})
+			},
 			getResponse() {
 				var self = this;
 				axios.get(api.adminEvaluationOuterSubmit, null)
 				.then(function(res) {
-					console.log(res);
 					if (res.status == 200 && res.data.status == 1) {
 						self.tableData = res.data.data;
-						for(var i=0; i<self.tableData.length; i++) {
-							self.tableData[i].submitTime = self.getDate(self.tableData[i].submitTime);
-						}
+						self.data = res.data.data;
+						
 					} else {
 						console.log(res.data.msg);
 					}
@@ -193,6 +250,7 @@
 			},
 			init() {
 				this.getFormList();
+				this.getClassList();
 			},
 			getDate(source) {
 				var timeStamp = new Date(parseInt(source*1000));
@@ -209,7 +267,43 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
-			}
+			},
+			search() {
+				var data = this.data;
+				this.tableData = [];
+				for (let value of data) {
+					let flag = 1;
+					
+					var className = null;
+					for (let x of this.classList){
+						if(this.searchInfo.classId == x.classId){
+							className = x.className;
+						}
+					}
+					if (value.submitOuterId != null && this.searchInfo.submitOuterId != null && this.searchInfo.submitOuterId != "") {
+						flag = 0;
+					}
+					if (className !=  this.teamList[value.groupId].className && this.searchInfo.classId != null && this.searchInfo.classId != "") {
+						flag = 0;
+					}
+					if (value.groupId != this.searchInfo.groupId && this.searchInfo.groupId != null && this.searchInfo.groupId != "") {
+						flag = 0;
+					}
+					if (flag == 1) {
+						this.tableData.push(value);
+					}
+				}
+			
+			},
+			resetSearch() {
+				this.tableData = this.data;
+				this.searchInfo = {
+					submitOuterId:null,
+					classId:null,
+					groupId:null,
+					groupNum:null,
+				}
+			},
 		},
 		computed:{
 			list() {
