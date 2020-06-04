@@ -117,36 +117,6 @@
 			},
 			getTeamInfo() {
 				const self = this;
-				// axios.get(api.userGroupDetails, {
-				// 	params:{
-				// 		groupId: self.$store.state.userInfo.groupId
-				// 	}
-				// }).then(function(res) {
-				// 	console.log(res);
-				// 	if(res.status == 200 && res.data.status == 1) {
-				// 		self.teamInfo = res.data.data;
-				// 		console.log(self.tableData);
-				// 		self.tableData[0] = {
-				// 			userId:self.teamInfo.leader.userId,
-				// 			name:self.teamInfo.leader.name,
-				// 			decision:'',
-				// 			contribution:0
-				// 		}
-				// 		for(var i=0;i<self.teamInfo.member.length;i++) {
-				// 			self.tableData[i+1] = {
-				// 				userId:self.teamInfo.member[i].userId,
-				// 				name:self.teamInfo.member[i].name,
-				// 				decision:'',
-				// 				contribution:0
-				// 			}
-				// 		}
-				// 		self.ready = true;
-				// 	} else {
-				// 		alert(res.data.msg);
-				// 	}
-				// }).catch(function(error) {
-				// 	console.log(error);
-				// })
 				axios.get(api.adminTeamList, null)
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {

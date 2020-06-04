@@ -1,10 +1,10 @@
 <!-- 某个用户的详情信息，组长可见 -->
 <template>
-	<div id="MemberDetails">
-		<UserNav />
+	<div id="UserDetails">
+		<ManageNav />
 		<br />
 		<div class="container">
-			<button class="btn btn-light" @click="goBack">返回小组</button>
+			<button class="btn btn-light" @click="goBack">返回</button>
 			<br /><br />
 			<div class="row">
 				<div class="card col-md-3">
@@ -35,12 +35,12 @@
 
 <script>
 	import axios from 'axios'
-	import api from '../router/httpConfig.js'
-	import UserNav from '../components/UserNav.vue'
+	import api from '../../router/httpConfig.js'
+	import ManageNav from '../../components/ManageNav.vue'
 	export default {
 		inject: ['reload'],
 		components: {
-			UserNav
+			ManageNav
 		},
 		data() {
 			return {
@@ -58,13 +58,11 @@
 				
 				axios.get(api.userEvaluationInnerList, {
 					params: {
-						classId: self.$store.state.userInfo.classId
+						classId: self.$route.query.classId
 					}
 				}).then(function(res) {
-					if(res.status == 200 && res.data.status == 1) {
-						for(var i=0; i<res.data.data.length; i++) {
-							self.formList[res.data.data[i].evaluationInnerId] = res.data.data[i].name;
-						}
+					for(var i=0; i<res.data.data.length; i++) {
+						self.formList[res.data.data[i].evaluationInnerId] = res.data.data[i].name;
 					}
 					axios.get(api.personScoreList,{
 						params: {
@@ -84,7 +82,7 @@
 				this.getResponse();
 			},
 			goBack() {
-				this.$router.push('/team');
+				this.$router.push('/admin/user');
 			}
 		}
 	}

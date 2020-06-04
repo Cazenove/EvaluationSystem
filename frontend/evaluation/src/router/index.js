@@ -183,7 +183,25 @@ const routes = [{
 		meta: {
 			requireLogin: true
 		}
-	}
+	},
+	{
+		// 个人详情信息
+		path: '/admin/user/details',
+		name: 'UserDetails',
+		component: () => import('../views/admin/UserDetails.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
+	{
+		// 小组详情信息
+		path: '/admin/team/details',
+		name: 'TeamDetails',
+		component: () => import('../views/admin/TeamDetails.vue'),
+		meta: {
+			requireLogin: true
+		}
+	},
 ]
 
 const router = new VueRouter({

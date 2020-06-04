@@ -43,10 +43,11 @@
 					checkPassword: ''
 				},
 				request: {
-					userId:null,//只能是9位
-					password:null,//6-16位
-					telephone:null,//11位
-					name:null,//姓名
+					userId: null,//只能是9位
+					password: null,//6-16位
+					telephone: null,//11位
+					name: null,//姓名
+					status: null
 				}
 			}
 		},
@@ -93,11 +94,9 @@
 				
 				this.request.userId = this.$store.state.userInfo.userId;
 				this.request.password = this.form.newPassword;
-				this.request.telephone = this.$store.state.userInfo.telephone;
-				this.request.name = this.$store.state.userInfo.userName;
 				
 				var self = this;
-				axios.post(api.userUpdate,this.request)
+				axios.post(api.userUpdatePassword,this.request)
 				.then(function(res) {
 					if(res.status == 200 && res.data.status == 1) {
 						self.$store.state.userInfo.password = self.request.password;

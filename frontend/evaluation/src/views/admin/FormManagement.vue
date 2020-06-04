@@ -77,6 +77,7 @@
 			border
 			resizable
 			keep-source
+			ref="xTable1"
 			:columns="tableColumn"
 			:data="detailData">
 			</vxe-grid>
@@ -269,7 +270,10 @@
 				this.$refs.xTable.exportData({
 					data: this.$refs.xTable.getCheckboxRecords()
 				})
-			}
+			},
+			exportDataEvent () {
+				this.$refs.xTable1.exportData({ type: 'csv' })
+			},
 		},
 		computed:{
 			list() {

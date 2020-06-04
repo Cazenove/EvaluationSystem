@@ -28,20 +28,51 @@
 <script>
 	import axios from 'axios'
 	import api from '../router/httpConfig.js'
+	import XLSX from 'xlsx'
 	export default {
 		inject: ['reload'],
 		data() {
+			const maxValid = ({ cellValue }) => {
+				return new Promise((resolve, reject) => {
+					if (cellValue > 0) {
+						reject()
+					} else {
+						resolve()
+					}
+				})
+			}
 			return {
 				ready:false,
 				showDetails:false,
 				title:'',
+				file: null,
+				maxScoreList: {},
+				inputs: [],
 				validRules: {
-					'3': [{required:true, message:'此项必填'}],
-					'4': [{required:true, message:'此项必填'}],
-					'5': [{required:true, message:'此项必填'}],
-					'6': [{required:true, message:'此项必填'}],
-					'7': [{required:true, message:'此项必填'}],
-					'8': [{required:true, message:'此项必填'}],
+					'3': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
+					'4': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
+					'5': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
+					'6': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
+					'7': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
+					'8': [
+						{required:true, message:'此项必填'},
+						{validator: maxValid}
+					],
 					suggestion:[{required:true, message:'建议为必填项'}]
 				},
 				request: {
@@ -74,10 +105,16 @@
 						errList.forEach(params => {
 							let { rowIndex, column, rules } = params
 							rules.forEach(rule => {
-								msgList.push(`第 ${rowIndex} 行 ${column.title} 校验错误：${rule.message}`)
+								if(column.title == "建议") {
+									msgList.push(`第 ${rowIndex} 行 ${column.title} 校验错误：${rule.message}`)
+								}
 							})
 						})
 					})
+					if(msgList.length == 0) {
+						this.$XModal.message({ status: 'success', message: '校验成功！' })
+						return true;
+					}
 					this.$XModal.message({
 						status: 'error',
 						message: () => {
@@ -115,7 +152,6 @@
 					if(res.status == 200 && res.data.status == 1) {
 						self.response = res.data.data;
 						self.title = self.response.name;
-						
 						//构建表头
 						var i;
 						for(i=3;i<self.response.content.tableColumn.length-2;i++) {
@@ -123,7 +159,7 @@
 							self.tableColumn[i] = {
 								field: i,
 								title: self.response.content.tableColumn[i]+"("+self.response.content.maxScore[i]+")",
-								editRender: {name: '$input', props: {type: 'number', min: 0, max: self.response.content.maxScore[i]}}
+								editRender: {name: '$input', props: {type: 'integer', min:0 ,max:Number(self.response.content.maxScore[i])}}
 							};
 						}
 						self.tableColumn[i] = {

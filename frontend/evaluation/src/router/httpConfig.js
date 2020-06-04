@@ -6,6 +6,7 @@ const apiList = {
 	register: http + '/register',
 	
 	userUpdate: http + '/user/update',
+	userUpdatePassword: http + '/user/update/password',
 	userEvaluationOuterList: http + '/user/evaluation/outer/list',
 	userEvaluationOuter: http + '/user/evaluation/outer',
 	userEvaluationOuterSubmit: http + '/user/evaluation/outer/submit',

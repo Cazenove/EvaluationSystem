@@ -10,9 +10,13 @@
 				</select>
 			</div>
 			<div class="row">
-				<div id="myChart" class="card col-md-7" :style="{height: '500px'}"></div>
+				<!-- 小组折线图 -->
+				<div id="myChart" class="card col-md-6" :style="{height: '500px'}"></div>
+				<!-- 小组得分图 -->
+				<div :style="{width: '80px'}"></div>
 				<div id="teamChart" class="card col-md-5" :style="{height: '500px'}"></div>
 			</div>
+			<br />
 			<!-- <Ranjintu /> -->
 		</div>
 	</div>

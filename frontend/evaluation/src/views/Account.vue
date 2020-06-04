@@ -62,7 +62,8 @@
 					userId: null,
 					password: null,
 					telephone: null,
-					name: null
+					name: null,
+					status: null
 				},
 				response: {
 					
@@ -86,10 +87,11 @@
 			}
 		},
 		created() {
-			this.$data.request.userId = this.$store.state.userInfo.userId;
-			this.$data.request.password = this.$store.state.userInfo.password;
-			this.$data.request.telephone = this.$store.state.userInfo.telephone;
-			this.$data.request.name = this.$store.state.userInfo.userName;
+			this.request.userId = this.$store.state.userInfo.userId;
+			this.request.password = this.$store.state.userInfo.password;
+			this.request.telephone = this.$store.state.userInfo.telephone;
+			this.request.name = this.$store.state.userInfo.userName;
+			this.request.status = this.$store.state.userInfo.status;
 		},
 		methods: {
 			onSubmit() {
@@ -112,7 +114,7 @@
 				
 				var self = this;
 				axios.post(api.userUpdate,this.request)
-				.then(function(res) {
+				.then(function(res) {console.log(res);
 					if(res.status == 200 && res.data.status == 1) {
 						self.$store.state.userInfo.telephone = self.request.telephone;
 						self.$store.state.userInfo.userName = self.request.name;

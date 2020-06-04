@@ -37,7 +37,7 @@
 				<!-- 模态框底部 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" @click="createClass">确认创建</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" @click="createClass">确认创建</button>
 				</div>
 				</div>
 			</div>
@@ -297,6 +297,7 @@
 				this.$data.editData.startTime = row.startTime;
 			},
 			editClass() {
+				var self = this;
 				this.getTimeStamp(this.$data.editData);
 				axios.post(api.adminClassUpdate,this.$data.editData)
 				.then(function(res) {

@@ -12,7 +12,9 @@
 			<h1>用户管理</h1>
 			<div>
 				<div class="row container" style="margin-bottom: 20px;">
-					<div style="margin-right: 20px;"><AdminUserCreateModal></AdminUserCreateModal></div>
+					<div style="margin-right: 20px;">
+						<AdminUserCreateModal></AdminUserCreateModal>
+					</div>
 					&nbsp;
 					<UploadFile></UploadFile>
 				</div>
@@ -44,7 +46,7 @@
 								</el-col>
 								<el-col :span="3">
 									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
+										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
 									</el-select>
 								</el-col>
 								<el-col :span="3">
@@ -68,13 +70,24 @@
 			highlight-hover-row
 			keep-source
 			ref="xTable"
-			:data="list"
-			max-height="500">
+			:data="list">
 				<vxe-table-column type="checkbox" width="60"></vxe-table-column>
-				<vxe-table-column field="userId" title="学号" cell-type="string"></vxe-table-column>
+				<vxe-table-column field="userId" title="学号" cell-type="string">
+					<template v-slot="{ row }">
+						<router-link :to="{path:'/admin/user/details', query:{userId: row.userId, classId: row.classId}}">
+							{{row.userId}}
+						</router-link>
+					</template>
+				</vxe-table-column>
 				<vxe-table-column field="name" title="姓名"></vxe-table-column>
 				<vxe-table-column field="classId" title="班级" :formatter="formatterClass"></vxe-table-column>
-				<vxe-table-column field="groupId" title="小组" :formatter="toGroupName"></vxe-table-column>
+				<vxe-table-column field="groupId" title="小组">
+					<template v-slot="{ row }">
+						<router-link :to="{path:'/admin/team/details', query:{groupId: row.groupId, classId: row.classId}}">
+							{{toGroupName(row.groupId)}}
+						</router-link>
+					</template>
+				</vxe-table-column>
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
 				<vxe-table-column field="telephone" title="电话号码" cell-type="string"></vxe-table-column>
 				<vxe-table-column field="status" title="职务" :formatter="formatterStatus"></vxe-table-column>
@@ -134,8 +147,7 @@
 									<div class="form-group">
 										<label for="update-groupId">小组</label>
 										<select class="form-control" v-model="updateInfo.groupId">
-											<!-- <option v-for="n of updateInfo.groupNum" :value="n" :key="n" :label="n"></option> -->
-											<option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></option>
+											<option v-for="n of updateInfo.groupNum" :value="n" :key="n">第{{n}}小组</option>
 										</select>
 									</div>
 									<div class="form-group">
@@ -152,8 +164,8 @@
 					
 					<!-- 模态框底部 -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="groupOfClass = []">取消</button>
-						<button type="button" class="btn btn-primary" @click="update();groupOfClass = []">确认修改</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" @click="update()">确认修改</button>
 					</div>
 				</div>
 			</div>
@@ -216,7 +228,6 @@
 				classOption: [],
 				groupList: {},
 				teamOption: [],
-				groupOfClass: [],
 				statusOption: [{
 						label: "组员",
 						value: 1,
@@ -262,7 +273,7 @@
 						self.tableData = res.data.data;
 						self.data = res.data.data;
 					} else {
-						alert(res.data.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
@@ -274,10 +285,10 @@
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
 						for (var i = 0; i < res.data.data.length; i++) {
-							self.groupList[res.data.data[i].groupId] = res.data.data[i];
+							self.groupList[res.data.data[i].groupId] = res.data.data[i].groupName;
 						}
 					} else {
-						alert(res.data.msg);
+						console.log(res.data.msg);
 					}
 				}).catch(function(error) {
 					console.log(error);
@@ -291,8 +302,8 @@
 				let item = this.statusOption.find(item => item.value == cellValue)
 				return item ? item.label : ''
 			},
-			toGroupName({cellValue}) {
-				return this.groupList[cellValue].groupName;
+			toGroupName(cellValue) {
+				return this.groupList[cellValue];
 			},
 			search() {
 				var data = this.data;
@@ -325,7 +336,6 @@
 
 			},
 			resetSearch() {
-				this.groupOfClass = [];
 				this.tableData = this.data;
 				this.searchInfo = {
 					userId: null,
@@ -351,7 +361,6 @@
 						this.updateInfo.groupNum = value.groupNum;
 					}
 				}
-				this.classOptionChange(this.updateInfo);
 				// this.selectRow = row;
 				// this.showEdit = true;
 			},
@@ -394,32 +403,16 @@
 					this.classOption.push(option);
 				}
 			},
-			classOptionChange(data){
-				this.searchInfo.groupId = null;
-				this.groupOfClass = [];
-				for(let value in this.groupList){
-					if(this.groupList[value].classId == data.classId){
-						var item = {
-							groupId: this.groupList[value].groupId,
-							groupName: this.groupList[value].groupName,
-							};
-						this.groupOfClass.push(item);
+			classOptionChange(data) {
+				for (let value of this.classOption) {
+					if (data.classId == value.classId) {
+						data.groupNum = value.groupNum;
 					}
 				}
 			},
 			update() {
-				//注册功能
-				//先检验表单
-				let verifyList = ['updateInfo.userId', 'updateInfo.password', 'updateInfo.userName', 'updateInfo.telephone',
-					'updateInfo.classId', 'updateInfo.groupNum', 'updateInfo.status'
-				];
-				// check() 校验所有规则，参数可以设置需要校验的数组
-				if (!this.$vuerify.check(verifyList)) {
-					return;
-				}
-				console.log('验证通过');
-				//然后发送表单
 				let self = this;
+				console.log(self.updateInfo);
 				axios.post(api.adminUserUpdate, self.updateInfo)
 				.then(function(res) {
 					alert(res.data.msg);

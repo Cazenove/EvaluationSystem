@@ -60,7 +60,13 @@
 		 :expand-config="{accordion: true}">
 			<vxe-table-column type="checkbox" width="60"></vxe-table-column>
 			<vxe-table-column field="groupId" title="小组ID"></vxe-table-column>
-			<vxe-table-column field="groupName" title="小组名"></vxe-table-column>
+			<vxe-table-column field="groupName" title="小组名">
+				<template v-slot="{ row }">
+					<router-link :to="{path:'/admin/team/details', query:{groupId: row.groupId, classId: row.classId}}">
+						{{row.groupName}}
+					</router-link>
+				</template>
+			</vxe-table-column>
 			<vxe-table-column field="classId" title="班级ID"></vxe-table-column>
 			<vxe-table-column field="className" title="班级"></vxe-table-column>
 			<vxe-table-column field="groupNum" title="小组序号"></vxe-table-column>
