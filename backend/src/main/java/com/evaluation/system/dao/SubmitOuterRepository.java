@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface SubmitOuterRepository extends JpaRepository<SubmitOuter,Integer> {
-    /**x修改了返回值的类型，从单个变成列表
-    * */
+
     @Query("SELECT a FROM SubmitOuter a where a.evaluationOuterId = :evaluationOuterId and a.groupId = :groupId")
-    public List<SubmitOuter> findByEvaluationOuterIdAndGroupId(@Param("evaluationOuterId") Integer evaluationOuterId,
+    public SubmitOuter findByEvaluationOuterIdAndGroupId(@Param("evaluationOuterId") Integer evaluationOuterId,
                                                                @Param("groupId") int groupId);
 
     @Query("SELECT a FROM SubmitOuter a WHERE a.evaluationOuterId = :evaluationOuterId")

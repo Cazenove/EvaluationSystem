@@ -32,11 +32,11 @@ public class SubmitOuterService {
         String flag = "0";
         String msg = "获取失败，请检查评价表号";
         try {
-            List<SubmitOuter> getSubmitOuter = submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
+            SubmitOuter getSubmitOuter = submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
                     submitOuter.getGroupId());
             if (getSubmitOuter!=null) {
                 result.put("status", 1);
-                result.put("data", getSubmitOuter.get(getSubmitOuter.size()-1));
+                result.put("data", getSubmitOuter);
             }
             else {
                 EvaluationOuter evaluationOuter = evaluationOuterRepository.findAllByClassIdAndEvaluationOuterId(
@@ -55,18 +55,24 @@ public class SubmitOuterService {
     }
 
     /*提交组间评价表*/
+    /**
+     * 221701230张增燊修改过
+     * */
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> submitEvaluationOuter(SubmitOuter submitOuter){
         int flag = 0;
         String msg = "提交失败";
         Map<String,Object> result = new HashMap<>();
         try {
-            SubmitOuter saveEvaluation = new SubmitOuter();
-            saveEvaluation.setContent(submitOuter.getContent());
-            saveEvaluation.setGroupId(submitOuter.getGroupId());
-            saveEvaluation.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
-            saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
-            submitOuterRepository.save(saveEvaluation);
+
+            SubmitOuter saveEvaluation=submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
+                    submitOuter.getGroupId());
+
+            if(saveEvaluation!=null)
+            {
+                saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
+                saveEvaluation.setContent(submitOuter.getContent());
+                submitOuterRepository.save(saveEvaluation);
                 //提交suggestions至GroupSuggestion表
                 List<List> list = (List<List>) submitOuter.getContent().get("tableData");
                 for (int i = 0; i < list.size(); i++) {
@@ -78,10 +84,30 @@ public class SubmitOuterService {
                     groupSuggestion.setGroupId(id);
                     groupSuggestionRepository.save(groupSuggestion);
                 }
-                flag = 1;
-                msg = "提交成功";
-                result.put("status", flag);
-                result.put("msg", msg);
+            }else if(saveEvaluation==null){
+                saveEvaluation = new SubmitOuter();
+                saveEvaluation.setContent(submitOuter.getContent());
+                saveEvaluation.setGroupId(submitOuter.getGroupId());
+                saveEvaluation.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
+                saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
+                submitOuterRepository.save(saveEvaluation);
+                //提交suggestions至GroupSuggestion表
+                List<List> list = (List<List>) submitOuter.getContent().get("tableData");
+                for (int i = 0; i < list.size(); i++) {
+                    String str = (String) list.get(i).get(list.get(i).size()-1);
+                    int id = (int) list.get(i).get(0);
+                    GroupSuggestion groupSuggestion = new GroupSuggestion();
+                    groupSuggestion.setSuggestion(str);
+                    groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
+                    groupSuggestion.setGroupId(id);
+                    groupSuggestionRepository.save(groupSuggestion);
+                }
+            }
+
+            flag = 1;
+            msg = "提交成功";
+            result.put("status", flag);
+            result.put("msg", msg);
 
         }
         catch (Exception e) {
