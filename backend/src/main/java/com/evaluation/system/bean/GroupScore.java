@@ -24,7 +24,7 @@ public class GroupScore {
     @Column(name = "evaluation_outer_id")
     private int evaluationOuterId;
     @Column(name = "content")
-    private int content;
+    private double content;
 
     @Transient
     private int classId;
@@ -61,11 +61,11 @@ public class GroupScore {
         this.evaluationOuterId = evaluationOuterId;
     }
 
-    public int getContent() {
+    public double getContent() {
         return content;
     }
 
-    public void setContent(int content) {
+    public void setContent(double content) {
         this.content = content;
     }
 

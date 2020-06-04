@@ -167,17 +167,23 @@ public class TaskJob implements Job {
                 //全部组都提交了表的情况
                 if(flag == 1)
                 {
-                    groupScore.setContent(statis.get(keyId) / (groupNum - 1));
+                    Double score = statis.get(keyId).doubleValue() / (groupNum - 1);
+                    score = Double.valueOf(String.format("%.5f",score));
+                    groupScore.setContent(score);
                 }
                 //有部分组没有提交的情况，提交的组的算分逻辑
                 else if(subGroup.contains(keyId))
                 {
-                    groupScore.setContent(statis.get(keyId) / (subList.size() - 1));
+                    Double score = statis.get(keyId).doubleValue() / (subList.size() - 1);
+                    score = Double.valueOf(String.format("%.5f",score));
+                    groupScore.setContent(score);
                 }
                 //未提交组的算分逻辑
                 else
                 {
-                    groupScore.setContent(statis.get(keyId) / subList.size());
+                    Double score = statis.get(keyId).doubleValue() / subList.size();
+                    score = Double.valueOf(String.format("%.5f",score));
+                    groupScore.setContent(score);
                 }
                 groupScore.setEvaluationOuterId(kid);
                 groupScoreRepository.save(groupScore);
