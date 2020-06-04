@@ -32,11 +32,11 @@ public class SubmitOuterService {
         String flag = "0";
         String msg = "获取失败，请检查评价表号";
         try {
-            SubmitOuter getSubmitOuter = submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
+            List<SubmitOuter> getSubmitOuter = submitOuterRepository.findByEvaluationOuterIdAndGroupId(submitOuter.getEvaluationOuterId(),
                     submitOuter.getGroupId());
             if (getSubmitOuter!=null) {
                 result.put("status", 1);
-                result.put("data", getSubmitOuter);
+                result.put("data", getSubmitOuter.get(getSubmitOuter.size()-1));
             }
             else {
                 EvaluationOuter evaluationOuter = evaluationOuterRepository.findAllByClassIdAndEvaluationOuterId(
