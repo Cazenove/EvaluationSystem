@@ -12,7 +12,8 @@
 		 :data="tableData"
 		 :edit-config="{trigger: 'click', mode: 'cell'}"
 		 :edit-rules="validRules"
-		 @edit-disabled="editDisabledEvent">
+		 @edit-disabled="editDisabledEvent"
+		 @edit-closed="editClosedEvent">
 		</vxe-grid>
 		<br />
 		<el-row>
@@ -191,6 +192,24 @@
 			init() {
 				this.getRequest(),
 				this.getResponse()
+			},
+			editClosedEvent ({ row, column }) {
+				for(var i=0; i<this.response.content.tableData.length; i++) {
+					this.response.content.tableData[i][0] = this.tableData[i][0];
+					this.response.content.tableData[i][1] = this.tableData[i][1];
+					this.response.content.tableData[i][2] = this.tableData[i][2];
+					var sum = 0,
+						j = 3;
+					for(var j=3; j<this.response.content.tableColumn.length-2; j++) {
+						sum += Number(this.tableData[i][j]);
+						this.response.content.tableData[i][j] = this.tableData[i][j];
+					}
+					this.response.content.tableData[i][j] = sum;
+					this.tableData[i][j] = sum;
+					j++;
+					this.response.content.tableData[i][j] = this.tableData[i][j];
+				}
+				console.log(this.tableData);
 			},
 			sumbit() {
 				// 提交表格

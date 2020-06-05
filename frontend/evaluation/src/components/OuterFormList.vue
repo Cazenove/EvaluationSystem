@@ -1,23 +1,27 @@
 <!-- 组间评价表列表 -->
 <template>
 	<div id="OuterFormList">
-		<ul>
-			<li v-for="item in response.data" v-if="item.endTime>time" :key="item.evaluationOuterId">
-				<div>
-					<router-link :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
-						{{item.evaluationOuterId}}.{{item.name}}
-					</router-link>
-					<p>发布时间：{{getDate(item.releaseTime)}}
-					截止时间：{{getDate(item.endTime)}}</p>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item" v-for="item in response.data" v-if="item.endTime>time" :key="item.evaluationOuterId">
+				<div class="card">
+					<div class="card-body">
+						<router-link class="btn btn-outline-success btn-lg btn-block" :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
+							<span class="badge badge-pill badge-success">开放中</span>{{item.name}}
+						</router-link>
+						<p>发布时间：{{getDate(item.releaseTime)}}<br />
+						截止时间：{{getDate(item.endTime)}}</p>
+					</div>
 				</div>
 			</li>
-			<li v-else>
-				<div>
-					<p>
-						[已截止]{{item.evaluationOuterId}}.{{item.name}}
-					</p>
-					<p>发布时间：{{getDate(item.releaseTime)}}
-					截止时间：{{getDate(item.endTime)}}</p>
+			<li class="list-group-item" v-else>
+				<div class="card">
+					<div class="card-body">
+						<router-link class="btn btn-outline-secondary btn-lg btn-block disabled" :to="{path:'/outer',query:{evaluationOuterId:item.evaluationOuterId}}">
+							<span class="badge badge-pill badge-dark">已截止</span>{{item.name}}
+						</router-link>
+						<p>发布时间：{{getDate(item.releaseTime)}}<br />
+						截止时间：{{getDate(item.endTime)}}</p>
+					</div>
 				</div>
 			</li>
 		</ul>

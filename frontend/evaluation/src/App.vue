@@ -126,9 +126,9 @@
 
 <style>
 	body {
-		background: url(assets/background.jpg) no-repeat;
+		/* background: url(assets/background.jpg) no-repeat; */
 		/* background-size: cover; */
-		background-position: center;
+		/* background-position: center; */
 	}
 	#app {
 		font-family: Avenir, Helvetica, Arial, sans-serif;
