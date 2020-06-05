@@ -1,8 +1,6 @@
 <template>
 	<div id="app">
-		<div style="position: fixed; height: 100%; width: 100%; background-color: rgba(255,255,255,0.6); z-index: -1;">
-			
-		</div>
+		<!-- <div style="position: fixed; height: 100%; width: 100%; background-color: #e9ecef; z-index: -1;"></div> -->
 		<!-- <router-view /> -->
 		<router-view v-if="isReloadAlive"></router-view>
 	</div>
@@ -127,8 +125,8 @@
 
 <style>
 	body {
-		background-image: url(assets/background.jpg);
-		background-size: cover;
+		background: url(assets/background.jpg) no-repeat;
+		/* background-size: cover; */
 		background-position: center;
 	}
 	#app {
