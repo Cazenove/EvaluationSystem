@@ -8,6 +8,7 @@
 </template>
 
 <script>
+	import css from './components/CSS.vue'
 	export default {
 		provide() {
 			return {

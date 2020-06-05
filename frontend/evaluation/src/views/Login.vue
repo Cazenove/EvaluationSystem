@@ -51,7 +51,7 @@
 	import axios from 'axios'
 	import api from '../router/httpConfig.js'
 	import RegisterModal from '../components/RegisterModal.vue'
-	import css from '../components/CSS.vue'
+	
 	import imgurl from '@/assets/home-bg.jpg'
 	export default {
 		inject: ['reload'],
@@ -138,7 +138,7 @@
 	 * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-clean-blog/blob/master/LICENSE)
 	 */
 	body{
-		background-image: none;
+		/* background-image: none; */
 	}
 	
 </style>
