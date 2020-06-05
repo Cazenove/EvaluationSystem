@@ -22,7 +22,13 @@
 			<vxe-table-column field="contribution" title="贡献率" :edit-render="{name: '$input', props: {type: 'number',min: 0,max: 100}}"></vxe-table-column>
 		</vxe-grid>
 		<br />
-		<button class="btn btn-success" @click="sumbit">提交</button>
+		<el-row>
+			<el-col :span="8" :offset="10">
+				<div class="grid-content bg-purple-light">
+					<button class="btn btn-success btn-lg" @click="sumbit">提交</button>
+				</div>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 

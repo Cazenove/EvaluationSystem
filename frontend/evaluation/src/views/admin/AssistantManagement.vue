@@ -21,6 +21,8 @@
 				<template v-slot:buttons>
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
+					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button>
+					<vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
 				</template>
 				<template v-slot:tools>
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
@@ -175,7 +177,23 @@
 			}
 		},
 		created() {
+			this.$nextTick(() => {
+				this.columns = this.$refs.xTable.getColumns()
+			})
 			this.getClassList();
+			setTimeout(() => {
+				// 将指定列设置为隐藏状态
+				this.columns.forEach(column => {
+					if (['password'].includes(column.property)) {
+						column.visible = false
+					}
+				})
+				if (this.$refs.xTable) {
+					this.$refs.xTable.refreshColumn()
+				}
+				this.loading = false
+			}, 0);
+			
 			setTimeout(() => {
 				this.init()
 			}, 500);

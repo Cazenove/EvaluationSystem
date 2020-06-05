@@ -173,21 +173,13 @@
 			},
 			showDetail(row) {
 				var i;
-				for(i=3;i<row.content.tableColumn.length-2;i++) {
+				for(i=1;i<row.content.tableColumn.length-1;i++) {
 					var str = i.toString();
 					this.tableColumn[i] = {
 						field: i,
 						title: row.content.tableColumn[i]+"("+row.content.maxScore[i]+")"
 					};
 				}
-				this.tableColumn[i] = {
-					field: i,
-					title: '总分'
-				};
-				this.tableColumn[++i] = {
-					field: i,
-					title: '建议'
-				};
 				//表体
 				for(var i=0;i<row.content.tableData.length;i++) {
 					var item = []

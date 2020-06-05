@@ -2,6 +2,10 @@
 <template>
 	<div id="OuterDetails">
 		<UserNav />
+		<div class="alert alert-primary" role="alert">
+			自己小组的评分不需要填写，建议那栏随便填即可，不会影响统分结果！<br />
+			总分会自动统计，不需要填写！
+		</div>
 		<br />
 		<el-row :gutter="20">
 			<el-col :span="6" :offset="2">

@@ -3,7 +3,13 @@
 	<div id="InnerDetails">
 		<UserNav />
 		<br />
-		<button class="btn btn-light" @click="goBack">返回列表</button>
+		<el-row :gutter="20">
+			<el-col :span="6" :offset="2">
+				<div class="grid-content bg-purple">
+					<el-button type="primary" @click="goBack">返回列表</el-button>
+				</div>
+			</el-col>
+		</el-row>
 		<InnerEditableTable v-bind:evaluationInnerId = "evaluationInnerId" />
 	</div>
 </template>
