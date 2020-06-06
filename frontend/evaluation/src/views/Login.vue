@@ -11,7 +11,7 @@
 		<!-- <div :style="{backgroundImage: 'url(' + require('@/assets/home-bg.jpg') + ')' }" style="width: 100%; height: 500px;">
 			
 		</div> -->
-		<header class="masthead" id="header" :style="{backgroundImage: 'url(' + require('@/assets/home-bg.jpg') + ')' }">
+		<header class="masthead" id="header" :style="{backgroundImage: 'url(' + imgUrl + ')' }">
 			<!-- <img :src="imgUrl" style="position: fixed; z-index: -1;"/> -->
 			<div class="overlay"></div>
 			<div class="container">
@@ -52,7 +52,7 @@
 	import api from '../router/httpConfig.js'
 	import RegisterModal from '../components/RegisterModal.vue'
 	import $ from 'jquery'
-	import imgurl from '@/assets/home-bg.jpg'
+	// import imgurl from '@/assets/home-bg.jpg'
 	export default {
 		inject: ['reload'],
 		data() {
@@ -61,14 +61,19 @@
 					status:'',
 					data: []
 				},
-				imgUrl: imgurl,
-				// imgUrl: require('@/assets/home-bg.jpg'),
+				// imgUrl: imgurl,
+				imgUrl: require('@/assets/home-bg.jpg'),
 				welcomemsg: "「软件工程实践」互动评价系统",
 				userId: "",
 				password: "",
 			}
 		},
 		created(){
+			var random = Math.floor(Math.random()*10);
+			if(random % 2 == 1){
+				this.imgUrl = require('@/assets/about-bg.jpg');
+			}
+			
 			this.init();
 			let that = this;
 			    document.onkeypress = function(e) {
