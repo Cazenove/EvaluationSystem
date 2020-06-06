@@ -10,7 +10,9 @@
 		  color: #212529;
 		  font-family: 'Lora', 'Times New Roman', serif;
 		}
-		
+		.el-input__inner{
+			height: 34px;
+		}
 		p {
 		  line-height: 1.5;
 		  margin: 30px 0;

@@ -20,7 +20,7 @@
 				</template>
 			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
-				<div class="card card-body">
+				<div class="card card-body" style="border: none;padding: 0;">
 					<vxe-toolbar>
 						<template v-slot:buttons>
 							<el-row :gutter="20">
@@ -37,8 +37,8 @@
 										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
 									</el-select>
 								</el-col>
-								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+								<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+								<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
 							</el-row>
 						</template>
 					</vxe-toolbar>
@@ -60,8 +60,8 @@
 				<vxe-table-column field="groupId" title="小组名" :formatter="toGroupName"></vxe-table-column>
 				<vxe-table-column field="evaluationInnerId" title="评分表" :formatter="toFormName"></vxe-table-column>
 				<vxe-table-column field="submitTime" title="提交时间" :formatter="toTime"></vxe-table-column>
-				<vxe-table-column>
-					<button class="btn btn-info">详情</button>
+				<vxe-table-column width="80px">
+					<vxe-button status="info">详情</vxe-button>
 				</vxe-table-column>
 			</vxe-table>
 		</div>
@@ -300,4 +300,7 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
 </style>

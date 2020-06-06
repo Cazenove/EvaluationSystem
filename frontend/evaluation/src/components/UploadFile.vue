@@ -1,7 +1,7 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="AdminUserCreateModal">
-		<button class="btn btn-info" data-toggle="modal" data-target="#uploadModal">一键导入</button>
+		<vxe-button status="info" data-toggle="modal" data-target="#uploadModal">一键导入</vxe-button>
 		<!-- 注册模态框 -->
 		<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">

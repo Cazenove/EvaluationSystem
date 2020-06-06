@@ -23,17 +23,28 @@
 				<template v-slot:buttons>
 					<vxe-input v-model="filterName" type="search" placeholder="快速搜索"></vxe-input>
 					<vxe-button @click="exportSelectEvent">导出选中</vxe-button>
-					<vxe-button @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'))">显示密码</vxe-button>
-					<vxe-button @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'))">隐藏密码</vxe-button>
+					
+					<vxe-button v-if="isHide" @click="$refs.xTable.showColumn($refs.xTable.getColumnByField('password'));isHide = !isHide">显示密码</vxe-button>
+					<vxe-button v-if="!isHide" @click="$refs.xTable.hideColumn($refs.xTable.getColumnByField('password'));isHide = !isHide">隐藏密码</vxe-button>
 				</template>
 				<template v-slot:tools>
 					<vxe-button data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">条件搜索</vxe-button>
 				</template>
 			</vxe-toolbar>
-			<div class="collapse" id="collapseExample">
-				<div class="card card-body">
+			<div class="collapse" id="collapseExample" >
+				<div class="card card-body" style="border: none;padding: 0;">
 					<vxe-toolbar>
 						<template v-slot:buttons>
+							<!-- <div class="row">
+								<vxe-input class="col-md-2 col-sm-2" placeholder="学号" v-model="searchInfo.userId"></vxe-input>
+								<vxe-input class="col-md-2 col-sm-2" placeholder="姓名" v-model="searchInfo.name"></vxe-input>
+								<vxe-select class="col-md-2 col-sm-2" placeholder="班级" v-model="searchInfo.classId" @change="classOptionChange(searchInfo)">
+									<vxe-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></vxe-option>
+								</vxe-select>
+								<vxe-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
+									<vxe-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</vxe-option>
+								</vxe-select>
+							</div> -->
 							<el-row :gutter="20">
 								<el-col :span="3">
 									<el-input offser="3" placeholder="学号" v-model="searchInfo.userId"></el-input>
@@ -48,7 +59,8 @@
 								</el-col>
 								<el-col :span="3">
 									<el-select offser="3" placeholder="小组" v-model="searchInfo.groupId">
-										<el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option>
+										<!-- <el-option v-for="n of searchInfo.groupNum" :value="n" :key="n">第{{n}}小组</el-option> -->
+										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
 									</el-select>
 								</el-col>
 								<el-col :span="3">
@@ -56,8 +68,8 @@
 										<el-option v-for="item in statusOption" :key="item.value" :value="item.value" :label="item.label"></el-option>
 									</el-select>
 								</el-col>
-								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+								<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+								<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
 							</el-row>
 						</template>
 					</vxe-toolbar>
@@ -93,11 +105,12 @@
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
 				<vxe-table-column field="telephone" title="电话号码" cell-type="string"></vxe-table-column>
 				<vxe-table-column field="status" title="职务" :formatter="formatterStatus"></vxe-table-column>
-				<vxe-table-column title="操作">
+				
+				<vxe-table-column title="操作" width="150px">
 					<template v-slot="{ row }">
-						<button type="button" @click="editEvent(row)" class="btn btn-light" data-toggle="modal" data-target="#UpdateModal">修改</button>
-						&nbsp;
-						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
+						<vxe-button type="button" @click="editEvent(row)" data-toggle="modal" data-target="#UpdateModal" >修改</vxe-button>
+						
+						<vxe-button type="button" @click="removeEvent(row)" status="danger">删除</vxe-button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -185,7 +198,8 @@
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
 	import XEUtils from 'xe-utils'
-
+	import css from '../../components/CSS.vue'
+	import VXETable from 'vxe-table'
 	export default {
 		inject: ['reload'],
 		name: "UserManagement",
@@ -230,6 +244,7 @@
 				classOption: [],
 				groupList: {},
 				teamOption: [],
+				isHide: true,
 				statusOption: [{
 						label: "组员",
 						value: 1,
@@ -239,6 +254,7 @@
 						value: 2,
 					},
 				],
+				groupOfClass: [],
 			}
 		},
 		created() {
@@ -287,7 +303,7 @@
 				.then(function(res) {
 					if (res.status == 200 && res.data.status == 1) {
 						for (var i = 0; i < res.data.data.length; i++) {
-							self.groupList[res.data.data[i].groupId] = res.data.data[i].groupName;
+							self.groupList[res.data.data[i].groupId] = res.data.data[i];
 						}
 					} else {
 						console.log(res.data.msg);
@@ -305,7 +321,7 @@
 				return item ? item.label : ''
 			},
 			toGroupName(cellValue) {
-				return this.groupList[cellValue];
+				return this.groupList[cellValue].groupName;
 			},
 			search() {
 				var data = this.data;
@@ -405,12 +421,20 @@
 					this.classOption.push(option);
 				}
 			},
-			classOptionChange(data) {
-				for (let value of this.classOption) {
-					if (data.classId == value.classId) {
-						data.groupNum = value.groupNum;
+			classOptionChange(data){
+				console.log(this.groupList);
+				this.searchInfo.groupId = null;
+				this.groupOfClass = [];
+				for(let value in this.groupList){
+					if(this.groupList[value].classId == this.searchInfo.classId){
+						var item = {
+							groupId: this.groupList[value].groupId,
+							groupName: this.groupList[value].groupName,
+							};
+						this.groupOfClass.push(item);
 					}
 				}
+				console.log(this.groupOfClass);
 			},
 			update() {
 				let self = this;
@@ -509,4 +533,8 @@
 	}
 </script>
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
+	
 </style>

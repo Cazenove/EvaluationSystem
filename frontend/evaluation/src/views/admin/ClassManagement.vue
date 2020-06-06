@@ -46,7 +46,7 @@
 		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
 			<div style="margin-bottom: 20px;">
 			<h1>班级管理</h1>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddModal">新增班级</button>
+			<vxe-button type="button" status="primary" data-toggle="modal" data-target="#AddModal">新增班级</vxe-button>
 			</div>
 			<vxe-toolbar>
 				<template v-slot:buttons>
@@ -71,11 +71,11 @@
 				<vxe-table-column field="startTime" title="开始时间"></vxe-table-column>
 				<vxe-table-column title="操作" width="240px">
 					<template v-slot="{ row }">
-						<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#UpdateModal" @click="setEditData(row)">修改</button>
+						<vxe-button type="button" data-toggle="modal" data-target="#UpdateModal" @click="setEditData(row)">修改</vxe-button>
 						&nbsp;
-						<button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#EndModal" @click="setEndClass(row.classId)">结束</button>
+						<vxe-button type="button" data-toggle="modal" data-target="#EndModal" @click="setEndClass(row.classId)">结束</vxe-button>
 						&nbsp;
-						<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#DeleteModal" @click="setDeleteClass(row.classId)">删除</button>
+						<vxe-button type="button" status="danger" data-toggle="modal" data-target="#DeleteModal" @click="setDeleteClass(row.classId)">删除</vxe-button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -345,4 +345,8 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
+	
 </style>

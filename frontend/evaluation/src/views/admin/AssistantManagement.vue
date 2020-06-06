@@ -14,7 +14,7 @@
 			</div>
 			<div class="row container" style="margin-bottom: 20px;">
 				<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">添加助教</button> -->
-				<button class="btn btn-primary" @click="showCreateModal()">添加助教</button>
+				<vxe-button status="primary" @click="showCreateModal()">添加助教</vxe-button>
 				<AdminAssistantCreateModal ref="AdminAssistantCreateModal" :modalTitle="createModalTitle"></AdminAssistantCreateModal>
 			</div>
 			<vxe-toolbar>
@@ -29,7 +29,7 @@
 				</template>
 			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
-				<div class="card card-body">
+				<div class="card card-body" style="border: none;padding: 0;">
 					<vxe-toolbar>
 						<template v-slot:buttons>
 							<el-row :gutter="20">
@@ -45,8 +45,8 @@
 									</el-select>
 								</el-col>
 								
-								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+								<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+								<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
 							</el-row>
 						</template>
 					</vxe-toolbar>
@@ -67,11 +67,11 @@
 				<vxe-table-column field="telephone" title="电话"></vxe-table-column>
 				<vxe-table-column field="classId" title="管理的班级" :formatter="toClassName"></vxe-table-column>
 				<vxe-table-column field="password" title="密码"></vxe-table-column>
-				<vxe-table-column title="操作">
+				<vxe-table-column title="操作" width="150px">
 					<template v-slot="{ row }">
-						<button type="button" class="btn btn-light" @click="showUpdateModal(row)">修改</button>
-						&nbsp;
-						<button type="button" @click="removeEvent(row)" class="btn btn-danger">删除</button>
+						<vxe-button type="button"  @click="showUpdateModal(row)">修改</vxe-button>
+						
+						<vxe-button type="button" @click="removeEvent(row)" status="danger">删除</vxe-button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -320,4 +320,8 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
+	
 </style>

@@ -13,8 +13,8 @@
 		</div> -->
 		<header class="masthead" id="header" :style="{backgroundImage: 'url(' + require('@/assets/home-bg.jpg') + ')' }">
 			<!-- <img :src="imgUrl" style="position: fixed; z-index: -1;"/> -->
-		    <div class="overlay"></div>
-		    <div class="container">
+			<div class="overlay"></div>
+			<div class="container">
 				
 			<div class="row">
 				<div class="col-lg-8 col-md-10 mx-auto">
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			</div>
-		  </header>
+		</header>
 		<div  style="height: 100%; width: auto; padding: 50px; margin: 5% 10%; border-radius: 10px;">
 		<div class="container">
 			<div class="form-row">
@@ -51,7 +51,7 @@
 	import axios from 'axios'
 	import api from '../router/httpConfig.js'
 	import RegisterModal from '../components/RegisterModal.vue'
-	
+	import $ from 'jquery'
 	import imgurl from '@/assets/home-bg.jpg'
 	export default {
 		inject: ['reload'],
@@ -70,7 +70,15 @@
 		},
 		created(){
 			this.init();
-			
+			let that = this;
+			    document.onkeypress = function(e) {
+			      var keycode = document.all ? event.keyCode : e.which;
+				  
+			      if (keycode == 13 && that.$route.path=='/') {
+			        that.login();// 登录方法名
+			         return false;
+			      }
+			    };
 		},
 		components: {//注册组件
 			RegisterModal

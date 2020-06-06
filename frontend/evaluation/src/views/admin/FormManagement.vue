@@ -12,7 +12,7 @@
 			<h1>评分表管理</h1>
 			<vxe-toolbar>
 				<template v-slot:buttons>
-					<button class="btn btn-primary" @click="createForm">新增评分表</button>
+					<vxe-button status="primary" @click="createForm">新增评分表</vxe-button>
 				</template>
 			</vxe-toolbar>
 			<vxe-toolbar>
@@ -26,7 +26,7 @@
 			</vxe-toolbar>
 			
 			<div class="collapse" id="collapseExample">
-			<div class="card card-body">
+			<div class="card card-body" style="border: none;padding: 0;">
 			<vxe-toolbar>
 				<template v-slot:buttons>
 					
@@ -42,8 +42,8 @@
 								<el-option :value="item.classId" v-for="item in classList" :key="item.classId" :label="item.className"></el-option>
 							</el-select>
 						</el-col>
-						<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-						<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+						<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+						<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
 					</el-row>
 				</template>
 			</vxe-toolbar>
@@ -65,9 +65,8 @@
 				<vxe-table-column field="endTime" title="截止时间"></vxe-table-column>
 				<vxe-table-column title="操作" width="150" show-overflow>
 					<template v-slot="{ row }">
-						<button type="text" class="btn btn-info" @click="detailsEvent(row)">详情</button>
-						&nbsp;
-						<button type="text" class="btn btn-danger" @click="removeEvent(row)">删除</button>
+						<vxe-button status="primary" @click="detailsEvent(row)">详情</vxe-button>
+						<vxe-button status="danger" @click="removeEvent(row)">删除</vxe-button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -298,4 +297,7 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
 </style>

@@ -12,9 +12,9 @@
 			<h1>{{this.title}}</h1>
 			<vxe-toolbar>
 				<template v-slot:buttons>
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+					<vxe-button type="button" status="primary" data-toggle="modal" data-target="#createModal">
 						新增建议
-					</button>
+					</vxe-button>
 				</template>
 			</vxe-toolbar>
 			<vxe-toolbar>
@@ -27,7 +27,7 @@
 				</template>
 			</vxe-toolbar>
 			<div class="collapse" id="collapseExample">
-				<div class="card card-body">
+				<div class="card card-body" style="border: none;padding: 0;">
 					<vxe-toolbar>
 						<template v-slot:buttons>
 							<el-row :gutter="20">
@@ -44,8 +44,9 @@
 										<el-option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></el-option>
 									</el-select>
 								</el-col>
-								<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-								<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+								<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+								<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
+								
 							</el-row>
 						</template>
 					</vxe-toolbar>
@@ -65,13 +66,12 @@
 				<vxe-table-column field="groupId" title="小组" :formatter="toGroupName"></vxe-table-column>
 				<vxe-table-column field="evaluationOuterId" title="评分表" :formatter="toFormName"></vxe-table-column>
 				<vxe-table-column field="suggestion" title="建议内容"></vxe-table-column>
-				<vxe-table-column title="操作" show-overflow>
+				<vxe-table-column title="操作" show-overflow width="150px">
 					<template v-slot="{ row }">
-						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal" @click="showEditModal(row)">
+						<vxe-button type="button" status="primary" data-toggle="modal" data-target="#editModal" @click="showEditModal(row)">
 							修改
-						</button>
-						&nbsp;
-						<button type="text" class="btn btn-danger" @click="removeEvent(row)">删除</button>
+						</vxe-button>
+						<vxe-button type="button" status="danger" @click="removeEvent(row)">删除</vxe-button>
 					</template>
 				</vxe-table-column>
 			</vxe-table>
@@ -391,4 +391,7 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
 </style>

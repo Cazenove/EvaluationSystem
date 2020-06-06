@@ -19,32 +19,32 @@
 			</template>
 		</vxe-toolbar>
 		<div class="collapse" id="collapseExample">
-			<div class="card card-body">
+			<div class="card card-body" style="border: none;padding: 0;">
 				<vxe-toolbar>
 					<template v-slot:buttons>
 						<el-row :gutter="20">
-							<el-col :span="4">
+							<el-col :span="3">
 								<el-input offser="3" placeholder="用户ID" v-model="searchInfo.userId"></el-input>
 							</el-col>
-							<el-col :span="4">
+							<el-col :span="3">
 								<el-input offser="3" placeholder="用户名" v-model="searchInfo.userName"></el-input>
 							</el-col>
-							<el-col :span="4">
+							<el-col :span="3">
 								<el-input offser="3" placeholder="小组名" v-model="searchInfo.groupName"></el-input>
 							</el-col>
-							<el-col :span="4">
+							<el-col :span="3">
 								<el-select offser="3" placeholder="班级" v-model="searchInfo.classId">
 									<el-option :value="item.classId" v-for="item in classOption" :key="item.classId" :label="item.className"></el-option>
 								</el-select>
 							</el-col>
-							<el-col :span="4">
+							<el-col :span="3">
 								<el-select offser="3" placeholder="评分表" v-model="searchInfo.evaluationInnerId">
 									<el-option :value="item.evaluationInnerId" v-for="item in formOption" :key="item.evaluationInnerId" :label="item.name"></el-option>
 								</el-select>
 							</el-col>
-							<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-							<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
-						</el-row>
+							<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+								<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
+							</el-row>
 					</template>
 				</vxe-toolbar>
 			</div>
@@ -267,4 +267,7 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
 </style>

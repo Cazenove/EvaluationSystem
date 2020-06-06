@@ -1,7 +1,7 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="AdminUserCreateModal">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">添加用户</button>
+		<vxe-button status="primary" data-toggle="modal" data-target="#registerModal">添加用户</vxe-button>
 		<!-- 注册模态框 -->
 		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">

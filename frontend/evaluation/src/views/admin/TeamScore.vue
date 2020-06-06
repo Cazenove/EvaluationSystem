@@ -19,7 +19,7 @@
 			</template>
 		</vxe-toolbar>
 		<div class="collapse" id="collapseExample">
-			<div class="card card-body">
+			<div class="card card-body"  style="border: none;padding: 0;">
 				<vxe-toolbar>
 					<template v-slot:buttons>
 						<el-row :gutter="20">
@@ -36,8 +36,8 @@
 									<el-option :value="item.evaluationOuterId" v-for="item in formOption" :key="item.evaluationOuterId" :label="item.name"></el-option>
 								</el-select>
 							</el-col>
-							<button class="btn-primary btn" style="margin-left: 20px;" @click="search()">搜索</button>
-							<button class="btn-light btn" style="margin-left: 20px;" @click="resetSearch()">重置搜索</button>
+							<vxe-button status="primary" style="margin-left: 20px;" @click="search()">搜索</vxe-button>
+							<vxe-button style="margin-left: 20px;" @click="resetSearch()">重置搜索</vxe-button>
 						</el-row>
 					</template>
 				</vxe-toolbar>
@@ -219,4 +219,7 @@
 </script>
 
 <style>
+	.el-input__inner{
+		height: 34px;
+	}
 </style>
