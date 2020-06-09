@@ -1,7 +1,7 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="RegisterModal">
-		<button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册</button>
+		<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册</button> -->
 		<!-- 注册模态框 -->
 		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">
@@ -75,6 +75,7 @@
 	import api from '../router/httpConfig.js'
 	import Vue from 'vue'
 	import Vuerify from 'vuerify'
+	import $ from 'jquery'
 	import UserNav from '../components/UserNav.vue'
 	Vue.use(Vuerify)
 
@@ -156,6 +157,9 @@
 			}
 		},
 		methods: {
+			showModal() {
+				$('#registerModal').modal('show');
+			},
 			getClassList() {
 				var self = this;
 				axios.get(api.adminClassList,null)

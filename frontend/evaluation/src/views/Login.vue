@@ -29,18 +29,32 @@
 		<div  style="height: 100%; width: auto; padding: 50px; margin: 5% 10%; border-radius: 10px;">
 		<div class="container">
 			<div class="form-row">
-				<div class="form-group col-md-6 col-xs-6">
-					<label for="userId">用户名</label>
-					<input type="text" class="form-control" placeholder="Username" id="username" v-model="userId"/>
+				<div class="form-group col-md-6 col-sm-6 offset-md-3">
+					<div>
+						<input type="text" class="form-control" placeholder="用户名" id="username" v-model="userId" style="margin-bottom: 20px;"/>
+					</div>
+					<div>
+						<input type="password" class="form-control" placeholder="密码" id="pw" v-model="password"/>
+					</div>
 				</div>
-				<div class="form-group col-md-6 col-xs-6">
-					<label for="pw">密码</label>
-					<input type="password" class="form-control" placeholder="Password" id="pw" v-model="password"/>
-				</div>
+				
 			</div>
 			<div class="form-row">
-				<RegisterModal />
-				<button class="btn btn-primary" @click="login()" style="margin-left: 20px;">登录</button>
+				<div class="form-group col-md-6 col-xs-6 offset-md-3">
+					<!-- <vxe-checkbox content="记住我" v-model="remember" style="vertical-align: initial;"/> -->
+					<vxe-checkbox content="记住我" v-model="remember" style="float: right;"></vxe-checkbox>
+					<!-- <button style="float: right;" class="btn btn-link" @click="showRegisterModal()">注册</button> -->
+					
+				</div>
+				
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6 col-xs-6 offset-md-3">
+					<div><RegisterModal ref="RegisterModal"/></div>
+					
+					<button class="btn btn-primary" @click="login()" style="width: 100%;">登录</button>
+					<button style="text-align: center; width: 100%;" class="btn btn-link" @click="showRegisterModal()">注册</button>
+				</div>
 			</div>
 		</div>
 		</div>
@@ -52,11 +66,16 @@
 	import api from '../router/httpConfig.js'
 	import RegisterModal from '../components/RegisterModal.vue'
 	import $ from 'jquery'
+	import XEUtils from 'xe-utils'
 	// import imgurl from '@/assets/home-bg.jpg'
 	export default {
+		mounted() {
+			this.getCookie();
+		},
 		inject: ['reload'],
 		data() {
 			return {
+				remember: false,
 				data: {
 					status:'',
 					data: []
@@ -94,10 +113,43 @@
 				
 				header.css("background-image",this.imgUrl);
 			},
+			setCookie(name,pwd,remember,exdays){
+				var exdate = new Date();
+				        exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+				        document.cookie = "username=" + name + ";path=/;expires=" + exdate.toLocaleString()
+				        document.cookie = "pw=" + pwd + ";path=/;expires=" + exdate.toLocaleString()
+				        document.cookie = "rm=" + remember + ";path=/;expires=" + exdate.toLocaleString()
+				// console.log(document.cookie);
+			},
+			getCookie(){
+				if (document.cookie.length > 0) {
+				            var arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
+				//             console.log(arr)
+				            for (var i = 0; i < arr.length; i++) {
+				                var arr2 = arr[i].split('='); //再次切割
+				                //判断查找相对应的值
+								// console.log(arr2);
+				                if (arr2[0] == 'username') {
+				                    this.userId = arr2[1]; //保存到保存数据的地方
+				                } else if (arr2[0] == 'pw') {
+				                    this.password = arr2[1];
+				                }else if (arr2[0] == 'rm' && arr2[1] == 'true') {
+									this.remember = true;
+								}
+				            }
+				        }
+			},
+			clearCookie(){
+					this.setCookie("", "", false, -1); //修改2值都为空，天数为负1天就好了
+				},
+			showRegisterModal() {
+				this.$refs.RegisterModal.showModal();
+			},
 			login() {
+				
 				var self = this;
 				var pw = this.$md5(this.$data.password);
-				console.log(pw);
+				// console.log(pw);
 				axios.post(api.login,{
 					userId:this.$data.userId,
 					password:this.$data.password
@@ -136,6 +188,11 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
+				if(this.remember == true){
+					this.setCookie(this.userId,this.password,this.remember,30);
+				}else{
+					this.clearCookie();
+				}
 			},
 		}
 	}
