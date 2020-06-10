@@ -2,7 +2,7 @@
 <template>
 	<div class="home">
 		<UserNav />
-		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+		<div class="container col-md-10 offset-md-1 w-75" style="margin: 50px auto;">
 			<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
 				<li class="nav-item">
 					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"

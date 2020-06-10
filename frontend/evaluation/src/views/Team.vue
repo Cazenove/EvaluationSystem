@@ -4,48 +4,58 @@
 		<UserNav />
 		<br />
 		<div class="container">
-			<div class="card">
-				<h5 class="card-header">我的小组</h5>
-				<div class="card-body">
-					<p>班级：{{response.data.className}}</p>
-					<p>组号：{{response.data.groupNum}}</p>
-					<p>组名：{{response.data.groupName}}
-						<button v-if="this.$store.state.userInfo.status == 2" class="btn btn-outline-light" data-toggle="modal"
-						 data-target="#exampleModal">修改名称</button>
-					</p>
-					<p v-if="this.$store.state.userInfo.status == 2">组长：
-						<router-link class="btn btn-outline-success" :to="{path:'/member',query:{userId:response.data.leader.userId}}">
-							{{response.data.leader.name}}
-						</router-link>
-					</p>
-					<p v-else-if="this.$store.state.userInfo.status == 1">
-						组长：{{response.data.leader.name}}
-					</p>
-					<div v-if="this.$store.state.userInfo.status == 2">组员：
-						<router-link v-for="member in response.data.member" :key="member.userId" class="btn btn-outline-info" :to="{path:'/member',query:{userId:member.userId}}">
-							{{member.name}}
-						</router-link>
+			<div class="row">
+				<div class="row col-md-3">
+					<div class="card shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+						<h5 class="card-header">小组信息</h5>
+						<div class="card-body">
+							<p>班级：{{response.data.className}}</p>
+							<p>组号：{{response.data.groupNum}}</p>
+							<p>组名：{{response.data.groupName}}
+								<button v-if="this.$store.state.userInfo.status == 2" class="btn btn-outline-light" data-toggle="modal"
+								 data-target="#exampleModal">修改名称</button>
+							</p>
+						</div>
 					</div>
-					<p v-else-if="this.$store.state.userInfo.status == 1">组员：
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item" v-for="member in response.data.member" :key="member.userId">
-								{{member.name}}
-							</li>
-						</ul>
-					</p>
+					<div class="card shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+						<h5 class="card-header">小组成员</h5>
+						<div class="card-body">
+							<p v-if="this.$store.state.userInfo.status == 2">组长：
+								<router-link class="btn btn-outline-success" :to="{path:'/member',query:{userId:response.data.leader.userId}}">
+									{{response.data.leader.name}}
+								</router-link>
+							</p>
+							<p v-else-if="this.$store.state.userInfo.status == 1">
+								组长：{{response.data.leader.name}}
+							</p>
+							<div v-if="this.$store.state.userInfo.status == 2">组员：
+								<router-link v-for="member in response.data.member" :key="member.userId" class="btn btn-outline-info" :to="{path:'/member',query:{userId:member.userId}}">
+									{{member.name}}
+								</router-link>
+							</div>
+							<p v-else-if="this.$store.state.userInfo.status == 1">组员：
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item" v-for="member in response.data.member" :key="member.userId">
+										{{member.name}}
+									</li>
+								</ul>
+							</p>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="card" v-if="isReady">
-				<h5 class="card-header">得分情况</h5>
-				<div class="card" v-for="item in teamScore" :key="item.evaluationOuterId">
-					<div class="card-body">
-						<h5 class="card-title">{{item.name}} ： {{item.score}}</h5>
-						<ul class="list-group list-group-horizontal">
-							<li class="list-group-item btn-info active">收到的建议</li>
-							<li class="list-group-item" v-for="suggestion in item.suggestion" :key="suggestion">
-								{{suggestion}}
-							</li>
-						</ul>
+				<div class="col-md-1"></div>
+				<div class="card col-md-8 shadow p-3 mb-5 bg-white rounded" v-if="isReady">
+					<h5 class="card-header">得分情况</h5>
+					<div class="card" v-for="item in teamScore" :key="item.evaluationOuterId">
+						<div class="card-body">
+							<h5 class="card-title">{{item.name}} ： {{item.score}}</h5>
+							<ul class="list-group list-group-horizontal">
+								<li class="list-group-item btn-info active">收到的建议</li>
+								<li class="list-group-item" v-for="suggestion in item.suggestion" :key="suggestion">
+									{{suggestion}}
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -55,7 +65,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<h5 class="modal-title" id="exampleModalLabel">修改小组名称</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -199,6 +209,12 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
+			},
+			addActive($event) {
+				$event.currentTarget.className="card shadow-lg p-3 mb-5 bg-white rounded";
+			},
+			removeActive($event) {
+				$event.currentTarget.className="card shadow p-3 mb-5 bg-white rounded";
 			}
 		}
 	}

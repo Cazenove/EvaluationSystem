@@ -7,14 +7,14 @@
 			<button class="btn btn-light" @click="goBack">返回小组</button>
 			<br /><br />
 			<div class="row">
-				<div class="card col-md-3">
+				<div class="card col-md-3 shadow p-3 mb-5 bg-white rounded">
 					<h5 class="card-header">组员详情</h5>
 					<p>姓名：{{memberInfo.name}}</p>
 					<p>学号：{{memberInfo.userId}}</p>
 					<p>电话号码：{{memberInfo.telephone}}</p>
 				</div>
 				<div class="col-md-1"></div>
-				<div class="card col-md-8" v-if="scoreInfo">
+				<div class="card col-md-8 shadow p-3 mb-5 bg-white rounded" v-if="scoreInfo">
 					<h5 class="card-header">历次贡献率</h5>
 					<div class="card" v-for="item in scoreInfo.personScores" :key="item.evaluationInnerId">
 						<div class="card-body">
@@ -28,7 +28,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="card col-md-8" v-else>
+				<div class="card col-md-8 shadow p-3 mb-5 bg-white rounded" v-else>
 					<h5 class="card-header">历次贡献率</h5>
 					<div class="card">
 						<p>暂无数据</p>
