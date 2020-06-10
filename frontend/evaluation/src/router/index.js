@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import { resolve } from 'path';
 
 Vue.use(VueRouter)
 
 const routes = [{
 		path: '/home',
 		name: 'Home',
-		component: Home,
+		component: resolve => require(['../views/Home.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -15,7 +15,7 @@ const routes = [{
 	{
 		path: '/team',
 		name: 'Team',
-		component: () => import('../views/Team.vue'),
+		component: resolve => require(['../views/Team.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -23,7 +23,7 @@ const routes = [{
 	{
 		path: '/member',
 		name: 'Member',
-		component: () => import('../views/MemberDetails.vue'),
+		component: resolve => require(['../views/MemberDetails.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -31,7 +31,7 @@ const routes = [{
 	{
 		path: '/outer',
 		name: 'Outer',
-		component: () => import('../views/OuterDetails.vue'),
+		component: resolve => require(['../views/OuterDetails.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -39,7 +39,7 @@ const routes = [{
 	{
 		path: '/inner',
 		name: 'Inner',
-		component: () => import('../views/InnerDetails.vue'),
+		component: resolve => require(['../views/InnerDetails.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -47,7 +47,7 @@ const routes = [{
 	{
 		path: '/account',
 		name: 'Account',
-		component: () => import('../views/Account.vue'),
+		component: resolve => require(['../views/Account.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -55,7 +55,7 @@ const routes = [{
 	{
 		path: '/changepassword',
 		name: 'ChangePassword',
-		component: () => import('../views/ChangePassword.vue'),
+		component: resolve => require(['../views/ChangePassword.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -63,7 +63,7 @@ const routes = [{
 	{
 		path: '*',
 		name: 'Login',
-		component: () => import('../views/Login.vue'),
+		component: resolve => require(['../views/Login.vue'],resolve),
 		meta: {
 			requireLogin: false
 		}
@@ -72,7 +72,7 @@ const routes = [{
 		// 用户管理
 		path: '/admin/user',
 		name: 'UserManagement',
-		component: () => import('../views/admin/UserManagement.vue'),
+		component: resolve => require(['../views/admin/UserManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -81,7 +81,7 @@ const routes = [{
 		// 班级管理
 		path: '/admin/class',
 		name: 'ClassManagement',
-		component: () => import('../views/admin/ClassManagement.vue'),
+		component: resolve => require(['../views/admin/ClassManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -90,7 +90,7 @@ const routes = [{
 		// 助教管理
 		path: '/admin/assistant',
 		name: 'AssistantManagement',
-		component: () => import('../views/admin/AssistantManagement.vue'),
+		component: resolve => require(['../views/admin/AssistantManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -99,7 +99,7 @@ const routes = [{
 		// 小组信息
 		path: '/admin/team',
 		name: 'TeamManagement',
-		component: () => import('../views/admin/TeamManagement.vue'),
+		component: resolve => require(['../views/admin/TeamManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -108,7 +108,7 @@ const routes = [{
 		// 评分表管理
 		path: '/admin/form',
 		name: 'FormManagement',
-		component: () => import('../views/admin/FormManagement.vue'),
+		component: resolve => require(['../views/admin/FormManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -117,7 +117,7 @@ const routes = [{
 		// 组间评分表提交记录
 		path: '/admin/evaluationouter',
 		name: 'EvaluationOuter',
-		component: () => import('../views/admin/EvaluationOuter.vue'),
+		component: resolve => require(['../views/admin/EvaluationOuter.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -126,7 +126,7 @@ const routes = [{
 		// 组内评分表提交记录
 		path: '/admin/evaluationinner',
 		name: 'EvaluationInner',
-		component: () => import('../views/admin/EvaluationInner.vue'),
+		component: resolve => require(['../views/admin/EvaluationInner.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -135,7 +135,7 @@ const routes = [{
 		// 组内评分表提交记录
 		path: '/admin/suggestion',
 		name: 'SuggestionManagement',
-		component: () => import('../views/admin/SuggestionManagement.vue'),
+		component: resolve => require(['../views/admin/SuggestionManagement.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -144,7 +144,7 @@ const routes = [{
 		// 小组历次评分
 		path: '/admin/teamscore',
 		name: 'TeamScore',
-		component: () => import('../views/admin/TeamScore.vue'),
+		component: resolve => require(['../views/admin/TeamScore.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -153,7 +153,7 @@ const routes = [{
 		// 个人历次评分
 		path: '/admin/personscore',
 		name: 'PersonScore',
-		component: () => import('../views/admin/PersonScore.vue'),
+		component: resolve => require(['../views/admin/PersonScore.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -162,7 +162,7 @@ const routes = [{
 		// 小组综合评分
 		path: '/admin/teamfinalscore',
 		name: 'TeamFinalScore',
-		component: () => import('../views/admin/TeamFinalScore.vue'),
+		component: resolve => require(['../views/admin/TeamFinalScore.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -171,7 +171,7 @@ const routes = [{
 		// 个人综合评分
 		path: '/admin/personfinalscore',
 		name: 'PersonFinalScore',
-		component: () => import('../views/admin/PersonFinalScore.vue'),
+		component: resolve => require(['../views/admin/PersonFinalScore.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -179,7 +179,7 @@ const routes = [{
 	{
 		path:'/admin/home',
 		name: 'AdminHome',
-		component: () => import('../views/admin/AdminHome'),
+		component: resolve => require(['../views/admin/AdminHome'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -188,7 +188,7 @@ const routes = [{
 		// 个人详情信息
 		path: '/admin/user/details',
 		name: 'UserDetails',
-		component: () => import('../views/admin/UserDetails.vue'),
+		component: resolve => require(['../views/admin/UserDetails.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
@@ -197,7 +197,7 @@ const routes = [{
 		// 小组详情信息
 		path: '/admin/team/details',
 		name: 'TeamDetails',
-		component: () => import('../views/admin/TeamDetails.vue'),
+		component: resolve => require(['../views/admin/TeamDetails.vue'],resolve),
 		meta: {
 			requireLogin: true
 		}
