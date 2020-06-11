@@ -43,6 +43,9 @@ public class TaskJob implements Job {
     @Autowired
     PersonScoreRepository personScoreRepository;
 
+    @Autowired
+    GroupSuggestionRepository groupSuggestionRepository;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -149,10 +152,16 @@ public class TaskJob implements Job {
                 for(List tableRaw:tableData){
                     int groupId = (int)tableRaw.get(0);
                     int score = (int)tableRaw.get(tableRaw.size() - 2);
+                    String suggestion = (String)tableRaw.get(tableRaw.size() - 1);
                     if(!statis.containsKey(groupId)){
                         statis.put(groupId,0);
                     }
                     statis.put(groupId,statis.get(groupId) + score);
+                    GroupSuggestion groupSuggestion = new GroupSuggestion();
+                    groupSuggestion.setEvaluationOuterId(e.getEvaluationOuterId());
+                    groupSuggestion.setGroupId(groupId);
+                    groupSuggestion.setSuggestion(suggestion);
+                    groupSuggestionRepository.save(groupSuggestion);
                 }
             }
 
