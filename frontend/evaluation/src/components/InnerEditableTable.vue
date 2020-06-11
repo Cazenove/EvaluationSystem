@@ -216,6 +216,7 @@
 								if(res.status == 200 && res.data.status == 1) {
 									// that.$XModal.message({ status: 'success', message: '提交成功！' })
 									alert('提交成功！');
+									self.$router.push('/home');
 								} else {
 									// that.$XModal.message({ status: 'error', message: res.data.msg })
 									alert(res.data.msg);

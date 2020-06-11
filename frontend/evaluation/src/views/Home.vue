@@ -1,8 +1,9 @@
 <!-- 用户首页，显示评分表列表 -->
 <template>
 	<div class="home">
+		<div class="bg"></div>
 		<UserNav />
-		<div class="container col-md-10 offset-md-1 w-75" style="margin: 50px auto;">
+		<div id="mainContainer" class="container col-md-10 offset-md-1 w-75 shadow p-3 mb-5 bg-white rounded" style="margin: 50px auto;">
 			<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
 				<li class="nav-item">
 					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
@@ -40,3 +41,10 @@
 		}
 	}
 </script>
+
+<style>
+	#mainContainer {
+		background:#DEE2E6;padding:5px;color:#212529; 
+		filter:alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.95;
+	}
+</style>

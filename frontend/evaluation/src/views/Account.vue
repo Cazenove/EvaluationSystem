@@ -1,15 +1,19 @@
 <!-- 个人中心 -->
 <template>
 	<div id="Account">
+		<div class="bg"></div>
 		<UserNav />
-		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
-			<h1>个人中心</h1>
-			<div>
-				<p>姓名：{{this.$store.state.userInfo.userName}}</p>
-				<p>学号：{{this.$store.state.userInfo.userId}}</p>
-				<p>电话：{{this.$store.state.userInfo.telephone}}</p>
-				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">修改个人信息</button>
+		<div class="container" style="margin: 50px auto;">
+			<div class="card col-md-3 shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+				<h5 class="card-header">小组信息</h5>
+				<div class="card-body">
+					<p>姓名：{{this.$store.state.userInfo.userName}}</p>
+					<p>学号：{{this.$store.state.userInfo.userId}}</p>
+					<p>电话：{{this.$store.state.userInfo.telephone}}</p>
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">修改个人信息</button>
+				</div>
 			</div>
+			
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -126,6 +130,12 @@
 				}).catch(function(error) {
 					console.log(error);
 				})
+			},
+			addActive($event) {
+				$event.currentTarget.className="card col-md-3 shadow-lg p-3 mb-5 bg-white rounded";
+			},
+			removeActive($event) {
+				$event.currentTarget.className="card col-md-3 shadow p-3 mb-5 bg-white rounded";
 			}
 		},
 		computed: {

@@ -1,7 +1,8 @@
 <template>
 	<div id="ChangePassword">
+		<div class="bg"></div>
 		<UserNav />
-		<div class="container col-md-10 offset-md-1" style="margin: 50px auto;">
+		<div class="container col-md-8 offset-md-1 shadow p-3 mb-5 bg-white rounded" style="margin: 50px auto;">
 			<el-form ref="form" :model="form" label-width="80px">
 				<el-form-item label="原密码">
 					<el-input type="password" v-model="form.password"></el-input>

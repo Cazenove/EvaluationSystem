@@ -1,6 +1,7 @@
 <!-- 某个用户的详情信息，组长可见 -->
 <template>
 	<div id="MemberDetails">
+		<div class="bg"></div>
 		<UserNav />
 		<br />
 		<div class="container">

@@ -255,6 +255,7 @@
 						.then(function(res) {
 							if(res.status == 200 && res.data.status == 1) {
 								alert(res.data.msg);
+								self.$router.push('/home');
 							} else {
 								alert(res.data.msg);
 							}

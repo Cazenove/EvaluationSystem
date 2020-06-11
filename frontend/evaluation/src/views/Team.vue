@@ -1,6 +1,7 @@
 <!-- 小组详情信息页面 -->
 <template>
 	<div class="about">
+		<div class="bg"></div>
 		<UserNav />
 		<br />
 		<div class="container">
@@ -46,7 +47,8 @@
 				<div class="col-md-1"></div>
 				<div class="card col-md-8 shadow p-3 mb-5 bg-white rounded" v-if="isReady">
 					<h5 class="card-header">得分情况</h5>
-					<div class="card" v-for="item in teamScore" :key="item.evaluationOuterId">
+					<div class="card" v-for="item in teamScore" :key="item.evaluationOuterId"
+					v-on:mouseover="addBorder($event)" v-on:mouseout="removeBorder($event)">
 						<div class="card-body">
 							<h5 class="card-title">{{item.name}} ： {{item.score}}</h5>
 							<ul class="list-group list-group-horizontal">
@@ -215,7 +217,13 @@
 			},
 			removeActive($event) {
 				$event.currentTarget.className="card shadow p-3 mb-5 bg-white rounded";
-			}
+			},
+			addBorder($event) {
+				$event.currentTarget.className="card border border-success rounded";
+			},
+			removeBorder($event) {
+				$event.currentTarget.className="card";
+			},
 		}
 	}
 </script>

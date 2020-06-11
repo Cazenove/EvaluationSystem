@@ -126,10 +126,15 @@
 </script>
 
 <style>
-	body {
-		/* background: url(assets/background.jpg) no-repeat; */
-		/* background-size: cover; */
-		/* background-position: center; */
+	.bg {
+		background: url(https://api.berryapi.net/?service=App.Bing.Images&day=1) no-repeat;
+		background-size: cover;
+		background-position: center;
+		height: 100%;
+		width: 100%;
+		filter: blur(10px);
+		position: absolute;
+		z-index: -1;
 	}
 	#app {
 		font-family: Avenir, Helvetica, Arial, sans-serif;
