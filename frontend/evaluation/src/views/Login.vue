@@ -11,22 +11,22 @@
 		<!-- <div :style="{backgroundImage: 'url(' + require('@/assets/home-bg.jpg') + ')' }" style="width: 100%; height: 500px;">
 			
 		</div> -->
-		<header class="masthead" id="header" :style="{backgroundImage: 'url(' + imgUrl + ')' }">
+		<header class="masthead" id="header" :style="{backgroundImage: 'url(https://api.berryapi.net/?service=App.Bing.Images&day=2)' }">
 			<!-- <img :src="imgUrl" style="position: fixed; z-index: -1;"/> -->
 			<div class="overlay"></div>
 			<div class="container">
-				
-			<div class="row">
-				<div class="col-lg-8 col-md-10 mx-auto">
-					<div class="site-heading">
-					<h1>{{welcomemsg}}</h1>
-					<span class="subheading">登录或注册来使用{{welcomemsg}}</span>
+				<div class="row">
+					<div class="col-lg-8 col-md-10 mx-auto">
+						<div class="site-heading">
+							<h1>「软件工程实践」<br />互动评价系统</h1>
+							<span class="subheading">登录或注册来使用{{welcomemsg}}</span>
+							<small>建议使用PC端进行操作</small>
+						</div>
 					</div>
 				</div>
 			</div>
-			</div>
 		</header>
-		<div  style="height: 100%; width: auto; padding: 50px; margin: 5% 10%; border-radius: 10px;">
+		<div style="height: 100%; width: auto; padding: 0px; margin: 5% 10%; border-radius: 10px;">
 		<div class="container">
 			<div class="form-row">
 				<div class="form-group col-md-6 col-sm-6 offset-md-3">

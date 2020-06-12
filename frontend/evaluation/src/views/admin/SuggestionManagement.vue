@@ -113,12 +113,25 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label for="evaluationId" class="col-form-label">评分表ID</label>
-							<input type="text" class="form-control" id="evaluationId" v-model="createForm.evaluationId" />
+							<label for="classId" class="col-form-label">班级</label>
+							<select class="form-control" v-model="createForm.classId" @change="classOptionChange(createForm)">
+								<option disabled="disabled" :value="null">请选择</option>
+								<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
+							</select>
 						</div>
 						<div class="form-group">
-							<label for="targetGroupId" class="col-form-label">小组ID</label>
-							<input type="text" class="form-control" id="targetGroupId" v-model="createForm.targetGroupId" />
+							<label for="targetGroupId" class="col-form-label">小组</label>
+							<select class="form-control" v-model="createForm.targetGroupId">
+								<option disabled="disabled" :value="null">请选择</option>
+								<option v-for="item in groupOfClass" :value="item.groupId" :key="item.groupId" :label="item.groupName"></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="evaluationId" class="col-form-label">评分表</label>
+							<select class="form-control" v-model="createForm.evaluationId">
+								<option disabled="disabled" :value="null">请选择</option>
+								<option v-for="item in formOption" :value="item.evaluationOuterId" :key="item.evaluationOuterId" :label="item.name"></option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="newsuggestion" class="col-form-label">建议</label>
@@ -171,6 +184,8 @@
 					targetGroupId:'',
 					suggestion:''
 				},
+				formList: {},
+				formOption: [],
 				groupList: {},
 				formList: {},
 				classList: {},
@@ -228,6 +243,11 @@
 					if(res.status == 200 && res.data.status == 1) {
 						for(var i=0; i<res.data.data.length; i++) {
 							self.formList[res.data.data[i].evaluationOuterId] = res.data.data[i].name;
+							var option = {
+								evaluationOuterId: res.data.data[i].evaluationOuterId,
+								name: res.data.data[i].name
+							}
+							self.formOption.push(option);
 						}
 						self.getResponse();
 					}
@@ -314,8 +334,12 @@
 				})
 			},
 			submitCreateForm() {
-				axios.post(api.adminSuggestionCreate,this.createForm)
-				.then(function(res) {
+				// console.log(this.createForm);
+				axios.post(api.adminSuggestionCreate,{
+					evaluationId:this.createForm.evaluationId.toString(),
+					targetGroupId:this.createForm.targetGroupId.toString(),
+					suggestion:this.createForm.suggestion
+				}).then(function(res) {
 					if(res.status == 200 && res.data.stauts == 1) {
 						alert("创建成功！");
 					} else {
@@ -365,6 +389,20 @@
 					classId:null,
 					groupId:null,
 				}
+			},
+			classOptionChange(data){
+				data.groupId = null;
+				this.groupOfClass = [];
+				for(let value in this.groupList){
+					if(this.groupList[value].classId == data.classId){
+						var item = {
+							groupId: this.groupList[value].groupId,
+							groupName: this.groupList[value].groupName,
+						};
+						this.groupOfClass.push(item);
+					}
+				}
+				
 			},
         },
 		computed:{
