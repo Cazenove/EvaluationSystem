@@ -74,7 +74,7 @@ public class SubmitOuterService {
                 saveEvaluation.setContent(submitOuter.getContent());
                 submitOuterRepository.save(saveEvaluation);
                 //提交suggestions至GroupSuggestion表
-                List<List> list = (List<List>) submitOuter.getContent().get("tableData");
+                /*List<List> list = (List<List>) submitOuter.getContent().get("tableData");
                 for (int i = 0; i < list.size(); i++) {
                     String str = (String) list.get(i).get(list.get(i).size()-1);
                     int id = (int) list.get(i).get(0);
@@ -83,7 +83,7 @@ public class SubmitOuterService {
                     groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
                     groupSuggestion.setGroupId(id);
                     groupSuggestionRepository.save(groupSuggestion);
-                }
+                }*/
             }else if(saveEvaluation==null){
                 saveEvaluation = new SubmitOuter();
                 saveEvaluation.setContent(submitOuter.getContent());
@@ -92,7 +92,7 @@ public class SubmitOuterService {
                 saveEvaluation.setSubmitTime(submitOuter.getSubmitTime());
                 submitOuterRepository.save(saveEvaluation);
                 //提交suggestions至GroupSuggestion表
-                List<List> list = (List<List>) submitOuter.getContent().get("tableData");
+                /*List<List> list = (List<List>) submitOuter.getContent().get("tableData");
                 for (int i = 0; i < list.size(); i++) {
                     String str = (String) list.get(i).get(list.get(i).size()-1);
                     int id = (int) list.get(i).get(0);
@@ -101,7 +101,7 @@ public class SubmitOuterService {
                     groupSuggestion.setEvaluationOuterId(submitOuter.getEvaluationOuterId());
                     groupSuggestion.setGroupId(id);
                     groupSuggestionRepository.save(groupSuggestion);
-                }
+                }*/
             }
 
             flag = 1;
