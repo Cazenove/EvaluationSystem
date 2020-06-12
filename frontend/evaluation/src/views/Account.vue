@@ -3,19 +3,50 @@
 	<div id="Account">
 		<div class="bg"></div>
 		<UserNav />
-		<div class="container" style="margin: 50px auto;">
-			<div class="card col-md-3 shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+		<div class="container row" style="margin: 50px auto;">
+			<div class="col-md-3">
+			<div class="card shadow mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
 				<h5 class="card-header">小组信息</h5>
 				<div class="card-body">
 					<p>姓名：{{this.$store.state.userInfo.userName}}</p>
 					<p>学号：{{this.$store.state.userInfo.userId}}</p>
 					<p>电话：{{this.$store.state.userInfo.telephone}}</p>
-					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">修改个人信息</button>
+					<button type="button" class="btn btn-info"  @click="show = !show" style="width: 100%;">修改个人信息</button>
+<!-- 					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">修改个人信息</button> -->
 				</div>
 			</div>
-			
+			</div>
+			<div  class="col-md-8">
+			<transition name="slide-fade">
+				<div v-if="show">
+					<div >
+					<div class="card shadow mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+						<h5 class="card-header">修改个人信息</h5>
+						<div class="card-body">
+							<div class="form-group">
+									<label for="name" class="col-form-label">姓名</label>
+									<input type="text" class="form-control" id="name" v-model="request.name" />
+									<span class="error" v-if="errors['request.name']">{{errors['request.name']}}</span>
+							</div>
+								<div class="form-group">
+									<label for="telephone" class="col-form-label">电话号码</label>
+									<input type="text" class="form-control" id="telephone" v-model="request.telephone" />
+									<span class="error" v-if="errors['request.telephone']">{{errors['request.telephone']}}</span>
+								</div>
+							
+							<div style="float: right;">
+								<button type="button" class="btn btn-secondary mr-2" @click="show = false">取消</button>
+								<button type="button" class="btn btn-primary" @click="onSubmit();show = false">修改</button>
+							</div>
+						</div>
+					</div>
+					
+					</div>
+				</div>
+			</transition>
+			</div>
 			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -42,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -71,7 +102,8 @@
 				},
 				response: {
 					
-				}
+				},
+				show: false,
 			}
 		},
 		vuerify: {
@@ -132,10 +164,10 @@
 				})
 			},
 			addActive($event) {
-				$event.currentTarget.className="card col-md-3 shadow-lg p-3 mb-5 bg-white rounded";
+				$event.currentTarget.className="card shadow-lg mb-5 bg-white rounded";
 			},
 			removeActive($event) {
-				$event.currentTarget.className="card col-md-3 shadow p-3 mb-5 bg-white rounded";
+				$event.currentTarget.className="card shadow mb-5 bg-white rounded";
 			}
 		},
 		computed: {
@@ -147,4 +179,15 @@
 </script>
 
 <style>
+	.slide-fade-enter-active {
+	  transition: all .3s ease;
+	}
+	.slide-fade-leave-active {
+	  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	.slide-fade-enter, .slide-fade-leave-to
+	/* .slide-fade-leave-active for below version 2.1.8 */ {
+	  transform: translateX(10px);
+	  opacity: 0;
+	}
 </style>

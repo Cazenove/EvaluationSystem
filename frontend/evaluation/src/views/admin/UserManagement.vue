@@ -3,7 +3,8 @@
 		<ManageNav></ManageNav>
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">主页</a></li>
+				
+				<li class="breadcrumb-item"><router-link to="/admin/home">主页</router-link></li>
 				<li class="breadcrumb-item active" aria-current="page">用户管理</li>
 			</ol>
 		</nav>
@@ -83,6 +84,7 @@
 			row-key
 			highlight-hover-row
 			keep-source
+			max-height="600px"
 			ref="xTable"
 			:data="list">
 				<vxe-table-column type="checkbox" width="60"></vxe-table-column>

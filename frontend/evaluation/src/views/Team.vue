@@ -7,7 +7,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="row col-md-3">
-					<div class="card shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+					<div class="card shadow mb-5 bg-white rounded" style="width: 100%;" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
 						<h5 class="card-header">小组信息</h5>
 						<div class="card-body">
 							<p>班级：{{response.data.className}}</p>
@@ -18,7 +18,7 @@
 							</p>
 						</div>
 					</div>
-					<div class="card shadow p-3 mb-5 bg-white rounded" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
+					<div class="card shadow mb-5 bg-white rounded" style="width: 100%;" v-on:mouseover="addActive($event)" v-on:mouseout="removeActive($event)">
 						<h5 class="card-header">小组成员</h5>
 						<div class="card-body">
 							<p v-if="this.$store.state.userInfo.status == 2">组长：
@@ -45,9 +45,11 @@
 					</div>
 				</div>
 				<div class="col-md-1"></div>
-				<div class="card col-md-8 shadow p-3 mb-5 bg-white rounded" v-if="isReady">
+				<div class="col-md-8">
+				<div class="card shadow mb-5 bg-white rounded" v-if="isReady">
 					<h5 class="card-header">得分情况</h5>
-					<div class="card" v-for="item in teamScore" :key="item.evaluationOuterId"
+					<div class="mb-3">
+					<div class="card mt-3 mr-2 ml-2" v-for="item in teamScore" :key="item.evaluationOuterId"
 					v-on:mouseover="addBorder($event)" v-on:mouseout="removeBorder($event)">
 						<div class="card-body">
 							<h5 class="card-title">{{item.name}} ： {{item.score}}</h5>
@@ -59,6 +61,8 @@
 							</ul>
 						</div>
 					</div>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>
@@ -213,17 +217,22 @@
 				})
 			},
 			addActive($event) {
-				$event.currentTarget.className="card shadow-lg p-3 mb-5 bg-white rounded";
+				$event.currentTarget.className="card shadow-lg mb-5 bg-white rounded";
 			},
 			removeActive($event) {
-				$event.currentTarget.className="card shadow p-3 mb-5 bg-white rounded";
+				$event.currentTarget.className="card shadow mb-5 bg-white rounded";
 			},
 			addBorder($event) {
-				$event.currentTarget.className="card border border-success rounded";
+				$event.currentTarget.className="card mt-3 ml-2 mr-3 border border-success rounded";
 			},
 			removeBorder($event) {
-				$event.currentTarget.className="card";
+				$event.currentTarget.className="card mt-3 ml-2 mr-3";
 			},
 		}
 	}
 </script>
+<style>
+	ul li {
+		text-align: center;
+	}
+</style>

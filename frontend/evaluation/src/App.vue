@@ -133,7 +133,7 @@
 		height: 100%;
 		width: 100%;
 		filter: blur(10px);
-		position: absolute;
+		position: fixed;
 		z-index: -1;
 	}
 	#app {
