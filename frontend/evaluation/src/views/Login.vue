@@ -32,7 +32,7 @@
 		<transition name="fade" mode="out-in">
 		<div class="container" id="loginForm" v-if="!register">
 			<div class="form-row">
-				<div class="form-group col-md-6 col-sm-6 offset-md-3">
+				<div class="form-group col-md-6 offset-md-3">
 					<div>
 						<input type="text" class="form-control mb-3" placeholder="用户名" id="username" v-model="userId"/>
 					</div>
