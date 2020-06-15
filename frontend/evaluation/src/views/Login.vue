@@ -20,18 +20,21 @@
 						<div class="site-heading">
 							<h1>「软件工程实践」<br />互动评价系统</h1>
 							<span class="subheading">登录或注册来使用{{welcomemsg}}</span>
-							<small>建议使用PC端进行操作</small>
+							<br>
+							<span style="font-weight:300;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">建议使用PC端进行操作</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</header>
 		<div style="height: 100%; width: auto; padding: 0px; margin: 5% 10%; border-radius: 10px;">
-		<div class="container">
+			
+		<transition name="fade" mode="out-in">
+		<div class="container" id="loginForm" v-if="!register">
 			<div class="form-row">
 				<div class="form-group col-md-6 col-sm-6 offset-md-3">
 					<div>
-						<input type="text" class="form-control" placeholder="用户名" id="username" v-model="userId" style="margin-bottom: 20px;"/>
+						<input type="text" class="form-control mb-3" placeholder="用户名" id="username" v-model="userId"/>
 					</div>
 					<div>
 						<input type="password" class="form-control" placeholder="密码" id="pw" v-model="password"/>
@@ -50,13 +53,32 @@
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6 col-xs-6 offset-md-3">
-					<div><RegisterModal ref="RegisterModal"/></div>
+					
 					
 					<button class="btn btn-primary" @click="login()" style="width: 100%;">登录</button>
-					<button style="text-align: center; width: 100%;" class="btn btn-link" @click="showRegisterModal()">注册</button>
+					<button style="text-align: center; width: 100%;" class="btn btn-link" @click="register = !register">注册</button>
 				</div>
 			</div>
 		</div>
+		</transition>
+		<transition name="fade" mode="out-in">
+		<div v-if="register" class="container">
+			<div class="form-row">
+				<div class="form-group col-md-6 col-xs-6 offset-md-3">
+			<RegisterModal ref="RegisterModal"/>
+			</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6 col-xs-6 offset-md-3">
+					
+					
+					<button class="btn btn-primary" @click="registerFun()" style="width: 100%;">注册</button>
+					<button style="text-align: center; width: 100%;" class="btn btn-link" @click="register = !register">返回</button>
+				</div>
+			</div>
+		</div>
+		
+		</transition>
 		</div>
 	</div>
 </template>
@@ -75,6 +97,7 @@
 		inject: ['reload'],
 		data() {
 			return {
+				register: false,
 				remember: false,
 				data: {
 					status:'',
@@ -98,10 +121,14 @@
 			    document.onkeypress = function(e) {
 			      var keycode = document.all ? event.keyCode : e.which;
 				  
-			      if (keycode == 13 && that.$route.path=='/') {
-			        that.login();// 登录方法名
-			         return false;
+			      if (keycode == 13 && that.$route.path=='/' && that.register == false) {
+					that.login();// 登录方法名
+					return false;
 			      }
+				  else if (keycode == 13 && that.$route.path=='/' && that.register == true){
+					  that.registerFun();
+					  return false;
+				  }
 			    };
 		},
 		components: {//注册组件
@@ -144,6 +171,9 @@
 				},
 			showRegisterModal() {
 				this.$refs.RegisterModal.showModal();
+			},
+			registerFun() {
+				this.$refs.RegisterModal.register();
 			},
 			login() {
 				
@@ -210,5 +240,23 @@
 	body{
 		/* background-image: none; */
 	}
-	
+	.vxe-checkbox>input:checked+.vxe-checkbox--icon{
+		background-color: #007bff;
+		border-color: #007bff;
+	}
+	.vxe-checkbox>input:checked+.vxe-checkbox--icon+.vxe-checkbox--label{
+		color: #007bff;
+	}
+	.fade-enter-active {
+	  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	.fade-leave-active {
+	  transition: all .0s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	.fade-enter, .fade-leave-to
+	/* .slide-fade-leave-active for below version 2.1.8 */ {
+	  transform: translateX(10px);
+	  opacity: 0;
+	  position: fixed;
+	}
 </style>

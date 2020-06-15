@@ -1,9 +1,63 @@
 <!-- 注册模态框，点击注册弹出 -->
 <template>
 	<div id="RegisterModal">
+		<div>
+			
+			<div>
+				<div class="mb-3">
+					
+					<input type="text" class="form-control" id="userId" v-model="registerInfo.userId" placeholder="学号"/>
+					<span class="error" v-if="errors['registerInfo.userId']">{{errors['registerInfo.userId']}}</span>
+				</div>
+				<div class="mb-3">
+					
+					<input type="password" class="form-control" id="password" v-model="registerInfo.password" placeholder="密码"/>
+					<span class="error" v-if="errors['registerInfo.password']">{{errors['registerInfo.password']}}</span>
+				</div>
+				<div class="mb-3">
+					
+					<input type="text" class="form-control" id="name" v-model="registerInfo.name" placeholder="姓名"/>
+					<span class="error" v-if="errors['registerInfo.name']">{{errors['registerInfo.name']}}</span>
+				</div>
+				<div class="mb-3">
+					
+					<input type="text" class="form-control" id="telephone" v-model="registerInfo.telephone" placeholder="电话号码"/>
+					<span class="error" v-if="errors['registerInfo.telephone']">{{errors['registerInfo.telephone']}}</span>
+				</div>
+				<div class="mb-3">
+					
+					<select class="form-control" v-model="registerInfo.classId" @change="registerInfo.groupNum=null">
+						<option disabled="disabled" :value="null">请选择班级</option>
+						<option v-for="(item, index) in classList" :value="item.classId" :key="item.classId">{{item.className}}</option>
+					</select>
+					<span class="error" v-if="errors['registerInfo.classId']">{{errors['registerInfo.classId']}}</span>
+				</div>
+				<div class="mb-3">
+					
+					<select class="form-control" v-model="registerInfo.groupNum">
+						<option disabled="disabled" :value="null">请选择小组</option>
+						<option v-for="n in getGroupNum" :value="n" :key="n">第{{n}}小组</option>
+					</select>
+					<span class="error" v-if="errors['registerInfo.groupId']">{{errors['registerInfo.groupId']}}</span>
+				</div>
+				<div >
+					
+					<select class="form-control" v-model="registerInfo.status">
+						<option disabled="disabled" :value="null">请选择身份</option>
+						<option :value="1">组员</option>
+						<option :value="2">组长</option>
+					</select>
+					<span class="error" v-if="errors['registerInfo.status']">{{errors['registerInfo.status']}}</span>
+				</div>
+			</div>
+			<!-- <div>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="close">取消</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" @click="register">注册</button>
+			</div> -->
+		</div>
 		<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#registerModal">注册</button> -->
 		<!-- 注册模态框 -->
-		<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		<!-- <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		 aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -66,7 +120,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -212,4 +266,7 @@
 </script>
 
 <style>
+	#RegisterModal span{
+		color: #FF6666;
+	}
 </style>
